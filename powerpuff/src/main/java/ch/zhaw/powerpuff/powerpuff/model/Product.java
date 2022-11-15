@@ -21,9 +21,6 @@ public class Product {
 
     @NonNull
     private DifficultyType difficultyType;
-
-    @NonNull
-    private ProductType productType;
     
     @NonNull
     private ProductState productState;

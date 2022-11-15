@@ -1,5 +1,5 @@
 package ch.zhaw.powerpuff.powerpuff.model;
 
 public enum ProductState {
-    DRAFT, REVIEW, ACTIVE, INACTIVE
+    NEW, REVIEW, ACTIVE, INACTIVE
 }
