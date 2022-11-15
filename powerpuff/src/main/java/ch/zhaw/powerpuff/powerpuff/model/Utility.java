@@ -14,24 +14,18 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Document("product")
-public class Product {
+@Document("utility")
+public class Utility {
     @Id
     private String id;
 
     @NonNull
-    private DifficultyType difficultyType;
+    private String utilityName;
 
     @NonNull
-    private ProductType productType;
-    
-    @NonNull
-    private ProductState productState;
-    
-    @NonNull
-    private String productName;
-    
-    @NonNull
-    private String description;
+    private int unit;
 
+    @NonNull
+    private UtilityType utilityType;    
+    
 }
