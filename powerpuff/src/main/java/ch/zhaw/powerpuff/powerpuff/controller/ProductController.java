@@ -35,12 +35,7 @@ public class ProductController {
         @GetMapping("")
         public ResponseEntity<List<Product>> getAllProducts(){
             List<Product> allProducts = productRepository.findAll();
-
-            if (!(allProducts.isEmpty())) {
             return new ResponseEntity<>(allProducts, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         }
 
         @GetMapping("{id}")
