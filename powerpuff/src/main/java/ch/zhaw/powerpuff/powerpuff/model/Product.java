@@ -14,21 +14,28 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Document("product")
+@Document("products")
 public class Product {
     @Id
     private String id;
 
     @NonNull
     private DifficultyType difficultyType;
-    
     @NonNull
     private ProductState productState;
-    
+    @NonNull
+    private ProductType productType;
     @NonNull
     private String productName;
-    
     @NonNull
     private String description;
+    @NonNull
+    private String size;
+    @NonNull
+    private String clothingType;
+    @NonNull
+    private double prize;
+    @NonNull
+    private String patchArt;
 
 }

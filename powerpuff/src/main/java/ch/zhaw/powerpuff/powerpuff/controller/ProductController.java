@@ -27,7 +27,7 @@ public class ProductController {
     @PostMapping("")
     public ResponseEntity<Product> createUtility(
         @RequestBody ProductCreateDTO pDTO) {
-            Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getProductState(), pDTO.getDescription(), pDTO.getProductName());
+            Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getProductState(), pDTO.getProductType(), pDTO.getDescription(), pDTO.getProductName(), pDTO.getSize(), pDTO.getClothingType(),pDTO.getPrize(), pDTO.getPatchArt());
             Product p = productRepository.save(pDAO);
             return new ResponseEntity<>(p, HttpStatus.CREATED);
         }
