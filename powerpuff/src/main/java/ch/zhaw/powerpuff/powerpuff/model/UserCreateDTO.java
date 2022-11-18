@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 public class UserCreateDTO {
     
     private UserStatus userStatus;
+    private UserType userType;
     private String eMail;
     private String username;
     private String name;

@@ -21,16 +21,14 @@ public class User {
 
     @NonNull
     private UserStatus userStatus;
-    
+    @NonNull
+    private UserType userType;
     @NonNull
     private String eMail;
-    
     @NonNull
     private String username;
-    
     @NonNull
     private String name;
-    
     @NonNull
     private String password;
 }
