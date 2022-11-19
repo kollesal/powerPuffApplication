@@ -20,15 +20,15 @@ public class User {
     private String id;
 
     @NonNull
-    private UserStatus userStatus;
+    private UserStatus userStatus = UserStatus.ACTIVE;
     @NonNull
-    private UserType userType;
+    private UserType userType = UserType.BUYER;
     @NonNull
-    private String eMail;
+    private String email;
     @NonNull
     private String username;
     @NonNull
     private String name;
-    @NonNull
-    private String password;
+    //@NonNull
+    //private String password;
 }

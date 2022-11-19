@@ -22,18 +22,18 @@ public class Product {
     @NonNull
     private DifficultyType difficultyType;
     @NonNull
-    private ProductState productState;
+    private ProductState productState = ProductState.NEW;
     @NonNull
-    private ProductType productType;
+    private ProductType productType = ProductType.SCHNITTMUSTER;
     @NonNull
-    private String productName;
+    private String productname;
     @NonNull
     private String description;
     @NonNull
     private String size;
     @NonNull
-    private String clothingType;
-    @NonNull
+    private ClothingType clothingType = ClothingType.UNDEFINED;
+    
     private double prize;
     @NonNull
     private String patchArt;

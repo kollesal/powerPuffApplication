@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 public class ProductCreateDTO {
     
     private DifficultyType difficultyType;
-    private ProductState productState;
-    private ProductType productType;
-    private String productName;
+    private String productname;
     private String description;
     private String size;
     private String clothingType;
