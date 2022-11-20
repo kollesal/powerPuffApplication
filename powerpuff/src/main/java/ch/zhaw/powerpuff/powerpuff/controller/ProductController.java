@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
+import ch.zhaw.powerpuff.powerpuff.model.ProductByUserAggregationDTO;
 //import ch.zhaw.powerpuff.powerpuff.model.ClothingType;
 import ch.zhaw.powerpuff.powerpuff.model.ProductCreateDTO;
 import ch.zhaw.powerpuff.powerpuff.model.ProductStateAggregationDTO;
