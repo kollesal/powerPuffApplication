@@ -2,4 +2,4 @@
     
 </script>
 
-<h1>Freelancers</h1>
+<h1>Users</h1>
