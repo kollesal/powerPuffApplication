@@ -36,7 +36,7 @@ public class Product {
     private String size;
     
 
-    private double prize;
+    private double price;
     @NonNull
     private String patchart;
 
@@ -47,7 +47,7 @@ public class Product {
         this.productname = productname;
         this.description = description;
         this.size = size;
-        this.prize = prize;
+        this.price = price;
         this.patchart = patchart;
 
     }

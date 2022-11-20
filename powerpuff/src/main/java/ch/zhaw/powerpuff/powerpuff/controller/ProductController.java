@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
 //import ch.zhaw.powerpuff.powerpuff.model.ClothingType;
 import ch.zhaw.powerpuff.powerpuff.model.ProductCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.ProductStateAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -29,7 +31,7 @@ public class ProductController {
     @PostMapping("")
     public ResponseEntity<Product> createUtility(
         @RequestBody ProductCreateDTO pDTO) {
-            Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getClothingType(), pDTO.getProductType(), pDTO.getProductname(), pDTO.getDescription(), pDTO.getSize(), pDTO.getPatchart(), pDTO.getPrize());
+            Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getClothingType(), pDTO.getProductType(), pDTO.getProductname(), pDTO.getDescription(), pDTO.getSize(), pDTO.getPatchart(), pDTO.getPrice());
             Product p = productRepository.save(pDAO);
             return new ResponseEntity<>(p, HttpStatus.CREATED);
         }
@@ -49,5 +51,35 @@ public class ProductController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         }
+
+        @GetMapping("product/pricesabove")
+        public ResponseEntity<List<Product>> getProductMinPrice(@RequestParam Double min) {
+            
+                return new ResponseEntity<>(productRepository
+                .findByPriceGreaterThan(min), HttpStatus.OK); 
+        }
+
+        @GetMapping("product/priceinrange")
+        public ResponseEntity<List<Product>> getProductPriceInRange(@RequestParam Double min, @RequestParam Double max) {
+            
+                return new ResponseEntity<>(productRepository
+                .findByPriceBetween(min, max), HttpStatus.OK); 
+        }
+
+        @GetMapping("product/bystate")
+        public ResponseEntity<List<ProductStateAggregationDTO>> getProdcutStateAggregation() {
+           
+                return new ResponseEntity<>(productRepository.getProductStateAggregation(), HttpStatus.OK);
+        }
+
+        @GetMapping("product/byuser")
+        public ResponseEntity<List<ProductByUserAggregationDTO>> getProductByUserAggregation() {
+           
+                return new ResponseEntity<>(productRepository.getProductByUserAggregation(), HttpStatus.OK);
+        }
+
+
+
+
    
 }

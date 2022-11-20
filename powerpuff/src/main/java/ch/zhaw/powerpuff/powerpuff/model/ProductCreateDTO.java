@@ -12,7 +12,7 @@ public class ProductCreateDTO {
     private String productname;
     private String description;
     private String size;
-    private double prize;
+    private double price;
     private String patchart;
     
 }
