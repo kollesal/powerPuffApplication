@@ -40,7 +40,10 @@ public class Product {
     @NonNull
     private String patchart;
 
-    public Product (DifficultyType difficultyType, ClothingType clothingType, ProductType productType, String productname, String description, String size, String patchart, Double prize){
+    private String userId;
+    private String comment;
+
+    public Product (DifficultyType difficultyType, ClothingType clothingType, ProductType productType, String productname, String description, String size, String patchart, Double price){
         this.difficultyType = difficultyType;
         this.clothingType  = clothingType;
         this.productType = productType;

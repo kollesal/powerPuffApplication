@@ -1,48 +1,85 @@
 package ch.zhaw.powerpuff.powerpuff.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.zhaw.powerpuff.powerpuff.service.UtilityService;
+import ch.zhaw.powerpuff.powerpuff.model.Product;
+import ch.zhaw.powerpuff.powerpuff.model.ProductAssignDTO;
+import ch.zhaw.powerpuff.powerpuff.model.ProductCloseDTO;
+import ch.zhaw.powerpuff.powerpuff.model.User;
+import ch.zhaw.powerpuff.powerpuff.model.UserCloseDTO;
+import ch.zhaw.powerpuff.powerpuff.service.ProductService;
+import ch.zhaw.powerpuff.powerpuff.service.UserService;
 
 @RestController
 @RequestMapping("/api/service")
 public class ServiceController {
 
+    @Autowired
+    ProductService productService;
 
     @Autowired
-    UtilityService utilityService;
-/*
-    @PostMapping("/jobassignment")
-    public ResponseEntity<Job> assignJob(
-        @RequestBody JobAssignDTO assignDTO) {
-        //Service aufrufen. Falls die Zuweisung erfolgreich war 
+    UserService userService;
 
-        if (assignDTO!=null){
-            Optional<Job> newService = jobService.assignJob(assignDTO.getJobId(), assignDTO.getFreelancerId());
+    @PostMapping("/productassignment")
+    public ResponseEntity<Product> assignProduct(
+            @RequestBody ProductAssignDTO assignDTO) {
+        // Service aufrufen. Falls die Zuweisung erfolgreich war
 
-            //den modifizierten Job mit Status OK zurückgeben, sonst BAD_REQUEST return new
+        if (assignDTO != null) {
+            Optional<Product> newService = productService.assignProduct(assignDTO.getProductId(),
+                    assignDTO.getUserId());
+
+            // den modifiziertes Product mit Status OK zurückgeben, sonst BAD_REQUEST return
+            // new
             return new ResponseEntity<>(newService.get(), HttpStatus.OK);
         }
-        
-        //ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        // ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/jobcompletion")
-    public ResponseEntity<Job> closeJob(
-        @RequestBody JobCloseDTO closeDTO) {
-        //Service aufrufen. Falls die Zuweisung erfolgreich war
+    @PostMapping("/productcompletion")
+    public ResponseEntity<Product> closeProduct(
+            @RequestBody ProductCloseDTO closeDTO) {
+        // Service aufrufen. Falls die Zuweisung erfolgreich war
 
-        if (closeDTO!=null){
-            Optional<Job> Service = jobService.closeJob(closeDTO.getJobId(), closeDTO.getComment());
+        if (closeDTO != null) {
+            Optional<Product> Service = productService.closeProduct(closeDTO.getProductId(), closeDTO.getComment());
 
-            //den modifizierten Job mit Status OK zurückgeben, sonst BAD_REQUEST return new
+            // das modifizierten Product mit Status OK zurückgeben, sonst BAD_REQUEST return
+            // new
             return new ResponseEntity<>(Service.get(), HttpStatus.OK);
         }
-        
-        //ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        // ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       */ 
+
+    }
+
+    @PostMapping("/usercompletion")
+    public ResponseEntity<User> closeUser(
+            @RequestBody UserCloseDTO closeDTO) {
+        // Service aufrufen. Falls die Zuweisung erfolgreich war
+
+        if (closeDTO != null) {
+            Optional<User> Service = userService.closeUser(closeDTO.getUserId(), closeDTO.getComment());
+
+            // das modifizierten User mit Status OK zurückgeben, sonst BAD_REQUEST return
+            // new
+            return new ResponseEntity<>(Service.get(), HttpStatus.OK);
+        }
+
+        // ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
 }
