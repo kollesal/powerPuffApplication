@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.zhaw.powerpuff.powerpuff.model.Product;
 import ch.zhaw.powerpuff.powerpuff.model.ProductAssignDTO;
 import ch.zhaw.powerpuff.powerpuff.model.ProductCloseDTO;
+import ch.zhaw.powerpuff.powerpuff.model.User;
+import ch.zhaw.powerpuff.powerpuff.model.UserCloseDTO;
 import ch.zhaw.powerpuff.powerpuff.service.ProductService;
+import ch.zhaw.powerpuff.powerpuff.service.UserService;
 
 @RestController
 @RequestMapping("/api/service")
@@ -21,6 +24,9 @@ public class ServiceController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/productassignment")
     public ResponseEntity<Product> assignProduct(
@@ -49,6 +55,24 @@ public class ServiceController {
             Optional<Product> Service = productService.closeProduct(closeDTO.getProductId(), closeDTO.getComment());
 
             // das modifizierten Product mit Status OK zurückgeben, sonst BAD_REQUEST return
+            // new
+            return new ResponseEntity<>(Service.get(), HttpStatus.OK);
+        }
+
+        // ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
+    @PostMapping("/usercompletion")
+    public ResponseEntity<User> closeUser(
+            @RequestBody UserCloseDTO closeDTO) {
+        // Service aufrufen. Falls die Zuweisung erfolgreich war
+
+        if (closeDTO != null) {
+            Optional<User> Service = userService.closeUser(closeDTO.getUserId(), closeDTO.getComment());
+
+            // das modifizierten User mit Status OK zurückgeben, sonst BAD_REQUEST return
             // new
             return new ResponseEntity<>(Service.get(), HttpStatus.OK);
         }

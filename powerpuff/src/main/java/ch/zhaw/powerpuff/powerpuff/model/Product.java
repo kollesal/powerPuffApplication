@@ -43,7 +43,7 @@ public class Product {
     private String userId;
     private String comment;
 
-    public Product (DifficultyType difficultyType, ClothingType clothingType, ProductType productType, String productname, String description, String size, String patchart, Double prize){
+    public Product (DifficultyType difficultyType, ClothingType clothingType, ProductType productType, String productname, String description, String size, String patchart, Double price){
         this.difficultyType = difficultyType;
         this.clothingType  = clothingType;
         this.productType = productType;

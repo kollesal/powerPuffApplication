@@ -5,8 +5,8 @@ import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
-import ch.zhaw.powerpuff.powerpuff.model.ProductByUserAggregationDTO;
-import ch.zhaw.powerpuff.powerpuff.model.ProductStateAggregationDTO;
+import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByUserAggregationDTO;
+import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductStateAggregationDTO;
 
 public interface ProductRepository extends MongoRepository<Product, String>{
 

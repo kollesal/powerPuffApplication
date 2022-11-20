@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
-import ch.zhaw.powerpuff.powerpuff.model.ProductByUserAggregationDTO;
 //import ch.zhaw.powerpuff.powerpuff.model.ClothingType;
 import ch.zhaw.powerpuff.powerpuff.model.ProductCreateDTO;
-import ch.zhaw.powerpuff.powerpuff.model.ProductStateAggregationDTO;
+import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByUserAggregationDTO;
+import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductStateAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -53,27 +53,27 @@ public class ProductController {
             }
         }
 
-        @GetMapping("product/pricesabove")
+        @GetMapping("/pricesabove")
         public ResponseEntity<List<Product>> getProductMinPrice(@RequestParam Double min) {
             
                 return new ResponseEntity<>(productRepository
                 .findByPriceGreaterThan(min), HttpStatus.OK); 
         }
 
-        @GetMapping("product/priceinrange")
+        @GetMapping("/priceinrange")
         public ResponseEntity<List<Product>> getProductPriceInRange(@RequestParam Double min, @RequestParam Double max) {
             
                 return new ResponseEntity<>(productRepository
                 .findByPriceBetween(min, max), HttpStatus.OK); 
         }
 
-        @GetMapping("product/bystate")
+        @GetMapping("/bystate")
         public ResponseEntity<List<ProductStateAggregationDTO>> getProdcutStateAggregation() {
            
                 return new ResponseEntity<>(productRepository.getProductStateAggregation(), HttpStatus.OK);
         }
 
-        @GetMapping("product/byuser")
+        @GetMapping("/byuser")
         public ResponseEntity<List<ProductByUserAggregationDTO>> getProductByUserAggregation() {
            
                 return new ResponseEntity<>(productRepository.getProductByUserAggregation(), HttpStatus.OK);

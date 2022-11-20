@@ -1,4 +1,4 @@
-package ch.zhaw.powerpuff.powerpuff.model;
+package ch.zhaw.powerpuff.powerpuff.model.aggregation;
 
 import java.util.List;
 
