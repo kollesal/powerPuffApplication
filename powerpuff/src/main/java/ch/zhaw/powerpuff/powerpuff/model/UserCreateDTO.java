@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UserCreateDTO {
     
-    private UserStatus userStatus;
-    private UserType userType;
-    private String eMail;
+   // private UserStatus userStatus;
+    //private UserType userType;
+    private String email;
     private String username;
     private String name;
-    private String password;
+   // private String password;
     
 }

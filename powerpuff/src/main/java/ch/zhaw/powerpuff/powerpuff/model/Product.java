@@ -16,26 +16,39 @@ import lombok.Setter;
 @NoArgsConstructor
 @Document("products")
 public class Product {
+   
     @Id
     private String id;
 
-    @NonNull
+    
     private DifficultyType difficultyType;
     @NonNull
-    private ProductState productState;
-    @NonNull
+    private ProductState productState = ProductState.NEW;
+    
     private ProductType productType;
+
+    private ClothingType clothingType;
     @NonNull
-    private String productName;
+    private String productname;
     @NonNull
     private String description;
     @NonNull
     private String size;
-    @NonNull
-    private String clothingType;
-    @NonNull
+    
+
     private double prize;
     @NonNull
-    private String patchArt;
+    private String patchart;
 
+    public Product (DifficultyType difficultyType, ClothingType clothingType, ProductType productType, String productname, String description, String size, String patchart, Double prize){
+        this.difficultyType = difficultyType;
+        this.clothingType  = clothingType;
+        this.productType = productType;
+        this.productname = productname;
+        this.description = description;
+        this.size = size;
+        this.prize = prize;
+        this.patchart = patchart;
+
+    }
 }

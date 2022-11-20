@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
+//import ch.zhaw.powerpuff.powerpuff.model.ClothingType;
 import ch.zhaw.powerpuff.powerpuff.model.ProductCreateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
 
-
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -27,7 +29,7 @@ public class ProductController {
     @PostMapping("")
     public ResponseEntity<Product> createUtility(
         @RequestBody ProductCreateDTO pDTO) {
-            Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getProductState(), pDTO.getProductType(), pDTO.getDescription(), pDTO.getProductName(), pDTO.getSize(), pDTO.getClothingType(),pDTO.getPrize(), pDTO.getPatchArt());
+            Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getClothingType(), pDTO.getProductType(), pDTO.getProductname(), pDTO.getDescription(), pDTO.getSize(), pDTO.getPatchart(), pDTO.getPrize());
             Product p = productRepository.save(pDAO);
             return new ResponseEntity<>(p, HttpStatus.CREATED);
         }
