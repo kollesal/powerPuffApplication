@@ -25,6 +25,7 @@ public class Utility {
     @NonNull
     private int unit;
 
-    private UtilityType utilityType = UtilityType.NEEDLE;    
+    @NonNull
+    private UtilityType utilityType;    
     
 }

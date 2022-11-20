@@ -26,7 +26,7 @@ public class UtilityController {
     @PostMapping("")
     public ResponseEntity<Utility> createUtility(
         @RequestBody UtilityCreateDTO uDTO) {
-            Utility uDAO = new Utility(uDTO.getUtilityName(), uDTO.getUnit());
+            Utility uDAO = new Utility(uDTO.getUtilityName(), uDTO.getUnit(), uDTO.getUtilityType());
             Utility u = utilityRepository.save(uDAO);
             return new ResponseEntity<>(u, HttpStatus.CREATED);
         }

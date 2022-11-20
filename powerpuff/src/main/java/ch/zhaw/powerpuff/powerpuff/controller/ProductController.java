@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
+//import ch.zhaw.powerpuff.powerpuff.model.ClothingType;
 import ch.zhaw.powerpuff.powerpuff.model.ProductCreateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
 
@@ -28,7 +29,7 @@ public class ProductController {
     @PostMapping("")
     public ResponseEntity<Product> createUtility(
         @RequestBody ProductCreateDTO pDTO) {
-            Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getProductname(), pDTO.getDescription(), pDTO.getSize(), pDTO.getPatchArt());
+            Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getClothingType(), pDTO.getProductType(), pDTO.getProductname(), pDTO.getDescription(), pDTO.getSize(), pDTO.getPatchart(), pDTO.getPrize());
             Product p = productRepository.save(pDAO);
             return new ResponseEntity<>(p, HttpStatus.CREATED);
         }
