@@ -2,119 +2,96 @@
     import axios from "axios";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
-    const api_root = "https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mock.pstmn.io";
+    const api_root = "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
 
-    let jobs = [];
-    let job = {
+    let products = [];
+    let product = {
+        productname: null,
         description: null,
-        earnings: null,
-        jobType: null,
+        productType: null,
+        difficultyType: null,
+        clothingType: null,
+        size: null,
+        price: null,
+        patchart: null,
     };
 
-    function getJobs() {
+    function getProducts() {
         var config = {
             method: "get",
-            url: api_root + "/api/job",
+            url: api_root + "/api/products",
             headers: {},
         };
 
         axios(config)
             .then(function (response) {
-                jobs = response.data;
+                products = response.data;
             })
             .catch(function (error) {
-                alert("Could not get jobs");
+                alert("Could not get products");
                 console.log(error);
             });
     }
-    getJobs();
+    getProducts();
 
-    function createJob() {
-        var config = {
-            method: "post",
-            url: api_root + "/api/job",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            data: job,
-        };
-
-        axios(config)
-            .then(function (response) {
-                alert("Job created");
-                getJobs();
-            })
-            .catch(function (error) {
-                alert("Could not create Job");
-                console.log(error);
-            });
-    }
 </script>
 
+<h1>All Products</h1>
 
-<h1 class="mt-3">Create Job</h1>
-<form class="mb-5">
-    <div class="row mb-3">
-        <div class="col">
-            <label class="form-label" for="description">Description</label>
-            <input
-                bind:value={job.description}
-                class="form-control"
-                id="description"
-                type="text"
-            />
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col">
-            <label class="form-label" for="type">Type</label>
-            <select
-                bind:value={job.jobType}
-                class="form-select"
-                id="type"
-                type="text"
-            >
-                <option value="OTHER">OTHER</option>
-                <option value="TEST">TEST</option>
-                <option value="IMPLEMENT">IMPLEMENT</option>
-                <option value="REVIEW">REVIEW</option>
-            </select>
-        </div>
-        <div class="col">
-            <label class="form-label" for="earnings">Earnings</label>
-            <input
-                bind:value={job.earnings}
-                class="form-control"
-                id="earnings"
-                type="number"
-            />
-        </div>
-    </div>
-    <button type="button" class="btn btn-primary" on:click={createJob}>Submit</button>
-</form>
-
-<h1>All Jobs</h1>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">Description</th>
-            <th scope="col">Type</th>
-            <th scope="col">Earnings</th>
-            <th scope="col">State</th>
-            <th scope="col">FreelancerId</th>
-            <th scope="col">Comment</th>
+            <th>Number</th>
+            <th>Product Name</th>
+            <th>Product Type</th>
+            <th>Difficulty Type</th>
+            <th>Clothing Type</th>
+            <th>Price</th>
+            <th>Size</th>
         </tr>
     </thead>
     <tbody>
-        {#each jobs as job}
-            <tr>
-                <td>{job.description}</td>
-                <td>{job.jobType}</td>
-                <td>{job.earnings}</td>
-                <td>{job.jobState}</td>
-                <td>{job.freelancerId}</td>
-                <td>{job.comment}</td>
+        {#each products as product, index}
+            <tr
+                class="row-tr"
+                onclick="document.location = '{'#/products/' + product._id}';"
+            >
+                <td>
+                    {index + 1}
+                </td>
+                <td>
+                    {product.productname}
+                </td>
+                <td>
+                    {product.productType}
+                </td>
+                <td>
+                    {product.difficultyType}
+                </td>
+                <td>
+                    {product.clothingType}
+                </td>
+                <td>
+                    {product.price}
+                </td>
+                <td>
+                    {product.size}
+                </td>
             </tr>
         {/each}
+        <tr>
+            <dt>
+                Number of Products: {products.length}
+            </dt>
+        </tr>
     </tbody>
 </table>
+
+<a
+class="my-button"
+href="#/create-product"
+role="button"
+aria-pressed="true">Add Product</a
+>
+<a class="back-button" href="#/" role="button" aria-pressed="true">Back</a>
+

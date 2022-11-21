@@ -21,17 +21,25 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav">
 					<li class="nav-item">
+						<img src="/images/home.png" class="logo" alt=" " />
 						<a
 							class="nav-link"
 							aria-current="page"
-							href="#/products">Products</a
+							href="#/products">Home</a
 						>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#/users">Users</a>
+						<a
+							class="nav-link"
+							aria-current="page"
+							href="#/products">View</a
+						>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#/utilities">Utilities</a>
+						<a class="nav-link" href="#/users">Create</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#/utilities">Analytics</a>
 					</li>
 				</ul>
 			</div>

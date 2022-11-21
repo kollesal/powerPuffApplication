@@ -68,28 +68,6 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-
-        <div class="container">
-            <div class="col-md-3">
-                <a href="#/create-member" class="alert" role="alert">
-                    <img
-                        class="small-logo"
-                        alt="Svelte Logo"
-                        src="images/plus.png"
-                    />
-                    <p>Create a member here!</p>
-                </a>
-            </div>
-            <div class="col-md-3">
-                <a href="#/create-team" class="alert" role="alert">
-                    <img
-                        class="small-logo"
-                        alt="Svelte Logo"
-                        src="images/plus.png"
-                    />
-                    <p>Create a team here!</p>
-                </a>
-            </div>
-        </div>
+       
     </div>
 </div>
