@@ -121,3 +121,7 @@ button {
     padding: 1rem .5rem;
     text-decoration: none;
 }
+
+.btn {
+    padding: .55rem 1.5rem .45rem;
+  }

@@ -154,6 +154,6 @@
         </div>
     </div>
 </form>
-<button type="button" class="btn btn-primary" on:click={createProduct}
+<button type="button" class="my-button" on:click={createProduct}
     >Submit</button
 >
