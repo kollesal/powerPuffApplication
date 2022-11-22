@@ -33,12 +33,8 @@ public class UserController {
         @GetMapping("")
         public ResponseEntity<List<User>> getAllUsers(){
             List<User> allUsers = userRepository.findAll();
-
-            if (!(allUsers.isEmpty())) {
             return new ResponseEntity<>(allUsers, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+       
         }
 
         @GetMapping("{id}")

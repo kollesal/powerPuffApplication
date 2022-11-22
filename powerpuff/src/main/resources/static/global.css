@@ -125,3 +125,8 @@ button {
 .btn {
     padding: .55rem 1.5rem .45rem;
   }
+
+
+  .alert {
+    margin-top: 60px;
+  }

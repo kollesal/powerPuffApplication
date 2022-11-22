@@ -79,7 +79,12 @@ public class ProductController {
                 return new ResponseEntity<>(productRepository.getProductByUserAggregation(), HttpStatus.OK);
         }
 
-
+        @GetMapping("/productstate")
+        public ResponseEntity<List<Product>> getProductState(@RequestParam String state) {
+            
+                return new ResponseEntity<>(productRepository
+                .findByProductState(state), HttpStatus.OK); 
+        }
 
 
    

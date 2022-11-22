@@ -19,4 +19,6 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     
       @Aggregation("{$group: {_id: '$userId', productIds: {$push: '$_id'}, totalPrices: {$sum: '$prices'}}}")
       List<ProductByUserAggregationDTO> getProductByUserAggregation();
+
+      List<Product> findByProductState(String state);
 }
