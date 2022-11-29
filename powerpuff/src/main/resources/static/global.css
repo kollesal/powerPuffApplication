@@ -1,0 +1,139 @@
+.my-button {
+
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    margin-top: 30px;
+    cursor: pointer;
+    background-color: #5402C0;
+    border-radius: 6px;
+
+    transition-duration: 0.4s;
+}
+
+.back-button {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 3px 2px;
+    margin-top: 30px;
+    cursor: pointer;
+    background-color: #6c757d;
+    border-radius: 6px;
+
+    transition-duration: 0.4s;
+}
+
+.delete-button {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    background-color: red;
+    border-radius: 6px;
+
+    transition-duration: 0.4s;
+}
+
+button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+a:hover {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    color: white;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+h1 {
+    color: #5402C0;
+}
+
+h3 {
+    color: #5402C0;
+}
+
+.row-tr {
+    background-color: #f8f9fa;
+    cursor: pointer;
+    border-bottom: 2px solid white;
+}
+
+.logo {
+    height: 40px;
+}
+
+.small-logo {
+    height: 50px;
+}
+
+.card-img-top {
+    height: 160px;
+    max-width: 345px;
+}
+
+nav {
+    color: #5402C0;
+}
+
+.card {
+    margin-top: 20px;
+}
+.card.mb-2 {
+    border: none;
+}
+
+button {
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.list-group-item-top {
+    background-color: #5402C0;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.alert {
+    background-color: #5402c035;
+    margin: 10px;
+    border-color: #5402c05f;
+    display: flex;
+    justify-content: center;
+    margin-bottom: .5rem;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    padding: 1rem .5rem;
+    text-decoration: none;
+}
+
+.btn {
+    padding: .55rem 1.5rem .45rem;
+  }
+
+  .alert {
+    margin-top: 60px;
+  }
