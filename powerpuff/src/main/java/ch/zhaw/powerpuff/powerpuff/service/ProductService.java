@@ -34,7 +34,7 @@ public class ProductService {
             if (product.getProductState() == ProductState.NEW) {
 
                 //Neuer Zustand und UserId setzen
-                product.setProductState(ProductState.ACTIVE);
+                product.setProductState(ProductState.REVIEW);
                 product.setUserId(userId);
                 
                 //Product speichern
@@ -47,6 +47,26 @@ public class ProductService {
         return Optional.empty();
     }
 
+    public Optional<Product> activateProduct(String productId) {
+        if(productRepository.findById(productId).isPresent()) {
+            Optional<Product> productToActivate = productRepository.findById(productId);
+        if (productToActivate.isPresent()){
+            Product product = productToActivate.get();
+            if (product.getProductState() == ProductState.NEW) {
+
+                //Neuer Zustand setzen
+                product.setProductState(ProductState.ACTIVE);
+                
+                //Product speichern
+                productRepository.save(product);
+
+                return Optional.of(product);
+            }
+        }
+    }
+    return Optional.empty();
+}
+
     public Optional<Product> closeProduct(String productId, String comment) {
         if(productRepository.findById(productId).isPresent()) {
             Optional<Product> productToClose = productRepository.findById(productId);
@@ -58,7 +78,7 @@ public class ProductService {
                 product.setProductState(ProductState.INACTIVE);
                 product.setComment(comment);
                 
-                //Job speichern
+                //Product speichern
                 productRepository.save(product);
 
                 return Optional.of(product);

@@ -1,12 +1,16 @@
 
 import Home from "./pages/Home.svelte";
-import Freelancers from "./pages/Freelancers.svelte";
-import Jobs from "./pages/Jobs.svelte";
+import Users from "./pages/Users.svelte";
+import Products from "./pages/Products.svelte";
+import Utilities from "./pages/Utilities.svelte";
+import CreateProduct from "./pages/CreateProduct.svelte";
 
 export default {
     '/': Home,
     '/home': Home,
-    '/freelancers': Freelancers,
+    '/products': Products,
+    '/create-product': CreateProduct,
 
-    '/jobs': Jobs,
+    '/users': Users,
+    '/utilities': Utilities,
 }
