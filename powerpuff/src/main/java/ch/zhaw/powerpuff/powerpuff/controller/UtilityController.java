@@ -26,33 +26,44 @@ public class UtilityController {
 
     @PostMapping("")
     public ResponseEntity<Utility> createUtility(
-        @RequestBody UtilityCreateDTO uDTO) {
-            Utility uDAO = new Utility(uDTO.getUtilityName(), uDTO.getUnit(), uDTO.getUtilityType());
-            Utility u = utilityRepository.save(uDAO);
-            return new ResponseEntity<>(u, HttpStatus.CREATED);
-        }
-    
-        @GetMapping("")
-        public ResponseEntity<List<Utility>> getAllUtilities(){
-            List<Utility> allUtilities = utilityRepository.findAll();
-            return new ResponseEntity<>(allUtilities, HttpStatus.OK);
-        }
+            @RequestBody UtilityCreateDTO uDTO) {
+        Utility uDAO = new Utility(uDTO.getUtilityName(), uDTO.getUnit(), uDTO.getUtilityType());
+        Utility u = utilityRepository.save(uDAO);
+        return new ResponseEntity<>(u, HttpStatus.CREATED);
+    }
 
-        @DeleteMapping("")
-        public ResponseEntity<String> deleteAllJob() {
-            utilityRepository.deleteAll();
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("DELETED");
-        }
+    @GetMapping("")
+    public ResponseEntity<List<Utility>> getAllUtilities() {
+        List<Utility> allUtilities = utilityRepository.findAll();
+        return new ResponseEntity<>(allUtilities, HttpStatus.OK);
+    }
 
-        @GetMapping("{id}")
-        public ResponseEntity<Utility> getUtilityById(@PathVariable String id) {
-            Optional<Utility> optUtility = utilityRepository.findById(id);
-            if (optUtility.isPresent()){
-                return new ResponseEntity<>(optUtility.get(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+    @GetMapping("{id}")
+    public ResponseEntity<Utility> getUtilityById(@PathVariable String id) {
+        Optional<Utility> optUtility = utilityRepository.findById(id);
+        if (optUtility.isPresent()) {
+            return new ResponseEntity<>(optUtility.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
 
-    
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteAllUtilities() {
+        utilityRepository.deleteAll();
+        return ResponseEntity.status(HttpStatus.OK).body("All Utilities have been deleted successfully");
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteUtilityById(@PathVariable String id) {
+        Optional<Utility> utility = utilityRepository.findById(id);
+        if (utility.isPresent()) {
+            this.utilityRepository.delete(utility.get());
+
+            return ResponseEntity.status(HttpStatus.OK).body("Utility has been deleted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

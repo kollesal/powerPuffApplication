@@ -1,4 +1,5 @@
 package ch.zhaw.powerpuff.powerpuff.controller;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -25,33 +26,45 @@ public class UserController {
 
     @PostMapping("")
     public ResponseEntity<User> createUtility(
-        @RequestBody UserCreateDTO uDTO) {
-            User uDAO = new User(uDTO.getName(), uDTO.getUsername(), uDTO.getEmail());
-            User u = userRepository.save(uDAO);
-            return new ResponseEntity<>(u, HttpStatus.CREATED);
-        }
-    
-        @GetMapping("")
-        public ResponseEntity<List<User>> getAllUsers(){
-            List<User> allUsers = userRepository.findAll();
-            return new ResponseEntity<>(allUsers, HttpStatus.OK);
-       
-        }
+            @RequestBody UserCreateDTO uDTO) {
+        User uDAO = new User(uDTO.getName(), uDTO.getUsername(), uDTO.getEmail());
+        User u = userRepository.save(uDAO);
+        return new ResponseEntity<>(u, HttpStatus.CREATED);
+    }
 
-        @DeleteMapping("")
-        public ResponseEntity<String> deleteAllJob() {
-            userRepository.deleteAll();
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("DELETED");
-        }
+    @GetMapping("")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> allUsers = userRepository.findAll();
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
 
-        @GetMapping("{id}")
-        public ResponseEntity<User> getUserById(@PathVariable String id) {
-            Optional<User> optUser = userRepository.findById(id);
-            if (optUser.isPresent()){
-                return new ResponseEntity<>(optUser.get(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<User> getUserById(@PathVariable String id) {
+        Optional<User> optUser = userRepository.findById(id);
+        if (optUser.isPresent()) {
+            return new ResponseEntity<>(optUser.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteAllJob() {
+        userRepository.deleteAll();
+        return ResponseEntity.status(HttpStatus.OK).body("All Users have been deleted successfully");
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteUserById(@PathVariable String id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            this.userRepository.delete(user.get());
+
+            return ResponseEntity.status(HttpStatus.OK).body("User has been deleted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

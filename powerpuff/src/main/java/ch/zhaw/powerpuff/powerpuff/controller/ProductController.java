@@ -77,12 +77,6 @@ public class ProductController {
         return new ResponseEntity<>(allProducts, HttpStatus.OK);
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<String> deleteAllJob() {
-        productRepository.deleteAll();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("DELETED");
-    }
-
     @GetMapping("/pricesabove")
     public ResponseEntity<List<Product>> getProductMinPrice(@RequestParam Double min) {
 
@@ -114,6 +108,24 @@ public class ProductController {
 
         return new ResponseEntity<>(productRepository
                 .findByProductState(state), HttpStatus.OK);
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteAllProducts() {
+        productRepository.deleteAll();
+        return ResponseEntity.status(HttpStatus.OK).body("All Products have been deleted successfully");
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteProductById(@PathVariable String id) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()) {
+            this.productRepository.delete(product.get());
+
+            return ResponseEntity.status(HttpStatus.OK).body("Product has been deleted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
