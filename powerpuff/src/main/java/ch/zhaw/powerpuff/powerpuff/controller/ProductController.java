@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
-//import ch.zhaw.powerpuff.powerpuff.model.ClothingType;
 import ch.zhaw.powerpuff.powerpuff.model.ProductCreateDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByUserAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductStateAggregationDTO;
@@ -31,61 +33,87 @@ public class ProductController {
 
     @PostMapping("")
     public ResponseEntity<Product> createUtility(
-        @RequestBody ProductCreateDTO pDTO) {
-            Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getClothingType(), pDTO.getProductType(), pDTO.getProductname(), pDTO.getDescription(), pDTO.getSize(), pDTO.getPatchart(), pDTO.getPrice());
-            Product p = productRepository.save(pDAO);
-            return new ResponseEntity<>(p, HttpStatus.CREATED);
-        }
-    
-        @GetMapping("")
-        public ResponseEntity<List<Product>> getAllProducts(){
-            List<Product> allProducts = productRepository.findAll();
-            return new ResponseEntity<>(allProducts, HttpStatus.OK);
-        }
+            @RequestBody ProductCreateDTO pDTO) {
+        Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getClothingType(), pDTO.getProductType(),
+                pDTO.getProductname(), pDTO.getDescription(), pDTO.getSize(), pDTO.getPatchart(), pDTO.getPrice());
+        Product p = productRepository.save(pDAO);
+        return new ResponseEntity<>(p, HttpStatus.CREATED);
+    }
 
-        @GetMapping("{id}")
-        public ResponseEntity<Product> getProductById(@PathVariable String id) {
-            Optional<Product> optProduct = productRepository.findById(id);
-            if (optProduct.isPresent()){
-                return new ResponseEntity<>(optProduct.get(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+    @GetMapping("{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+        Optional<Product> optProduct = productRepository.findById(id);
+        if (optProduct.isPresent()) {
+            return new ResponseEntity<>(optProduct.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
 
-        @GetMapping("/pricesabove")
-        public ResponseEntity<List<Product>> getProductMinPrice(@RequestParam Double min) {
-            
-                return new ResponseEntity<>(productRepository
-                .findByPriceGreaterThan(min), HttpStatus.OK); 
+    @GetMapping("")
+    public ResponseEntity<Page<Product>> getAllProducts(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize,
+            @RequestParam(required = false) Double min,
+            @RequestParam(required = false) Double max) {
+        if (page == null) {
+            page = 1;
         }
-
-        @GetMapping("/priceinrange")
-        public ResponseEntity<List<Product>> getProductPriceInRange(@RequestParam Double min, @RequestParam Double max) {
-            
-                return new ResponseEntity<>(productRepository
-                .findByPriceBetween(min, max), HttpStatus.OK); 
+        if (pageSize == null) {
+            pageSize = 2;
         }
 
-        @GetMapping("/bystate")
-        public ResponseEntity<List<ProductStateAggregationDTO>> getProdcutStateAggregation() {
-           
-                return new ResponseEntity<>(productRepository.getProductStateAggregation(), HttpStatus.OK);
+        Page<Product> allProducts;
+        if (min != null && max != null) {
+            allProducts = productRepository
+                    .findByPriceBetween(min, max, PageRequest.of(page - 1, pageSize));
+        } else if (min != null) {
+            allProducts = productRepository
+                    .findByPriceGreaterThan(min, PageRequest.of(page - 1, pageSize));
+        } else {
+            allProducts = productRepository
+                    .findAll(PageRequest.of(page - 1, pageSize));
         }
+        return new ResponseEntity<>(allProducts, HttpStatus.OK);
+    }
 
-        @GetMapping("/byuser")
-        public ResponseEntity<List<ProductByUserAggregationDTO>> getProductByUserAggregation() {
-           
-                return new ResponseEntity<>(productRepository.getProductByUserAggregation(), HttpStatus.OK);
-        }
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteAllJob() {
+        productRepository.deleteAll();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("DELETED");
+    }
 
-        @GetMapping("/productstate")
-        public ResponseEntity<List<Product>> getProductState(@RequestParam String state) {
-            
-                return new ResponseEntity<>(productRepository
-                .findByProductState(state), HttpStatus.OK); 
-        }
+    @GetMapping("/pricesabove")
+    public ResponseEntity<List<Product>> getProductMinPrice(@RequestParam Double min) {
 
+        return new ResponseEntity<>(productRepository
+                .findByPriceGreaterThan(min), HttpStatus.OK);
+    }
 
-   
+    @GetMapping("/priceinrange")
+    public ResponseEntity<List<Product>> getProductPriceInRange(@RequestParam Double min, @RequestParam Double max) {
+
+        return new ResponseEntity<>(productRepository
+                .findByPriceBetween(min, max), HttpStatus.OK);
+    }
+
+    @GetMapping("/bystate")
+    public ResponseEntity<List<ProductStateAggregationDTO>> getProdcutStateAggregation() {
+
+        return new ResponseEntity<>(productRepository.getProductStateAggregation(), HttpStatus.OK);
+    }
+
+    @GetMapping("/byuser")
+    public ResponseEntity<List<ProductByUserAggregationDTO>> getProductByUserAggregation() {
+
+        return new ResponseEntity<>(productRepository.getProductByUserAggregation(), HttpStatus.OK);
+    }
+
+    @GetMapping("/productstate")
+    public ResponseEntity<List<Product>> getProductState(@RequestParam String state) {
+
+        return new ResponseEntity<>(productRepository
+                .findByProductState(state), HttpStatus.OK);
+    }
+
 }

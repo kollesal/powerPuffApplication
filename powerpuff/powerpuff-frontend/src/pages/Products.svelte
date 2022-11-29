@@ -1,8 +1,15 @@
 <script>
     import axios from "axios";
+    import { querystring } from "svelte-spa-router";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
-    const api_root = "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
+    const api_root =
+        "http://localhost:8080";
+
+    let currentPage;
+    let nrOfPages = 0;
+
+    let pricesMin, pricesMax;
 
     let products = [];
     let product = {
@@ -16,82 +23,150 @@
         patchart: null,
     };
 
+    $: {
+        let searchParams = new URLSearchParams($querystring);
+        if (searchParams.has("page")) {
+            currentPage = searchParams.get("page");
+        } else {
+            currentPage = "1";
+        }
+        getProducts();
+    }
+
     function getProducts() {
+        let query = "pageSize=4&page=" + currentPage;
+
+
+        if (pricesMin) {
+            query += "&min=" + pricesMin;
+        }
+        if (pricesMax) {
+            query += "&max=" + pricesMax;
+        }
+
         var config = {
             method: "get",
-            url: api_root + "/api/products",
+            url: api_root + "/api/products?" + query,
             headers: {},
         };
 
         axios(config)
             .then(function (response) {
-                products = response.data;
+                products = response.data.content;
+                nrOfPages = response.data.totalPages;
             })
             .catch(function (error) {
                 alert("Could not get products");
                 console.log(error);
             });
     }
-    getProducts();
-
+    //getProducts();
 </script>
 
 <h1>All Products</h1>
+<h4>
+    Number of Products: {products.length}
+</h4>
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Number</th>
-            <th>Product Name</th>
-            <th>Product Type</th>
-            <th>Difficulty Type</th>
-            <th>Clothing Type</th>
-            <th>Price</th>
-            <th>Size</th>
-        </tr>
-    </thead>
-    <tbody>
-        {#each products as product, index}
-            <tr
-                class="row-tr"
-                onclick="document.location = '{'#/products/' + product._id}';"
-            >
-                <td>
-                    {index + 1}
-                </td>
-                <td>
-                    {product.productname}
-                </td>
-                <td>
-                    {product.productType}
-                </td>
-                <td>
-                    {product.difficultyType}
-                </td>
-                <td>
-                    {product.clothingType}
-                </td>
-                <td>
-                    {product.price}
-                </td>
-                <td>
-                    {product.size}
-                </td>
-            </tr>
-        {/each}
-        <tr>
-            <dt>
-                Number of Products: {products.length}
-            </dt>
-        </tr>
-    </tbody>
-</table>
-
-<a
-class="my-button"
-href="#/create-product"
-role="button"
-aria-pressed="true">Add Product</a
+<a class="my-button" href="#/create-product" role="button" aria-pressed="true"
+    >Add Product</a
 >
 <a class="back-button" href="#/" role="button" aria-pressed="true">Back</a>
 
+<div class="row my-3">
+    <div class="col-auto">
+        <label for="" class="col-form-label">Price: </label>
+    </div>
+    <div class="col-3">
+        <input
+            class="form-control"
+            type="number"
+            placeholder="from"
+            bind:value={pricesMin}
+        />
+    </div>
+    <div class="col-3">
+        <input
+            class="form-control"
+            type="number"
+            placeholder="to"
+            bind:value={pricesMax}
+        />
+    </div>
+    <div class="col-3">
+        <button class="btn btn-primary" on:click={getProducts}>Apply</button>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {#each products as product, index}
+        <div class="container">
+            <div class="col-10">
+                <div class="card mb-2">
+                    <div
+                        class="card"
+                        onclick="document.location = '{'#/products/' +
+                            product.id}';"
+                    >
+                        <!-- svelte-ignore a11y-img-redundant-alt -->
+                        <img
+                            class="card-img-top"
+                            src="/images/default.png"
+                            alt="Card image cap"
+                        />
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {product.productname}
+                                <span class="badge"
+                                    >{product.difficultyType}</span
+                                >
+                            </h5>
+
+                            <p class="card-text" />
+                            <p>
+                                Product Type: {product.productType}
+                            </p>
+                            <p>
+                                Clothing Type: {product.clothingType}
+                            </p>
+
+                            <p>
+                                Product Price: {product.price}
+                            </p>
+
+                            <p>
+                                Product Size: {product.size}
+                            </p>
+
+                            <p class="card-text">
+                                <small class="text-muted"
+                                    >Product Number: {index + 1}</small
+                                >
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {/each}
+</div>
+
+<nav>
+    <ul class="pagination">
+        {#each Array(nrOfPages) as _, i}
+            <li class="page-item">
+                <a
+                    class="page-link"
+                    class:active={currentPage == i + 1}
+                    href={"#/products?page=" + (i + 1)}
+                    >{i + 1}
+                </a>
+            </li>
+        {/each}
+    </ul>
+</nav>
+
+<a class="my-button" href="#/create-product" role="button" aria-pressed="true"
+    >Add Product</a
+>
+<a class="back-button" href="#/" role="button" aria-pressed="true">Back</a>

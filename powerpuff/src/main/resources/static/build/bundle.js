@@ -41,12 +41,20 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function validate_store(store, name) {
+        if (store != null && typeof store.subscribe !== 'function') {
+            throw new Error(`'${name}' is not a store with a 'subscribe' method`);
+        }
+    }
     function subscribe(store, ...callbacks) {
         if (store == null) {
             return noop$1;
         }
         const unsub = store.subscribe(...callbacks);
         return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+    }
+    function component_subscribe(component, store, callback) {
+        component.$$.on_destroy.push(subscribe(store, callback));
     }
     function append(target, node) {
         target.appendChild(node);
@@ -109,6 +117,9 @@ var app = (function () {
     function select_value(select) {
         const selected_option = select.querySelector(':checked') || select.options[0];
         return selected_option && selected_option.__value;
+    }
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? 'add' : 'remove'](name);
     }
     function custom_event(type, detail, { bubbles = false, cancelable = false } = {}) {
         const e = document.createEvent('CustomEvent');
@@ -5370,114 +5381,234 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[1] = list[i];
-    	child_ctx[4] = i;
+    	child_ctx[10] = list[i];
+    	child_ctx[12] = i;
     	return child_ctx;
     }
 
-    // (54:8) {#each products as product, index}
-    function create_each_block$1(ctx) {
-    	let tr;
-    	let td0;
-    	let t0_value = /*index*/ ctx[4] + 1 + "";
+    function get_each_context_1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[6] = list[i];
+    	child_ctx[14] = i;
+    	return child_ctx;
+    }
+
+    // (102:4) {#each products as product, index}
+    function create_each_block_1(ctx) {
+    	let div4;
+    	let div3;
+    	let div2;
+    	let div1;
+    	let img;
+    	let img_src_value;
     	let t0;
+    	let div0;
+    	let h5;
+    	let t1_value = /*product*/ ctx[6].productname + "";
     	let t1;
-    	let td1;
-    	let t2_value = /*product*/ ctx[1].productname + "";
     	let t2;
+    	let span;
+    	let t3_value = /*product*/ ctx[6].difficultyType + "";
     	let t3;
-    	let td2;
-    	let t4_value = /*product*/ ctx[1].productType + "";
     	let t4;
+    	let p0;
     	let t5;
-    	let td3;
-    	let t6_value = /*product*/ ctx[1].difficultyType + "";
+    	let p1;
     	let t6;
+    	let t7_value = /*product*/ ctx[6].productType + "";
     	let t7;
-    	let td4;
-    	let t8_value = /*product*/ ctx[1].clothingType + "";
     	let t8;
+    	let p2;
     	let t9;
-    	let td5;
-    	let t10_value = /*product*/ ctx[1].price + "";
+    	let t10_value = /*product*/ ctx[6].clothingType + "";
     	let t10;
     	let t11;
-    	let td6;
-    	let t12_value = /*product*/ ctx[1].size + "";
+    	let p3;
     	let t12;
-    	let tr_onclick_value;
+    	let t13_value = /*product*/ ctx[6].price + "";
+    	let t13;
+    	let t14;
+    	let p4;
+    	let t15;
+    	let t16_value = /*product*/ ctx[6].size + "";
+    	let t16;
+    	let t17;
+    	let p5;
+    	let small;
+    	let t18;
+    	let t19_value = /*index*/ ctx[14] + 1 + "";
+    	let t19;
+    	let div1_onclick_value;
+    	let t20;
 
     	const block = {
     		c: function create() {
-    			tr = element("tr");
-    			td0 = element("td");
-    			t0 = text(t0_value);
-    			t1 = space();
-    			td1 = element("td");
-    			t2 = text(t2_value);
-    			t3 = space();
-    			td2 = element("td");
-    			t4 = text(t4_value);
+    			div4 = element("div");
+    			div3 = element("div");
+    			div2 = element("div");
+    			div1 = element("div");
+    			img = element("img");
+    			t0 = space();
+    			div0 = element("div");
+    			h5 = element("h5");
+    			t1 = text(t1_value);
+    			t2 = space();
+    			span = element("span");
+    			t3 = text(t3_value);
+    			t4 = space();
+    			p0 = element("p");
     			t5 = space();
-    			td3 = element("td");
-    			t6 = text(t6_value);
-    			t7 = space();
-    			td4 = element("td");
-    			t8 = text(t8_value);
-    			t9 = space();
-    			td5 = element("td");
+    			p1 = element("p");
+    			t6 = text("Product Type: ");
+    			t7 = text(t7_value);
+    			t8 = space();
+    			p2 = element("p");
+    			t9 = text("Clothing Type: ");
     			t10 = text(t10_value);
     			t11 = space();
-    			td6 = element("td");
-    			t12 = text(t12_value);
-    			add_location(td0, file$3, 58, 16, 1512);
-    			add_location(td1, file$3, 61, 16, 1590);
-    			add_location(td2, file$3, 64, 16, 1678);
-    			add_location(td3, file$3, 67, 16, 1766);
-    			add_location(td4, file$3, 70, 16, 1857);
-    			add_location(td5, file$3, 73, 16, 1946);
-    			add_location(td6, file$3, 76, 16, 2028);
-    			attr_dev(tr, "class", "row-tr");
-    			attr_dev(tr, "onclick", tr_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[1]._id) + "';");
-    			add_location(tr, file$3, 54, 12, 1364);
+    			p3 = element("p");
+    			t12 = text("Product Price: ");
+    			t13 = text(t13_value);
+    			t14 = space();
+    			p4 = element("p");
+    			t15 = text("Product Size: ");
+    			t16 = text(t16_value);
+    			t17 = space();
+    			p5 = element("p");
+    			small = element("small");
+    			t18 = text("Product Number: ");
+    			t19 = text(t19_value);
+    			t20 = space();
+    			attr_dev(img, "class", "card-img-top");
+    			if (!src_url_equal(img.src, img_src_value = "/images/default.png")) attr_dev(img, "src", img_src_value);
+    			attr_dev(img, "alt", "Card image cap");
+    			add_location(img, file$3, 111, 24, 3008);
+    			attr_dev(span, "class", "badge");
+    			add_location(span, file$3, 119, 32, 3386);
+    			attr_dev(h5, "class", "card-title");
+    			add_location(h5, file$3, 117, 28, 3274);
+    			attr_dev(p0, "class", "card-text");
+    			add_location(p0, file$3, 124, 28, 3576);
+    			add_location(p1, file$3, 125, 28, 3629);
+    			add_location(p2, file$3, 128, 28, 3765);
+    			add_location(p3, file$3, 132, 28, 3905);
+    			add_location(p4, file$3, 136, 28, 4038);
+    			attr_dev(small, "class", "text-muted");
+    			add_location(small, file$3, 141, 32, 4224);
+    			attr_dev(p5, "class", "card-text");
+    			add_location(p5, file$3, 140, 28, 4169);
+    			attr_dev(div0, "class", "card-body");
+    			add_location(div0, file$3, 116, 24, 3221);
+    			attr_dev(div1, "class", "card");
+    			attr_dev(div1, "onclick", div1_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[6].id) + "';");
+    			add_location(div1, file$3, 105, 20, 2730);
+    			attr_dev(div2, "class", "card mb-2");
+    			add_location(div2, file$3, 104, 16, 2685);
+    			attr_dev(div3, "class", "col-10");
+    			add_location(div3, file$3, 103, 12, 2647);
+    			attr_dev(div4, "class", "container");
+    			add_location(div4, file$3, 102, 8, 2610);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, tr, anchor);
-    			append_dev(tr, td0);
-    			append_dev(td0, t0);
-    			append_dev(tr, t1);
-    			append_dev(tr, td1);
-    			append_dev(td1, t2);
-    			append_dev(tr, t3);
-    			append_dev(tr, td2);
-    			append_dev(td2, t4);
-    			append_dev(tr, t5);
-    			append_dev(tr, td3);
-    			append_dev(td3, t6);
-    			append_dev(tr, t7);
-    			append_dev(tr, td4);
-    			append_dev(td4, t8);
-    			append_dev(tr, t9);
-    			append_dev(tr, td5);
-    			append_dev(td5, t10);
-    			append_dev(tr, t11);
-    			append_dev(tr, td6);
-    			append_dev(td6, t12);
+    			insert_dev(target, div4, anchor);
+    			append_dev(div4, div3);
+    			append_dev(div3, div2);
+    			append_dev(div2, div1);
+    			append_dev(div1, img);
+    			append_dev(div1, t0);
+    			append_dev(div1, div0);
+    			append_dev(div0, h5);
+    			append_dev(h5, t1);
+    			append_dev(h5, t2);
+    			append_dev(h5, span);
+    			append_dev(span, t3);
+    			append_dev(div0, t4);
+    			append_dev(div0, p0);
+    			append_dev(div0, t5);
+    			append_dev(div0, p1);
+    			append_dev(p1, t6);
+    			append_dev(p1, t7);
+    			append_dev(div0, t8);
+    			append_dev(div0, p2);
+    			append_dev(p2, t9);
+    			append_dev(p2, t10);
+    			append_dev(div0, t11);
+    			append_dev(div0, p3);
+    			append_dev(p3, t12);
+    			append_dev(p3, t13);
+    			append_dev(div0, t14);
+    			append_dev(div0, p4);
+    			append_dev(p4, t15);
+    			append_dev(p4, t16);
+    			append_dev(div0, t17);
+    			append_dev(div0, p5);
+    			append_dev(p5, small);
+    			append_dev(small, t18);
+    			append_dev(small, t19);
+    			append_dev(div4, t20);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*products*/ 1 && t2_value !== (t2_value = /*product*/ ctx[1].productname + "")) set_data_dev(t2, t2_value);
-    			if (dirty & /*products*/ 1 && t4_value !== (t4_value = /*product*/ ctx[1].productType + "")) set_data_dev(t4, t4_value);
-    			if (dirty & /*products*/ 1 && t6_value !== (t6_value = /*product*/ ctx[1].difficultyType + "")) set_data_dev(t6, t6_value);
-    			if (dirty & /*products*/ 1 && t8_value !== (t8_value = /*product*/ ctx[1].clothingType + "")) set_data_dev(t8, t8_value);
-    			if (dirty & /*products*/ 1 && t10_value !== (t10_value = /*product*/ ctx[1].price + "")) set_data_dev(t10, t10_value);
-    			if (dirty & /*products*/ 1 && t12_value !== (t12_value = /*product*/ ctx[1].size + "")) set_data_dev(t12, t12_value);
+    			if (dirty & /*products*/ 16 && t1_value !== (t1_value = /*product*/ ctx[6].productname + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*products*/ 16 && t3_value !== (t3_value = /*product*/ ctx[6].difficultyType + "")) set_data_dev(t3, t3_value);
+    			if (dirty & /*products*/ 16 && t7_value !== (t7_value = /*product*/ ctx[6].productType + "")) set_data_dev(t7, t7_value);
+    			if (dirty & /*products*/ 16 && t10_value !== (t10_value = /*product*/ ctx[6].clothingType + "")) set_data_dev(t10, t10_value);
+    			if (dirty & /*products*/ 16 && t13_value !== (t13_value = /*product*/ ctx[6].price + "")) set_data_dev(t13, t13_value);
+    			if (dirty & /*products*/ 16 && t16_value !== (t16_value = /*product*/ ctx[6].size + "")) set_data_dev(t16, t16_value);
 
-    			if (dirty & /*products*/ 1 && tr_onclick_value !== (tr_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[1]._id) + "';")) {
-    				attr_dev(tr, "onclick", tr_onclick_value);
+    			if (dirty & /*products*/ 16 && div1_onclick_value !== (div1_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[6].id) + "';")) {
+    				attr_dev(div1, "onclick", div1_onclick_value);
     			}
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(tr);
+    			if (detaching) detach_dev(div4);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_1.name,
+    		type: "each",
+    		source: "(102:4) {#each products as product, index}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (156:8) {#each Array(nrOfPages) as _, i}
+    function create_each_block$1(ctx) {
+    	let li;
+    	let a;
+    	let t0_value = /*i*/ ctx[12] + 1 + "";
+    	let t0;
+    	let t1;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			a = element("a");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			attr_dev(a, "class", "page-link");
+    			attr_dev(a, "href", "#/products?page=" + (/*i*/ ctx[12] + 1));
+    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[12] + 1);
+    			add_location(a, file$3, 157, 16, 4666);
+    			attr_dev(li, "class", "page-item");
+    			add_location(li, file$3, 156, 12, 4626);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, a);
+    			append_dev(a, t0);
+    			append_dev(li, t1);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*currentPage*/ 1) {
+    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[12] + 1);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
     		}
     	};
 
@@ -5485,7 +5616,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(54:8) {#each products as product, index}",
+    		source: "(156:8) {#each Array(nrOfPages) as _, i}",
     		ctx
     	});
 
@@ -5495,35 +5626,47 @@ var app = (function () {
     function create_fragment$3(ctx) {
     	let h1;
     	let t1;
-    	let table;
-    	let thead;
-    	let tr0;
-    	let th0;
+    	let h4;
+    	let t2;
+    	let t3_value = /*products*/ ctx[4].length + "";
     	let t3;
-    	let th1;
-    	let t5;
-    	let th2;
-    	let t7;
-    	let th3;
-    	let t9;
-    	let th4;
-    	let t11;
-    	let th5;
-    	let t13;
-    	let th6;
-    	let t15;
-    	let tbody;
-    	let t16;
-    	let tr1;
-    	let dt;
-    	let t17;
-    	let t18_value = /*products*/ ctx[0].length + "";
-    	let t18;
-    	let t19;
+    	let t4;
     	let a0;
-    	let t21;
+    	let t6;
     	let a1;
-    	let each_value = /*products*/ ctx[0];
+    	let t8;
+    	let div4;
+    	let div0;
+    	let label;
+    	let t10;
+    	let div1;
+    	let input0;
+    	let t11;
+    	let div2;
+    	let input1;
+    	let t12;
+    	let div3;
+    	let button;
+    	let t14;
+    	let div5;
+    	let t15;
+    	let nav;
+    	let ul;
+    	let t16;
+    	let a2;
+    	let t18;
+    	let a3;
+    	let mounted;
+    	let dispose;
+    	let each_value_1 = /*products*/ ctx[4];
+    	validate_each_argument(each_value_1);
+    	let each_blocks_1 = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks_1[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    	}
+
+    	let each_value = Array(/*nrOfPages*/ ctx[1]);
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -5536,72 +5679,101 @@ var app = (function () {
     			h1 = element("h1");
     			h1.textContent = "All Products";
     			t1 = space();
-    			table = element("table");
-    			thead = element("thead");
-    			tr0 = element("tr");
-    			th0 = element("th");
-    			th0.textContent = "Number";
-    			t3 = space();
-    			th1 = element("th");
-    			th1.textContent = "Product Name";
-    			t5 = space();
-    			th2 = element("th");
-    			th2.textContent = "Product Type";
-    			t7 = space();
-    			th3 = element("th");
-    			th3.textContent = "Difficulty Type";
-    			t9 = space();
-    			th4 = element("th");
-    			th4.textContent = "Clothing Type";
+    			h4 = element("h4");
+    			t2 = text("Number of Products: ");
+    			t3 = text(t3_value);
+    			t4 = space();
+    			a0 = element("a");
+    			a0.textContent = "Add Product";
+    			t6 = space();
+    			a1 = element("a");
+    			a1.textContent = "Back";
+    			t8 = space();
+    			div4 = element("div");
+    			div0 = element("div");
+    			label = element("label");
+    			label.textContent = "Price:";
+    			t10 = space();
+    			div1 = element("div");
+    			input0 = element("input");
     			t11 = space();
-    			th5 = element("th");
-    			th5.textContent = "Price";
-    			t13 = space();
-    			th6 = element("th");
-    			th6.textContent = "Size";
+    			div2 = element("div");
+    			input1 = element("input");
+    			t12 = space();
+    			div3 = element("div");
+    			button = element("button");
+    			button.textContent = "Apply";
+    			t14 = space();
+    			div5 = element("div");
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].c();
+    			}
+
     			t15 = space();
-    			tbody = element("tbody");
+    			nav = element("nav");
+    			ul = element("ul");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
     			t16 = space();
-    			tr1 = element("tr");
-    			dt = element("dt");
-    			t17 = text("Number of Products: ");
-    			t18 = text(t18_value);
-    			t19 = space();
-    			a0 = element("a");
-    			a0.textContent = "Add Product";
-    			t21 = space();
-    			a1 = element("a");
-    			a1.textContent = "Back";
-    			add_location(h1, file$3, 38, 0, 951);
-    			add_location(th0, file$3, 43, 12, 1050);
-    			add_location(th1, file$3, 44, 12, 1079);
-    			add_location(th2, file$3, 45, 12, 1114);
-    			add_location(th3, file$3, 46, 12, 1149);
-    			add_location(th4, file$3, 47, 12, 1187);
-    			add_location(th5, file$3, 48, 12, 1223);
-    			add_location(th6, file$3, 49, 12, 1251);
-    			add_location(tr0, file$3, 42, 8, 1032);
-    			add_location(thead, file$3, 41, 4, 1015);
-    			add_location(dt, file$3, 82, 12, 2155);
-    			add_location(tr1, file$3, 81, 8, 2137);
-    			add_location(tbody, file$3, 52, 4, 1299);
-    			attr_dev(table, "class", "table table-hover");
-    			add_location(table, file$3, 40, 0, 976);
+    			a2 = element("a");
+    			a2.textContent = "Add Product";
+    			t18 = space();
+    			a3 = element("a");
+    			a3.textContent = "Back";
+    			add_location(h1, file$3, 65, 0, 1612);
+    			add_location(h4, file$3, 66, 0, 1635);
     			attr_dev(a0, "class", "my-button");
     			attr_dev(a0, "href", "#/create-product");
     			attr_dev(a0, "role", "button");
     			attr_dev(a0, "aria-pressed", "true");
-    			add_location(a0, file$3, 89, 0, 2276);
+    			add_location(a0, file$3, 70, 0, 1693);
     			attr_dev(a1, "class", "back-button");
     			attr_dev(a1, "href", "#/");
     			attr_dev(a1, "role", "button");
     			attr_dev(a1, "aria-pressed", "true");
-    			add_location(a1, file$3, 95, 0, 2378);
+    			add_location(a1, file$3, 73, 0, 1797);
+    			attr_dev(label, "for", "");
+    			attr_dev(label, "class", "col-form-label");
+    			add_location(label, file$3, 77, 8, 1936);
+    			attr_dev(div0, "class", "col-auto");
+    			add_location(div0, file$3, 76, 4, 1904);
+    			attr_dev(input0, "class", "form-control");
+    			attr_dev(input0, "type", "number");
+    			attr_dev(input0, "placeholder", "from");
+    			add_location(input0, file$3, 80, 8, 2035);
+    			attr_dev(div1, "class", "col-3");
+    			add_location(div1, file$3, 79, 4, 2006);
+    			attr_dev(input1, "class", "form-control");
+    			attr_dev(input1, "type", "number");
+    			attr_dev(input1, "placeholder", "to");
+    			add_location(input1, file$3, 88, 8, 2229);
+    			attr_dev(div2, "class", "col-3");
+    			add_location(div2, file$3, 87, 4, 2200);
+    			attr_dev(button, "class", "btn btn-primary");
+    			add_location(button, file$3, 96, 8, 2421);
+    			attr_dev(div3, "class", "col-3");
+    			add_location(div3, file$3, 95, 4, 2392);
+    			attr_dev(div4, "class", "row my-3");
+    			add_location(div4, file$3, 75, 0, 1876);
+    			attr_dev(div5, "class", "row row-cols-1 row-cols-md-3 g-4");
+    			add_location(div5, file$3, 100, 0, 2514);
+    			attr_dev(ul, "class", "pagination");
+    			add_location(ul, file$3, 154, 4, 4547);
+    			add_location(nav, file$3, 153, 0, 4536);
+    			attr_dev(a2, "class", "my-button");
+    			attr_dev(a2, "href", "#/create-product");
+    			attr_dev(a2, "role", "button");
+    			attr_dev(a2, "aria-pressed", "true");
+    			add_location(a2, file$3, 168, 0, 4932);
+    			attr_dev(a3, "class", "back-button");
+    			attr_dev(a3, "href", "#/");
+    			attr_dev(a3, "role", "button");
+    			attr_dev(a3, "aria-pressed", "true");
+    			add_location(a3, file$3, 171, 0, 5036);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5609,42 +5781,95 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			insert_dev(target, h1, anchor);
     			insert_dev(target, t1, anchor);
-    			insert_dev(target, table, anchor);
-    			append_dev(table, thead);
-    			append_dev(thead, tr0);
-    			append_dev(tr0, th0);
-    			append_dev(tr0, t3);
-    			append_dev(tr0, th1);
-    			append_dev(tr0, t5);
-    			append_dev(tr0, th2);
-    			append_dev(tr0, t7);
-    			append_dev(tr0, th3);
-    			append_dev(tr0, t9);
-    			append_dev(tr0, th4);
-    			append_dev(tr0, t11);
-    			append_dev(tr0, th5);
-    			append_dev(tr0, t13);
-    			append_dev(tr0, th6);
-    			append_dev(table, t15);
-    			append_dev(table, tbody);
+    			insert_dev(target, h4, anchor);
+    			append_dev(h4, t2);
+    			append_dev(h4, t3);
+    			insert_dev(target, t4, anchor);
+    			insert_dev(target, a0, anchor);
+    			insert_dev(target, t6, anchor);
+    			insert_dev(target, a1, anchor);
+    			insert_dev(target, t8, anchor);
+    			insert_dev(target, div4, anchor);
+    			append_dev(div4, div0);
+    			append_dev(div0, label);
+    			append_dev(div4, t10);
+    			append_dev(div4, div1);
+    			append_dev(div1, input0);
+    			set_input_value(input0, /*pricesMin*/ ctx[2]);
+    			append_dev(div4, t11);
+    			append_dev(div4, div2);
+    			append_dev(div2, input1);
+    			set_input_value(input1, /*pricesMax*/ ctx[3]);
+    			append_dev(div4, t12);
+    			append_dev(div4, div3);
+    			append_dev(div3, button);
+    			insert_dev(target, t14, anchor);
+    			insert_dev(target, div5, anchor);
 
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(tbody, null);
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(div5, null);
     			}
 
-    			append_dev(tbody, t16);
-    			append_dev(tbody, tr1);
-    			append_dev(tr1, dt);
-    			append_dev(dt, t17);
-    			append_dev(dt, t18);
-    			insert_dev(target, t19, anchor);
-    			insert_dev(target, a0, anchor);
-    			insert_dev(target, t21, anchor);
-    			insert_dev(target, a1, anchor);
+    			insert_dev(target, t15, anchor);
+    			insert_dev(target, nav, anchor);
+    			append_dev(nav, ul);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(ul, null);
+    			}
+
+    			insert_dev(target, t16, anchor);
+    			insert_dev(target, a2, anchor);
+    			insert_dev(target, t18, anchor);
+    			insert_dev(target, a3, anchor);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[8]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[9]),
+    					listen_dev(button, "click", /*getProducts*/ ctx[5], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*products*/ 1) {
-    				each_value = /*products*/ ctx[0];
+    			if (dirty & /*products*/ 16 && t3_value !== (t3_value = /*products*/ ctx[4].length + "")) set_data_dev(t3, t3_value);
+
+    			if (dirty & /*pricesMin*/ 4 && to_number(input0.value) !== /*pricesMin*/ ctx[2]) {
+    				set_input_value(input0, /*pricesMin*/ ctx[2]);
+    			}
+
+    			if (dirty & /*pricesMax*/ 8 && to_number(input1.value) !== /*pricesMax*/ ctx[3]) {
+    				set_input_value(input1, /*pricesMax*/ ctx[3]);
+    			}
+
+    			if (dirty & /*products*/ 16) {
+    				each_value_1 = /*products*/ ctx[4];
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+    					if (each_blocks_1[i]) {
+    						each_blocks_1[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_1[i] = create_each_block_1(child_ctx);
+    						each_blocks_1[i].c();
+    						each_blocks_1[i].m(div5, null);
+    					}
+    				}
+
+    				for (; i < each_blocks_1.length; i += 1) {
+    					each_blocks_1[i].d(1);
+    				}
+
+    				each_blocks_1.length = each_value_1.length;
+    			}
+
+    			if (dirty & /*currentPage, nrOfPages*/ 3) {
+    				each_value = Array(/*nrOfPages*/ ctx[1]);
     				validate_each_argument(each_value);
     				let i;
 
@@ -5656,7 +5881,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block$1(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(tbody, t16);
+    						each_blocks[i].m(ul, null);
     					}
     				}
 
@@ -5666,20 +5891,31 @@ var app = (function () {
 
     				each_blocks.length = each_value.length;
     			}
-
-    			if (dirty & /*products*/ 1 && t18_value !== (t18_value = /*products*/ ctx[0].length + "")) set_data_dev(t18, t18_value);
     		},
     		i: noop$1,
     		o: noop$1,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h1);
     			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(table);
-    			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t19);
+    			if (detaching) detach_dev(h4);
+    			if (detaching) detach_dev(t4);
     			if (detaching) detach_dev(a0);
-    			if (detaching) detach_dev(t21);
+    			if (detaching) detach_dev(t6);
     			if (detaching) detach_dev(a1);
+    			if (detaching) detach_dev(t8);
+    			if (detaching) detach_dev(div4);
+    			if (detaching) detach_dev(t14);
+    			if (detaching) detach_dev(div5);
+    			destroy_each(each_blocks_1, detaching);
+    			if (detaching) detach_dev(t15);
+    			if (detaching) detach_dev(nav);
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(t16);
+    			if (detaching) detach_dev(a2);
+    			if (detaching) detach_dev(t18);
+    			if (detaching) detach_dev(a3);
+    			mounted = false;
+    			run_all(dispose);
     		}
     	};
 
@@ -5694,11 +5930,17 @@ var app = (function () {
     	return block;
     }
 
-    const api_root$2 = "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
+    const api_root$2 = "http://localhost:8080";
 
     function instance$3($$self, $$props, $$invalidate) {
+    	let $querystring;
+    	validate_store(querystring, 'querystring');
+    	component_subscribe($$self, querystring, $$value => $$invalidate(7, $querystring = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Products', slots, []);
+    	let currentPage;
+    	let nrOfPages = 0;
+    	let pricesMin, pricesMax;
     	let products = [];
 
     	let product = {
@@ -5713,45 +5955,102 @@ var app = (function () {
     	};
 
     	function getProducts() {
+    		let query = "pageSize=4&page=" + currentPage;
+
+    		if (pricesMin) {
+    			query += "&min=" + pricesMin;
+    		}
+
+    		if (pricesMax) {
+    			query += "&max=" + pricesMax;
+    		}
+
     		var config = {
     			method: "get",
-    			url: api_root$2 + "/api/products",
+    			url: api_root$2 + "/api/products?" + query,
     			headers: {}
     		};
 
     		axios(config).then(function (response) {
-    			$$invalidate(0, products = response.data);
+    			$$invalidate(4, products = response.data.content);
+    			$$invalidate(1, nrOfPages = response.data.totalPages);
     		}).catch(function (error) {
     			alert("Could not get products");
     			console.log(error);
     		});
     	}
 
-    	getProducts();
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$2.warn(`<Products> was created with unknown prop '${key}'`);
     	});
 
+    	function input0_input_handler() {
+    		pricesMin = to_number(this.value);
+    		$$invalidate(2, pricesMin);
+    	}
+
+    	function input1_input_handler() {
+    		pricesMax = to_number(this.value);
+    		$$invalidate(3, pricesMax);
+    	}
+
     	$$self.$capture_state = () => ({
     		axios,
+    		querystring,
     		api_root: api_root$2,
+    		currentPage,
+    		nrOfPages,
+    		pricesMin,
+    		pricesMax,
     		products,
     		product,
-    		getProducts
+    		getProducts,
+    		$querystring
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('products' in $$props) $$invalidate(0, products = $$props.products);
-    		if ('product' in $$props) $$invalidate(1, product = $$props.product);
+    		if ('currentPage' in $$props) $$invalidate(0, currentPage = $$props.currentPage);
+    		if ('nrOfPages' in $$props) $$invalidate(1, nrOfPages = $$props.nrOfPages);
+    		if ('pricesMin' in $$props) $$invalidate(2, pricesMin = $$props.pricesMin);
+    		if ('pricesMax' in $$props) $$invalidate(3, pricesMax = $$props.pricesMax);
+    		if ('products' in $$props) $$invalidate(4, products = $$props.products);
+    		if ('product' in $$props) $$invalidate(6, product = $$props.product);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [products, product];
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*$querystring*/ 128) {
+    			{
+    				let searchParams = new URLSearchParams($querystring);
+
+    				if (searchParams.has("page")) {
+    					$$invalidate(0, currentPage = searchParams.get("page"));
+    				} else {
+    					$$invalidate(0, currentPage = "1");
+    				}
+
+    				getProducts();
+    			}
+    		}
+    	};
+
+    	return [
+    		currentPage,
+    		nrOfPages,
+    		pricesMin,
+    		pricesMax,
+    		products,
+    		getProducts,
+    		product,
+    		$querystring,
+    		input0_input_handler,
+    		input1_input_handler
+    	];
     }
 
     class Products extends SvelteComponentDev {
@@ -6425,7 +6724,8 @@ var app = (function () {
     	let t37;
     	let textarea;
     	let t38;
-    	let button;
+    	let a;
+    	let t40;
     	let mounted;
     	let dispose;
 
@@ -6512,135 +6812,136 @@ var app = (function () {
     			t37 = space();
     			textarea = element("textarea");
     			t38 = space();
-    			button = element("button");
-    			button.textContent = "Submit";
+    			a = element("a");
+    			a.textContent = "Submit";
+    			t40 = text("\r\n>");
     			attr_dev(h1, "class", "mt-3");
-    			add_location(h1, file$1, 58, 0, 1513);
+    			add_location(h1, file$1, 39, 0, 992);
     			attr_dev(label0, "class", "form-label");
     			attr_dev(label0, "for", "productname");
-    			add_location(label0, file$1, 62, 12, 1639);
+    			add_location(label0, file$1, 43, 12, 1118);
     			attr_dev(input0, "class", "form-control");
     			attr_dev(input0, "id", "description");
     			attr_dev(input0, "type", "text");
-    			add_location(input0, file$1, 63, 12, 1717);
+    			add_location(input0, file$1, 44, 12, 1196);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$1, 61, 8, 1608);
+    			add_location(div0, file$1, 42, 8, 1087);
     			attr_dev(label1, "class", "form-label");
     			attr_dev(label1, "for", "difficultyType");
-    			add_location(label1, file$1, 72, 12, 1949);
+    			add_location(label1, file$1, 53, 12, 1428);
     			option0.__value = "OTHER";
     			option0.value = option0.__value;
-    			add_location(option0, file$1, 79, 16, 2213);
+    			add_location(option0, file$1, 60, 16, 1692);
     			option1.__value = "TEST";
     			option1.value = option1.__value;
-    			add_location(option1, file$1, 80, 16, 2275);
+    			add_location(option1, file$1, 61, 16, 1754);
     			attr_dev(select0, "class", "form-select");
     			attr_dev(select0, "id", "type");
     			attr_dev(select0, "type", "text");
     			if (/*product*/ ctx[0].productType === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[3].call(select0));
-    			add_location(select0, file$1, 73, 12, 2030);
+    			add_location(select0, file$1, 54, 12, 1509);
     			attr_dev(div1, "class", "col");
-    			add_location(div1, file$1, 71, 8, 1918);
+    			add_location(div1, file$1, 52, 8, 1397);
     			attr_dev(label2, "class", "form-label");
     			attr_dev(label2, "for", "difficultyType");
-    			add_location(label2, file$1, 85, 12, 2393);
+    			add_location(label2, file$1, 66, 12, 1872);
     			option2.__value = "OTHER";
     			option2.value = option2.__value;
-    			add_location(option2, file$1, 94, 16, 2695);
+    			add_location(option2, file$1, 75, 16, 2174);
     			option3.__value = "TEST";
     			option3.value = option3.__value;
-    			add_location(option3, file$1, 95, 16, 2748);
+    			add_location(option3, file$1, 76, 16, 2227);
     			option4.__value = "TEST";
     			option4.value = option4.__value;
-    			add_location(option4, file$1, 96, 16, 2802);
+    			add_location(option4, file$1, 77, 16, 2281);
     			attr_dev(select1, "class", "form-select");
     			attr_dev(select1, "id", "type");
     			attr_dev(select1, "type", "text");
     			if (/*product*/ ctx[0].difficultyType === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[4].call(select1));
-    			add_location(select1, file$1, 88, 12, 2509);
+    			add_location(select1, file$1, 69, 12, 1988);
     			attr_dev(div2, "class", "col");
-    			add_location(div2, file$1, 84, 8, 2362);
+    			add_location(div2, file$1, 65, 8, 1841);
     			attr_dev(div3, "class", "row mb-3");
-    			add_location(div3, file$1, 60, 4, 1576);
+    			add_location(div3, file$1, 41, 4, 1055);
     			attr_dev(label3, "class", "form-label");
     			attr_dev(label3, "for", "type");
-    			add_location(label3, file$1, 103, 12, 2963);
+    			add_location(label3, file$1, 84, 12, 2442);
     			option5.__value = "OTHER";
     			option5.value = option5.__value;
-    			add_location(option5, file$1, 110, 16, 3219);
+    			add_location(option5, file$1, 91, 16, 2698);
     			option6.__value = "TEST";
     			option6.value = option6.__value;
-    			add_location(option6, file$1, 111, 16, 3273);
+    			add_location(option6, file$1, 92, 16, 2752);
     			option7.__value = "OTHER";
     			option7.value = option7.__value;
-    			add_location(option7, file$1, 112, 16, 3327);
+    			add_location(option7, file$1, 93, 16, 2806);
     			option8.__value = "TEST";
     			option8.value = option8.__value;
-    			add_location(option8, file$1, 113, 16, 3384);
+    			add_location(option8, file$1, 94, 16, 2863);
     			option9.__value = "OTHER";
     			option9.value = option9.__value;
-    			add_location(option9, file$1, 114, 16, 3438);
+    			add_location(option9, file$1, 95, 16, 2917);
     			option10.__value = "TEST";
     			option10.value = option10.__value;
-    			add_location(option10, file$1, 115, 16, 3493);
+    			add_location(option10, file$1, 96, 16, 2972);
     			option11.__value = "OTHER";
     			option11.value = option11.__value;
-    			add_location(option11, file$1, 116, 16, 3549);
+    			add_location(option11, file$1, 97, 16, 3028);
     			option12.__value = "TEST";
     			option12.value = option12.__value;
-    			add_location(option12, file$1, 117, 16, 3603);
+    			add_location(option12, file$1, 98, 16, 3082);
     			option13.__value = "TEST";
     			option13.value = option13.__value;
-    			add_location(option13, file$1, 118, 16, 3656);
+    			add_location(option13, file$1, 99, 16, 3135);
     			option14.__value = "OTHER";
     			option14.value = option14.__value;
-    			add_location(option14, file$1, 119, 16, 3709);
+    			add_location(option14, file$1, 100, 16, 3188);
     			option15.selected = true;
     			option15.__value = "TEST";
     			option15.value = option15.__value;
-    			add_location(option15, file$1, 120, 16, 3769);
+    			add_location(option15, file$1, 101, 16, 3248);
     			attr_dev(select2, "class", "form-select");
     			attr_dev(select2, "id", "type");
     			attr_dev(select2, "type", "text");
     			if (/*product*/ ctx[0].clothingType === void 0) add_render_callback(() => /*select2_change_handler*/ ctx[5].call(select2));
-    			add_location(select2, file$1, 104, 12, 3035);
+    			add_location(select2, file$1, 85, 12, 2514);
     			attr_dev(div4, "class", "col");
-    			add_location(div4, file$1, 102, 8, 2932);
+    			add_location(div4, file$1, 83, 8, 2411);
     			attr_dev(label4, "class", "form-label");
     			attr_dev(label4, "for", "earnings");
-    			add_location(label4, file$1, 124, 12, 3897);
+    			add_location(label4, file$1, 105, 12, 3376);
     			attr_dev(input1, "class", "form-control");
     			attr_dev(input1, "id", "earnings");
     			attr_dev(input1, "type", "number");
-    			add_location(input1, file$1, 125, 12, 3965);
+    			add_location(input1, file$1, 106, 12, 3444);
     			attr_dev(div5, "class", "col");
-    			add_location(div5, file$1, 123, 8, 3866);
+    			add_location(div5, file$1, 104, 8, 3345);
     			attr_dev(label5, "class", "form-label");
     			attr_dev(label5, "for", "productname");
-    			add_location(label5, file$1, 134, 12, 4190);
+    			add_location(label5, file$1, 115, 12, 3669);
     			attr_dev(input2, "class", "form-control");
     			attr_dev(input2, "id", "description");
     			attr_dev(input2, "type", "text");
-    			add_location(input2, file$1, 135, 12, 4260);
+    			add_location(input2, file$1, 116, 12, 3739);
     			attr_dev(div6, "class", "col");
-    			add_location(div6, file$1, 133, 8, 4159);
+    			add_location(div6, file$1, 114, 8, 3638);
     			attr_dev(div7, "class", "row mb-3");
-    			add_location(div7, file$1, 101, 4, 2900);
+    			add_location(div7, file$1, 82, 4, 2379);
     			attr_dev(label6, "for", "description");
-    			add_location(label6, file$1, 146, 12, 4525);
+    			add_location(label6, file$1, 127, 12, 4004);
     			attr_dev(textarea, "class", "form-control");
     			attr_dev(textarea, "id", "description");
     			attr_dev(textarea, "rows", "3");
-    			add_location(textarea, file$1, 147, 12, 4583);
+    			add_location(textarea, file$1, 128, 12, 4062);
     			attr_dev(div8, "class", "col");
-    			add_location(div8, file$1, 145, 8, 4494);
+    			add_location(div8, file$1, 126, 8, 3973);
     			attr_dev(div9, "class", "row mb-3");
-    			add_location(div9, file$1, 144, 4, 4462);
+    			add_location(div9, file$1, 125, 4, 3941);
     			attr_dev(form, "class", "mb-5");
-    			add_location(form, file$1, 59, 0, 1551);
-    			attr_dev(button, "type", "button");
-    			attr_dev(button, "class", "my-button");
-    			add_location(button, file$1, 156, 0, 4795);
+    			add_location(form, file$1, 40, 0, 1030);
+    			attr_dev(a, "class", "my-button");
+    			attr_dev(a, "href", "#/create-product");
+    			add_location(a, file$1, 137, 0, 4274);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6710,7 +7011,8 @@ var app = (function () {
     			append_dev(div8, textarea);
     			set_input_value(textarea, /*product*/ ctx[0].description);
     			insert_dev(target, t38, anchor);
-    			insert_dev(target, button, anchor);
+    			insert_dev(target, a, anchor);
+    			insert_dev(target, t40, anchor);
 
     			if (!mounted) {
     				dispose = [
@@ -6721,7 +7023,7 @@ var app = (function () {
     					listen_dev(input1, "input", /*input1_input_handler*/ ctx[6]),
     					listen_dev(input2, "input", /*input2_input_handler*/ ctx[7]),
     					listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[8]),
-    					listen_dev(button, "click", /*createProduct*/ ctx[1], false, false, false)
+    					listen_dev(a, "click", /*createProduct*/ ctx[1], false, false, false)
     				];
 
     				mounted = true;
@@ -6763,7 +7065,8 @@ var app = (function () {
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(form);
     			if (detaching) detach_dev(t38);
-    			if (detaching) detach_dev(button);
+    			if (detaching) detach_dev(a);
+    			if (detaching) detach_dev(t40);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -6780,7 +7083,7 @@ var app = (function () {
     	return block;
     }
 
-    const api_root = "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
+    const api_root = "http://localhost:8080";
 
     function instance$1($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
@@ -6798,21 +7101,6 @@ var app = (function () {
     		patchart: null
     	};
 
-    	function getProducts() {
-    		var config = {
-    			method: "get",
-    			url: api_root + "/api/products",
-    			headers: {}
-    		};
-
-    		axios(config).then(function (response) {
-    			products = response.data;
-    		}).catch(function (error) {
-    			alert("Could not get products");
-    			console.log(error);
-    		});
-    	}
-
     	function createProduct() {
     		var config = {
     			method: "post",
@@ -6823,7 +7111,6 @@ var app = (function () {
 
     		axios(config).then(function (response) {
     			alert("Product created");
-    			getProducts();
     		}).catch(function (error) {
     			alert("Could not create Product");
     			console.log(error);
@@ -6876,7 +7163,6 @@ var app = (function () {
     		api_root,
     		products,
     		product,
-    		getProducts,
     		createProduct
     	});
 

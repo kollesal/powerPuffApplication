@@ -2,8 +2,7 @@
     import axios from "axios";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
-    const api_root =
-        "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
+    const api_root = "http://localhost:8080";
 
     let products = [];
     let product = {
@@ -16,23 +15,6 @@
         price: null,
         patchart: null,
     };
-
-    function getProducts() {
-        var config = {
-            method: "get",
-            url: api_root + "/api/products",
-            headers: {},
-        };
-
-        axios(config)
-            .then(function (response) {
-                products = response.data;
-            })
-            .catch(function (error) {
-                alert("Could not get products");
-                console.log(error);
-            });
-    }
 
     function createProduct() {
         var config = {
@@ -47,7 +29,6 @@
         axios(config)
             .then(function (response) {
                 alert("Product created");
-                getProducts();
             })
             .catch(function (error) {
                 alert("Could not create Product");
@@ -154,6 +135,6 @@
         </div>
     </div>
 </form>
-<button type="button" class="my-button" on:click={createProduct}
-    >Submit</button
+<a class="my-button" href="#/create-product" on:click={createProduct}
+    >Submit</a>
 >
