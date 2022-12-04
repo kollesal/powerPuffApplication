@@ -9,7 +9,7 @@
     let currentPage;
     let nrOfPages = 0;
 
-    let pricesMin, pricesMax;
+    let pricesMin, pricesMax, type;
 
     let products = [];
     let product = {
@@ -34,7 +34,7 @@
     }
 
     function getProducts() {
-        let query = "pageSize=4&page=" + currentPage;
+        let query = "pageSize=6&page=" + currentPage;
 
 
         if (pricesMin) {
@@ -42,6 +42,9 @@
         }
         if (pricesMax) {
             query += "&max=" + pricesMax;
+        }
+        if (type) {
+            query += "&type=SCHNITTMUSTER"
         }
 
         var config = {
@@ -60,13 +63,30 @@
                 console.log(error);
             });
     }
-    //getProducts();
+
+    function getProductsSchnittmuster() {
+        let query = "pageSize=6&page=" + currentPage + "&type=SCHNITTMUSTER";
+
+        var config = {
+            method: "get",
+            url: api_root + "/api/products?" + query,
+            headers: {},
+        };
+
+        axios(config)
+            .then(function (response) {
+                products = response.data.content;
+                nrOfPages = response.data.totalPages;
+            })
+            .catch(function (error) {
+                alert("Could not get products");
+                console.log(error);
+            });
+    }
+  
 </script>
 
 <h1>All Products</h1>
-<h4>
-    Number of Products: {products.length}
-</h4>
 
 <a class="my-button" href="#/create-product" role="button" aria-pressed="true"
     >Add Product</a
@@ -94,9 +114,11 @@
         />
     </div>
     <div class="col-3">
-        <button class="btn btn-primary" on:click={getProducts}>Apply</button>
+        <button class="btn btn-primary" on:click={getProductsSchnittmuster}>Apply</button>
     </div>
 </div>
+
+<button on:click={getProducts}>Schnittmuster</button>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {#each products as product, index}

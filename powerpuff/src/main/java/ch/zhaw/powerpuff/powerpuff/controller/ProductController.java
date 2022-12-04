@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
 import ch.zhaw.powerpuff.powerpuff.model.ProductCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByProducttypeAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByUserAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductStateAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
@@ -55,7 +56,8 @@ public class ProductController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize,
             @RequestParam(required = false) Double min,
-            @RequestParam(required = false) Double max) {
+            @RequestParam(required = false) Double max,
+            @RequestParam(required = false) Double type) {
         if (page == null) {
             page = 1;
         }
@@ -70,6 +72,9 @@ public class ProductController {
         } else if (min != null) {
             allProducts = productRepository
                     .findByPriceGreaterThan(min, PageRequest.of(page - 1, pageSize));
+        } else if (type != null) {
+            allProducts = productRepository
+                    .findByProductType(type, PageRequest.of(page - 1, pageSize));
         } else {
             allProducts = productRepository
                     .findAll(PageRequest.of(page - 1, pageSize));
@@ -101,6 +106,19 @@ public class ProductController {
     public ResponseEntity<List<ProductByUserAggregationDTO>> getProductByUserAggregation() {
 
         return new ResponseEntity<>(productRepository.getProductByUserAggregation(), HttpStatus.OK);
+    }
+
+    @GetMapping("/byproducttype")
+    public ResponseEntity<List<ProductByProducttypeAggregationDTO>> getProductByProducttypeAggregation() {
+
+        return new ResponseEntity<>(productRepository.getProducttypeAggregation(), HttpStatus.OK);
+    }
+
+    @GetMapping("/producttype")
+    public ResponseEntity<List<Product>> getProductType(@RequestParam String type) {
+
+        return new ResponseEntity<>(productRepository
+                .findByProductType(type), HttpStatus.OK);
     }
 
     @GetMapping("/productstate")

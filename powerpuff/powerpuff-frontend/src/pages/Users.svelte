@@ -1,21 +1,23 @@
 <script>
     import axios from "axios";
+    import { querystring } from "svelte-spa-router";
+    import { jwt_token} from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
-    const api_root = "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
+    const api_root = "http://localhost:8080";
 
     let users = [];
     let user = {
-        email: null,
         username: null,
         name: null,
+        email: null,
     };
 
     function getUsers() {
         var config = {
             method: "get",
             url: api_root + "/api/users",
-            headers: {},
+            headers: {Authorization: "Bearer "+$jwt_token},
         };
 
         axios(config)
@@ -40,7 +42,7 @@
 
         axios(config)
             .then(function (response) {
-                alert("Product created");
+                alert("User created");
                 getUsers();
             })
             .catch(function (error) {
@@ -57,7 +59,7 @@
 <form class="mb-5">
     <div class="row mb-3">
         <div class="col">
-            <label class="form-label" for="productname">Username</label>
+            <label class="form-label" for="username">Username</label>
             <input
                 bind:value={user.username}
                 class="form-control"
@@ -67,7 +69,7 @@
         </div>
 
         <div class="col">
-            <label class="form-label" for="productname">Name</label>
+            <label class="form-label" for="name">Name</label>
             <input
                 bind:value={user.name}
                 class="form-control"
@@ -77,7 +79,7 @@
         </div>
 
         <div class="col">
-            <label class="form-label" for="productname">Username</label>
+            <label class="form-label" for="email">E-Mail</label>
             <input
                 bind:value={user.email}
                 class="form-control"

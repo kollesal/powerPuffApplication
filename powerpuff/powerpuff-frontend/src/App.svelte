@@ -1,11 +1,12 @@
 <script>
 	import Router from "svelte-spa-router";
 	import routes from "./routes";
+	import { isAuthenticated, user } from "./store";
+	import auth from "./auth.service";
 </script>
 
 <div id="app">
-
-<!-- Navbar -->
+	<!-- Navbar -->
 	<nav class="navbar navbar-expand-lg bg-light">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#/">Power Puff</a>
@@ -20,30 +21,61 @@
 			>
 				<span class="navbar-toggler-icon" />
 			</button>
-			<div class="collapse navbar-collapse" id="navbarNavDropdown">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="navbar-brand" href="/#">
-						<img src="/images/home.png" width="30" height="30" class="d-inline-block align-top" alt=""/>
-					</a>
-					</li>
-					<li class="nav-item">
-						<a
-							class="nav-link"
-							aria-current="page"
-							href="/#">Home</a
-						>
-					</li>
+
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					{#if $isAuthenticated}
+						<li class="nav-item">
+							<a class="navbar-brand" href="/#">
+								<img
+									src="/images/home.png"
+									width="30"
+									height="30"
+									class="d-inline-block align-top"
+									alt=""
+								/>
+							</a>
+						</li>
+					{/if}
+					{#if $isAuthenticated}
+						<li class="nav-item">
+							<a class="nav-link" aria-current="page" href="/#"
+								>Home</a
+							>
+						</li>
+					{/if}
 					<li class="nav-item">
 						<a class="nav-link" href="#/products">Products</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#/users">Users</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#/utilities">Utilities</a>
-					</li>
+					{#if $isAuthenticated}
+						<li class="nav-item">
+							<a class="nav-link" href="#/users">Users</a>
+						</li>
+					{/if}
+					{#if $isAuthenticated}
+						<li class="nav-item">
+							<a class="nav-link" href="#/utilities">Utilities</a>
+						</li>
+					{/if}
 				</ul>
+				<div class="d-flex">
+					{#if $isAuthenticated}
+						<span class="navbar-text me-2">
+							{$user.name}
+						</span>
+						<button
+							type="button"
+							class="btn btn-primary"
+							on:click={auth.logout}>Log Out</button
+						>
+					{:else}
+						<button
+							type="button"
+							class="btn btn-primary"
+							on:click={auth.loginWithPopup}>Log In</button
+						>
+					{/if}
+				</div>
 			</div>
 		</div>
 	</nav>
