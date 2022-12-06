@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +28,7 @@ import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByProducttypeAggrega
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByUserAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductStateAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
+import ch.zhaw.powerpuff.powerpuff.security.UserValidator;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -33,8 +38,14 @@ public class ProductController {
     ProductRepository productRepository;
 
     @PostMapping("")
-    public ResponseEntity<Product> createUtility(
-            @RequestBody ProductCreateDTO pDTO) {
+    public ResponseEntity<Product> createProduct(
+            @RequestBody ProductCreateDTO pDTO, 
+            @AuthenticationPrincipal Jwt jwt) {
+
+                if (!UserValidator.userHasRole(jwt, "admin")) {
+                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                    } 
+
         Product pDAO = new Product(pDTO.getDifficultyType(), pDTO.getClothingType(), pDTO.getProductType(),
                 pDTO.getProductname(), pDTO.getDescription(), pDTO.getSize(), pDTO.getPatchart(), pDTO.getPrice());
         Product p = productRepository.save(pDAO);
@@ -57,7 +68,7 @@ public class ProductController {
             @RequestParam(required = false) Integer pageSize,
             @RequestParam(required = false) Double min,
             @RequestParam(required = false) Double max,
-            @RequestParam(required = false) Double type) {
+            @RequestParam(required = false) String type) {
         if (page == null) {
             page = 1;
         }
@@ -66,7 +77,10 @@ public class ProductController {
         }
 
         Page<Product> allProducts;
-        if (min != null && max != null) {
+        if (min != null && max != null && type != null) {
+            allProducts = productRepository
+                    .findByProductTypeAndPriceBetween(type, min, max, PageRequest.of(page - 1, pageSize));
+        } else if (min != null && max != null) {
             allProducts = productRepository
                     .findByPriceBetween(min, max, PageRequest.of(page - 1, pageSize));
         } else if (min != null) {

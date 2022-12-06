@@ -1,5 +1,6 @@
 package ch.zhaw.powerpuff.powerpuff.service;
 
+import java.util.List;
 import java.util.Optional;
 
 //import java.util.Optional;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
 import ch.zhaw.powerpuff.powerpuff.model.ProductState;
+import ch.zhaw.powerpuff.powerpuff.model.User;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
 import ch.zhaw.powerpuff.powerpuff.repository.UserRepository;
 import ch.zhaw.powerpuff.powerpuff.repository.UtilityRepository;
@@ -46,6 +48,14 @@ public class ProductService {
     }
         return Optional.empty();
     }
+
+    public Optional<Product> assignProductByEmail(String productId, String email) {
+        List<User> uList = userRepository.findByEmail(email);
+        if (uList.size() == 1) { 
+        return assignProduct(productId, uList.get(0).getId());
+        } 
+        return Optional.empty();
+       } 
 
     public Optional<Product> activateProduct(String productId) {
         if(productRepository.findById(productId).isPresent()) {

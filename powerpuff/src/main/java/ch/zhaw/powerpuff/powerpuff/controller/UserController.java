@@ -27,6 +27,7 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity<User> createUtility(
             @RequestBody UserCreateDTO uDTO) {
+                
         User uDAO = new User(uDTO.getName(), uDTO.getUsername(), uDTO.getEmail());
         User u = userRepository.save(uDAO);
         return new ResponseEntity<>(u, HttpStatus.CREATED);

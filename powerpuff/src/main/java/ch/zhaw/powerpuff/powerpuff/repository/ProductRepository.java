@@ -17,10 +17,12 @@ public interface ProductRepository extends MongoRepository<Product, String> {
   List<Product> findByPriceGreaterThan(Double price);
   List<Product> findByPriceBetween(Double min, Double max);
   List<Product> findByProductType(String type);
+  List<Product> findByProductTypeAndPriceBetween(String type, Double min, Double max);
 
   Page<Product> findByPriceGreaterThan(Double price, Pageable pageable);
   Page<Product> findByPriceBetween(Double min, Double max, Pageable pageable);
-  Page<Product> findByProductType(Double type, Pageable pageable);
+  Page<Product> findByProductType(String type, Pageable pageable);
+  Page<Product> findByProductTypeAndPriceBetween(String type, Double min, Double max, Pageable pageable);
 
   @Aggregation("{$group: {_id: '$productState',productIds: {$push: '$_id'}, count: {$count: {}}}}")
   List<ProductStateAggregationDTO> getProductStateAggregation();
@@ -31,7 +33,8 @@ public interface ProductRepository extends MongoRepository<Product, String> {
   @Aggregation("{$group: {_id: '$productType',productIds: {$push: '$_id'}, totalPrices: {$sum: '$price'}}}")
   List<ProductByProducttypeAggregationDTO> getProducttypeAggregation();
 
-  List<Product> findByProductState(String state);
+  // @Query("{$match: {price: { $gte: ?0, $lte: ?1 }, productType: ?2,},},")
 
+  List<Product> findByProductState(String state);
 
 }

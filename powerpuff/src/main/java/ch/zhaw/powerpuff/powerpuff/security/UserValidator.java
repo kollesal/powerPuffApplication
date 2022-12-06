@@ -1,5 +1,7 @@
 package ch.zhaw.powerpuff.powerpuff.security;
 
+import java.util.List;
+
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
@@ -8,7 +10,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import ch.zhaw.powerpuff.powerpuff.model.User;
 import ch.zhaw.powerpuff.powerpuff.repository.UserRepository;
 
-class UserValidator implements OAuth2TokenValidator<Jwt> {
+public class UserValidator implements OAuth2TokenValidator<Jwt> {
 
     UserRepository userRepository;
 
@@ -22,7 +24,7 @@ class UserValidator implements OAuth2TokenValidator<Jwt> {
         String email = jwt.getClaimAsString("email");
         if (email != null && !email.equals("")) { 
             if (userRepository.findByEmail(email).size() == 0) {     
-                String username = jwt.getClaimAsString("nickname");
+                String username = jwt.getClaimAsString("username");
                 String name = jwt.getClaimAsString("name");
                 userRepository.save(new User(email, username, name));
             }
@@ -30,4 +32,13 @@ class UserValidator implements OAuth2TokenValidator<Jwt> {
         }
         return OAuth2TokenValidatorResult.failure(error);
     }
+
+    public static boolean userHasRole(Jwt jwt, String requiredRole) {
+        if (jwt != null) {
+        List<String> userRole = jwt.getClaimAsStringList("user_roles");
+        return userRole.stream()
+        .filter(x -> x.equals(requiredRole)).count() == 1; 
+        } 
+        return false; 
+       } 
 }

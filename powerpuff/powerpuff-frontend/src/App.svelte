@@ -37,17 +37,11 @@
 							</a>
 						</li>
 					{/if}
-					{#if $isAuthenticated}
-						<li class="nav-item">
-							<a class="nav-link" aria-current="page" href="/#"
-								>Home</a
-							>
-						</li>
-					{/if}
+					
 					<li class="nav-item">
 						<a class="nav-link" href="#/products">Products</a>
 					</li>
-					{#if $isAuthenticated}
+					{#if $isAuthenticated && $user.user_roles.includes("admin")}
 						<li class="nav-item">
 							<a class="nav-link" href="#/users">Users</a>
 						</li>
@@ -61,7 +55,7 @@
 				<div class="d-flex">
 					{#if $isAuthenticated}
 						<span class="navbar-text me-2">
-							{$user.name}
+							<a class="nav-link" href="#/account">{$user.name}</a>
 						</span>
 						<button
 							type="button"

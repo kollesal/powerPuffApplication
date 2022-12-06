@@ -1,5 +1,7 @@
 <script>
     import axios from "axios";
+    import { jwt_token } from "../store";
+    import { isAuthenticated, user } from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
     const api_root = "http://localhost:8080";
@@ -22,6 +24,7 @@
             url: api_root + "/api/products",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: "Bearer " + $jwt_token
             },
             data: product,
         };
@@ -36,6 +39,8 @@
             });
     }
 </script>
+
+{#if $user.user_roles && $user.user_roles.length > 0}
 
 <h1 class="mt-3">Create Product</h1>
 <form class="mb-5">
@@ -138,3 +143,10 @@
 <a class="my-button" href="#/products" on:click={createProduct}
     >Submit</a>
 
+    {:else}
+
+    <div class="alert" role="alert">
+      <h3><b>Not correct Role</b></h3>
+    </div>
+   
+{/if}
