@@ -52,6 +52,6 @@ public class Product {
         this.size = size;
         this.price = price;
         this.patchart = patchart;
-
+ 
     }
 }

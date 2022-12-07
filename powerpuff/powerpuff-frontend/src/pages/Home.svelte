@@ -41,12 +41,14 @@
         <h1 class="mt-3">Welcome to the Power Puff Application!</h1>
         <div class="col-md-12" />
 
-        <div class="alert" margin="30px" color="#5402C0" role="alert">
-            <h4 class="alert-heading">Dashboard</h4>
+        <div class="mx-auto">
+        <img
+                        src="images/homep.webp"
+                        class="rounded-circle"
+                        alt="PowerPuff"
+                        width="500" 
+                    />
         </div>
 
-        <h4 class="mt-3">
-            Neue Produkte, welche überprüft und aktiviert werden müssen
-        </h4>
     </div>
 </div>

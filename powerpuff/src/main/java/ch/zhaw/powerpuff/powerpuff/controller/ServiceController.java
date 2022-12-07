@@ -3,11 +3,15 @@ package ch.zhaw.powerpuff.powerpuff.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
@@ -45,6 +49,17 @@ public class ServiceController {
         // ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping("/assigntome") 
+public ResponseEntity<Product> assignToMe(@RequestParam String productId, 
+@AuthenticationPrincipal Jwt jwt) {
+ String userEmail = jwt.getClaimAsString("email");
+ Optional<Product> product = productService.assignProductByEmail(productId, userEmail);
+ if (product.isPresent()) {
+ return new ResponseEntity<>(product.get(), HttpStatus.OK); 
+ } 
+ return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+}
 
     @PostMapping("/productactivation")
     public ResponseEntity<Product> activateProduct(

@@ -1,5 +1,7 @@
 <script>
     import axios from "axios";
+    import { jwt_token } from "../store";
+    import { isAuthenticated, user } from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
     const api_root = "http://localhost:8080";
@@ -22,6 +24,7 @@
             url: api_root + "/api/products",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: "Bearer " + $jwt_token
             },
             data: product,
         };
@@ -37,6 +40,8 @@
     }
 </script>
 
+{#if $user.user_roles && $user.user_roles.length > 0}
+
 <h1 class="mt-3">Create Product</h1>
 <form class="mb-5">
     <div class="row mb-3">
@@ -51,15 +56,15 @@
         </div>
 
         <div class="col">
-            <label class="form-label" for="difficultyType">Product Type</label>
+            <label class="form-label" for="productType">Product Type</label>
             <select
                 bind:value={product.productType}
                 class="form-select"
                 id="type"
                 type="text"
             >
-                <option value="OTHER">SCHNITTMUSTER</option>
-                <option value="TEST">MANUAL</option>
+                <option value="SCHNITTMUSTER">Schnittmuster</option>
+                <option value="MANUAL">Manual</option>
             </select>
         </div>
 
@@ -73,37 +78,37 @@
                 id="type"
                 type="text"
             >
-                <option value="OTHER">EASY</option>
-                <option value="TEST">MIDDLE</option>
-                <option value="TEST">DIFFICULT</option>
+                <option value="EASY">Easy</option>
+                <option value="MIDDLE">Middle</option>
+                <option value="DIFFICULT">Difficult</option>
             </select>
         </div>
     </div>
 
     <div class="row mb-3">
         <div class="col">
-            <label class="form-label" for="type">Clothing Type</label>
+            <label class="form-label" for="clothingType">Clothing Type</label>
             <select
                 bind:value={product.clothingType}
                 class="form-select"
                 id="type"
                 type="text"
             >
-                <option value="OTHER">SHIRT</option>
-                <option value="TEST">TSHIRT</option>
-                <option value="OTHER">PULLOVER</option>
-                <option value="TEST">BLOUSE</option>
-                <option value="OTHER">JACKET</option>
-                <option value="TEST">TROUSERS</option>
-                <option value="OTHER">SKIRT</option>
-                <option value="TEST">DRESS</option>
-                <option value="TEST">SOCKS</option>
-                <option value="OTHER">ACCESSOIRES</option>
-                <option selected value="TEST">UNDEFINED</option>
+                <option value="SHIRT">Shirt</option>
+                <option value="TSHIRT">T-Shirt</option>
+                <option value="PULLOVER">Pullover</option>
+                <option value="BLOUSE">Blouse</option>
+                <option value="JACKET">Jacket</option>
+                <option value="TROUSERS">Trousers</option>
+                <option value="SKIRT">Skirt</option>
+                <option value="DRESS">Dress</option>
+                <option value="SOCKS">Socks</option>
+                <option value="ACCESSOIRES">Accessoires</option>
+                <option selected value="UNDEFINED">Undefined</option>
             </select>
         </div>
         <div class="col">
-            <label class="form-label" for="earnings">Price</label>
+            <label class="form-label" for="price">Price</label>
             <input
                 bind:value={product.price}
                 class="form-control"
@@ -113,7 +118,7 @@
         </div>
 
         <div class="col">
-            <label class="form-label" for="productname">Size</label>
+            <label class="form-label" for="size">Size</label>
             <input
                 bind:value={product.size}
                 class="form-control"
@@ -135,6 +140,13 @@
         </div>
     </div>
 </form>
-<a class="my-button" href="#/create-product" on:click={createProduct}
+<a class="my-button" href="#/products" on:click={createProduct}
     >Submit</a>
->
+
+    {:else}
+
+    <div class="alert" role="alert">
+      <h3><b>Not correct Role</b></h3>
+    </div>
+   
+{/if}
