@@ -1,7 +1,8 @@
 <script>
     import axios from "axios";
     import { querystring } from "svelte-spa-router";
-    import { jwt_token} from "../store";
+    import { jwt_token } from "../store";
+    import { isAuthenticated, user } from "../store";
 
         // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
         const api_root =
@@ -10,12 +11,13 @@
     export let params = {};
     let product_id;
     let user_id;
-   
-    let user = {
-        username: null,
-        name: null,
-        email: null,
-    };
+    let allUsers = [];
+
+    $: {
+        product_id = params.id;
+        getProduct();
+        getUsers();
+    }
 
     let product = {
         productname: null,
@@ -28,49 +30,73 @@
         patchart: null,
         userId: null,
         comment: null,
-
     };
-
-    $: {
-        product_id = params.id;
-        getProduct();
-        getUser();
-    }
 
 
     function getProduct() {
-        axios
-            .get("http://localhost:8080/api/products/" + product.id)
-            .then((response) => {
+            var config = {
+            method: "get",
+            url: api_root + "/api/products/" + product_id,
+            headers: {},
+        };
+
+        axios(config)
+            .then(function (response) {
                 product = response.data;
+            })
+            .catch(function (error) {
+                alert("Could not get product");
+                console.log(error);
             });
     }
 
-    function getUser() {
-        axios.get("http://localhost:8080/api/users/" + user_Id)
-            .then((response) => {
-            user = response.data;
+    function getUsers() {
+        /* axios.get("http://localhost:3001/api/members").then((response) => {
+            allMembers = response.data;
+            console.log(allMembers.length);
         });
+*/
+        var config = {
+            method: "get",
+            url: api_root + "/api/users",
+            headers: {Authorization: "Bearer "+$jwt_token},
+        };
+
+        axios(config)
+            .then(function (response) {
+                allUsers = response.data;
+                console.log(allMembers.length);
+            })
+            .catch(function (error) {
+                alert("Could not get users");
+                console.log(error);
+            });
     }
 
     function deleteProduct() {
-        axios
-            .delete("http://localhost:3001/api/products/" + id)
-            .then((response) => {
+            var config = {
+            method: "delete",
+            url: api_root + "/api/products/" + product_id,
+            headers: { Authorization: "Bearer " + $jwt_token },
+        };
+
+        axios(config)
+            .then(function (response) {
                 alert("Product " + product.productname + " deleted");
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(function (error) {
                 alert(error);
+                console.log(error);
             });
     }
+
 </script>
 
 
 <!--<div class="col-md-12">-->
     <h1>Product {product.productname}</h1>
-    <p>ID: {product._id}</p>
-    <h3>{product.productType}</h3>
+    <p>ID: {product.id}</p>
+    <h3>Product Type: {product.productType}</h3>
 
     <div class="md-12">
         <div class="col-md-4">
@@ -99,44 +125,39 @@
             </ul>
         </div>
     </div>
-
-    <h3>Members:</h3>
+-->
+    <h3>Creator:</h3>
 
     <div class="row">
-        {#each team.members as member}
-            {#each allMembers as differentMember}
-                {#if member === differentMember._id}
+            {#each allUsers as differentUser}
+                {#if product.userId === differentUser._id}
                     <div class="col-sm-4">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    {differentMember.firstName}
-                                    {differentMember.lastName}
+                                    {differentUser.username}
                                 </h5>
                                 <p class="card-text">
-                                    Position: {differentMember.position}
+                                    Name: {differentUser.name}
                                 </p>
                                 <p>
-                                    Experience in Years: {differentMember.experienceInYears}
+                                    Email: {differentUser.email}
                                 </p>
-                                <a
-                                    href={"#/members/" + differentMember._id}
-                                    class="my-button">See profile</a
-                                >
                             </div>
                         </div>
                     </div>
                 {/if}
             {/each}
-        {/each}
     </div>
--->
 
-    <div class="col-md-6" />
+
+    <div class="col-md-12" />
 
     <!--<button on:click={addMemberToTeam} class="my-button">Update</button>-->
-    <a href="#/teams" on:click={deleteProduct} class="delete-button">Delete Product</a
+    {#if $user.user_roles && $user.user_roles.length > 0}
+    <a href="#/products" on:click={deleteProduct} class="delete-button">Delete Product</a
     >
+   {/if} 
     <a class="back-button" href="#/products" role="button" aria-pressed="true"
         >Back</a
     >

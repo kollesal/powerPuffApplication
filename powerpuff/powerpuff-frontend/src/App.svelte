@@ -59,13 +59,13 @@
 						</span>
 						<button
 							type="button"
-							class="btn btn-primary"
+							class="my-button"
 							on:click={auth.logout}>Log Out</button
 						>
 					{:else}
 						<button
 							type="button"
-							class="btn btn-primary"
+							class="my-button"
 							on:click={auth.loginWithPopup}>Log In</button
 						>
 					{/if}

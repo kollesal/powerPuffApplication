@@ -6,14 +6,13 @@
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
     const api_root = "http://localhost:8080";
-
-    let currentPage;
+var currentPage;
     let nrOfPages = 0;
 
     let pricesMin, pricesMax, type;
 
     let products = [];
-    let product = {
+    /*let product = {
         productname: null,
         description: null,
         productType: null,
@@ -24,7 +23,7 @@
         patchart: null,
         userId: null,
         comment: null,
-    };
+    };*/
 
     $: {
         let searchParams = new URLSearchParams($querystring);
@@ -52,7 +51,7 @@
         var config = {
             method: "get",
             url: api_root + "/api/products?" + query,
-            headers: { Authorization: "Bearer " + $jwt_token },
+            headers: {},
         };
 
         axios(config)
@@ -119,11 +118,50 @@
 
 <div class="row my-3">
     <div class="col-auto">
+        <label for="" class="col-form-label">Product Type: </label>
+    </div>
+    <div class="col-3">
+        <div class="form-check">
+            <label>
+                <input
+                    class="form-check-input"
+                    bind:group={type}
+                    on:click={getProducts}
+                    type="radio"
+                    name="schittmuster"
+                    value="SCHNITTMUSTER"
+                />
+                Schnittmuster
+            </label>
+        </div>
+        <div class="form-check">
+            <label>
+                <input
+                    class="form-check-input"
+                    bind:group={type}
+                    on:click={getProducts}
+                    type="radio"
+                    name="manual"
+                    id="manual"
+                    value="MANUAL"
+                />
+                Manual
+            </label>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <button class="my-button" on:click={getProducts}>Apply</button>
+    </div>
+</div>
+<!--
+<div class="row my-3">
+    <div class="col-auto">
         <label class="form-label" for="producttype">Product Type: </label>
     </div>
     <div class="col-3">
         <select bind:value={type} class="form-select" id="type" type="text">
-            <option value="none">No type selected</option>
+            <option disabled>No type selected</option>
             <option value="SCHNITTMUSTER" on:click={getProducts}
                 >Schnittmuster</option
             >
@@ -135,6 +173,7 @@
         <button class="btn btn-primary" on:click={getProducts}>Apply</button>
     </div>
 </div>
+-->
 
 <!-- <button on:click={getProducts}>Schnittmuster</button> -->
 
@@ -157,10 +196,13 @@
                         <div class="card-body">
                             <h5 class="card-title">
                                 {product.productname}
-                                <span class="badge"
+                            </h5>
+
+                            <p class="card-title">
+                                <span class="badge bg-primary"
                                     >{product.difficultyType}</span
                                 >
-                            </h5>
+                            </p>
 
                             <p class="card-text" />
                             <p>
@@ -178,25 +220,52 @@
                                 Product Size: {product.size}
                             </p>
 
-                            
-                                {#if product.productState === "ACTIVE"} 
-                                <span class="badge bg-secondary">Active</span>
-                                {:else if product.userId === null} 
-                                <button
-                                type="button"
-                               class="btn btn-primary btn-sm"
-                                on:click={() => { assignToMe(user.id); }}
-                                >
-                                Assign to me
-                                </button>
-                                {/if}
-                                
+                            {#if product.productState === "ACTIVE"}
+                                <p>
+                                    <span class="badge bg-success"
+                                        >{product.productState}</span
+                                    >
+                                </p>
+                            {:else if product.productState === "REVIEW" || product.productState === "NEW"}
+                                <p>
+                                    <span class="badge bg-warning"
+                                        >{product.productState}</span
+                                    >
+                                </p>
+                            {:else if product.productState === "INACTIVE"}
+                                <p>
+                                    <span class="badge bg-secondary"
+                                        >{product.productState}</span
+                                    >
+                                </p>
+                            {/if}
 
-                            <p class="card-text">
-                                <small class="text-muted"
-                                    >Product Number: {index + 1}</small
-                                >
-                            </p>
+                            {#if product.userId === null}
+                                <p>
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary btn-sm"
+                                        on:click={() => {
+                                            assignToMe(user.id);
+                                        }}
+                                    >
+                                        Assign to me
+                                    </button>
+                                </p>
+                            {/if}
+                            {#if product.userId !== null}
+                                <p class="card-text">
+                                    <small class="text-muted"
+                                        >Creator: {product.userId}</small
+                                    >
+                                </p>
+                            {:else}
+                                <p class="card-text">
+                                    <small class="text-muted"
+                                        >Creator: No Creator defined</small
+                                    >
+                                </p>
+                            {/if}
                         </div>
                     </div>
                 </div>
@@ -207,6 +276,11 @@
 
 <nav>
     <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href={"#/products?page=" + (currentPage - 1)}
+                >Previous</a
+            >
+        </li>
         {#each Array(nrOfPages) as _, i}
             <li class="page-item">
                 <a
@@ -217,6 +291,11 @@
                 </a>
             </li>
         {/each}
+        <li class="page-item">
+            <a class="page-link" href={"#/products?page=" + (currentPage+1)}
+                >Next</a
+            >
+        </li>
     </ul>
 </nav>
 

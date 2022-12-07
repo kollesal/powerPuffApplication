@@ -32,9 +32,7 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
   @Aggregation("{$group: {_id: '$productType',productIds: {$push: '$_id'}, totalPrices: {$sum: '$price'}}}")
   List<ProductByProducttypeAggregationDTO> getProducttypeAggregation();
-
-  // @Query("{$match: {price: { $gte: ?0, $lte: ?1 }, productType: ?2,},},")
-
+  
   List<Product> findByProductState(String state);
 
 }

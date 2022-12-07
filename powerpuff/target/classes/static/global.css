@@ -2,13 +2,13 @@
 
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 12px 28px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
-    margin-top: 30px;
+    /* margin-top: 30px; */
     cursor: pointer;
     background-color: #5402C0;
     border-radius: 6px;
@@ -19,13 +19,13 @@
 .back-button {
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 12px 28px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     margin: 3px 2px;
-    margin-top: 30px;
+    /* margin-top: 30px; */
     cursor: pointer;
     background-color: #6c757d;
     border-radius: 6px;
@@ -36,7 +36,7 @@
 .delete-button {
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 12px 28px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -84,7 +84,8 @@ h3 {
 }
 
 .logo {
-    height: 40px;
+    height: 500px;
+    
 }
 
 .small-logo {
@@ -194,4 +195,8 @@ button {
 }
 .shadow-none {
     box-shadow: none!important;
+}
+
+.col-md-12{
+    padding-bottom: 80px;
 }
