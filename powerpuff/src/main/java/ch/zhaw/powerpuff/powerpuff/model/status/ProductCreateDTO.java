@@ -1,4 +1,7 @@
-package ch.zhaw.powerpuff.powerpuff.model;
+package ch.zhaw.powerpuff.powerpuff.model.status;
+import ch.zhaw.powerpuff.powerpuff.model.ClothingType;
+import ch.zhaw.powerpuff.powerpuff.model.DifficultyType;
+import ch.zhaw.powerpuff.powerpuff.model.ProductType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
-import ch.zhaw.powerpuff.powerpuff.model.ProductActivateDTO;
-import ch.zhaw.powerpuff.powerpuff.model.ProductAssignDTO;
-import ch.zhaw.powerpuff.powerpuff.model.ProductCloseDTO;
-import ch.zhaw.powerpuff.powerpuff.model.ProductReviewDTO;
 import ch.zhaw.powerpuff.powerpuff.model.User;
-import ch.zhaw.powerpuff.powerpuff.model.UserCloseDTO;
+import ch.zhaw.powerpuff.powerpuff.model.status.ProductActivateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.status.ProductAssignDTO;
+import ch.zhaw.powerpuff.powerpuff.model.status.ProductCloseDTO;
+import ch.zhaw.powerpuff.powerpuff.model.status.ProductReviewDTO;
+import ch.zhaw.powerpuff.powerpuff.model.status.UserCloseDTO;
 import ch.zhaw.powerpuff.powerpuff.service.ProductService;
 import ch.zhaw.powerpuff.powerpuff.service.UserService;
 
