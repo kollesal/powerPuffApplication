@@ -18,6 +18,7 @@ import ch.zhaw.powerpuff.powerpuff.model.Product;
 import ch.zhaw.powerpuff.powerpuff.model.ProductActivateDTO;
 import ch.zhaw.powerpuff.powerpuff.model.ProductAssignDTO;
 import ch.zhaw.powerpuff.powerpuff.model.ProductCloseDTO;
+import ch.zhaw.powerpuff.powerpuff.model.ProductReviewDTO;
 import ch.zhaw.powerpuff.powerpuff.model.User;
 import ch.zhaw.powerpuff.powerpuff.model.UserCloseDTO;
 import ch.zhaw.powerpuff.powerpuff.service.ProductService;
@@ -68,6 +69,24 @@ public ResponseEntity<Product> assignToMe(@RequestParam String productId,
 
         if (activateDTO != null) {
             Optional<Product> Service = productService.activateProduct(activateDTO.getProductId());
+
+            // das modifizierten Product mit Status OK zurückgeben, sonst BAD_REQUEST return
+            // new
+            return new ResponseEntity<>(Service.get(), HttpStatus.OK);
+        }
+
+        // ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
+    @PostMapping("/productreview")
+    public ResponseEntity<Product> reviewProduct(
+            @RequestBody ProductReviewDTO reviewDTO) {
+        // Service aufrufen. Falls die Zuweisung erfolgreich war
+
+        if (reviewDTO != null) {
+            Optional<Product> Service = productService.reviewProduct(reviewDTO.getProductId());
 
             // das modifizierten Product mit Status OK zurückgeben, sonst BAD_REQUEST return
             // new

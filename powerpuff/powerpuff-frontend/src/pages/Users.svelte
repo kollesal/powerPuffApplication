@@ -118,7 +118,7 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>Number</th>
+            <th></th>
             <th>Username</th>
             <th>Name</th>
             <th>Email</th>
@@ -127,14 +127,29 @@
         </tr>
     </thead>
     <tbody>
-        {#each users as user, index}
+        {#each users as user}
             <tr
                 class="row-tr"
                 onclick="document.location = '{'#/users/' + user._id}';"
             >
+            <!--
                 <td>
-                    {index + 1}
+                    <div class="form-check">
+                        <label>
+                            <input
+                                class="form-check-input"
+                                bind:group={type}
+                                on:click={getProducts}
+                                type="radio"
+                                name="activation"
+                                id="manual"
+                                value="MANUAL"
+                            />
+                            Manual
+                        </label>
+                    </div>
                 </td>
+            -->
                 <td>
                     {user.username}
                 </td>
@@ -152,11 +167,7 @@
                 </td>
             </tr>
         {/each}
-        <tr>
-            <dt>
-                Number of Products: {users.length}
-            </dt>
-        </tr>
+       
     </tbody>
 </table>
 
