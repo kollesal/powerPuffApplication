@@ -1,6 +1,5 @@
 <script>
     import axios from "axios";
-    import { querystring } from "svelte-spa-router";
     import { jwt_token } from "../store";
     import { isAuthenticated, user } from "../store";
 

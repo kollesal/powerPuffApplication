@@ -26,6 +26,23 @@
         getUsers();
     }
 
+    function getUser() {
+        var config = {
+            method: "get",
+            url: api_root + "/api/products/" + user_id,
+            headers: {},
+        };
+
+        axios(config)
+            .then(function (response) {
+                user = response.data;
+            })
+            .catch(function (error) {
+                alert("Could not get user");
+                console.log(error);
+            });
+    }
+
     function getUsers() {
         let query = "pageSize=6&page=" + currentPage;
 
@@ -64,6 +81,45 @@
             })
             .catch(function (error) {
                 alert("Could not create User");
+                console.log(error);
+            });
+    }
+
+    function userActivation() {
+        var config = {
+            method: "post",
+            url: api_root + "/api/service/useractivation",
+            headers: { Authorization: "Bearer " + $jwt_token },
+            data: {
+                userId: user.id,
+            },
+        };
+        axios(config)
+            .then(function (response) {
+                alert("User activated");
+            })
+            .catch(function (error) {
+                alert("Could not activate User");
+                console.log(error);
+            });
+    }
+
+    function userCompletion() {
+        var config = {
+            method: "post",
+            url: api_root + "/api/service/usercompletion",
+            headers: { Authorization: "Bearer " + $jwt_token },
+            data: {
+                userId: user.id,
+                comment: user.comment,
+            },
+        };
+        axios(config)
+            .then(function (response) {
+                alert("User inactivated");
+            })
+            .catch(function (error) {
+                alert("Could not inactivate User");
                 console.log(error);
             });
     }
@@ -118,7 +174,7 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th></th>
+            
             <th>Username</th>
             <th>Name</th>
             <th>Email</th>
@@ -128,28 +184,10 @@
     </thead>
     <tbody>
         {#each users as user}
-            <tr
-                class="row-tr"
-                onclick="document.location = '{'#/users/' + user._id}';"
-            >
-            <!--
-                <td>
-                    <div class="form-check">
-                        <label>
-                            <input
-                                class="form-check-input"
-                                bind:group={type}
-                                on:click={getProducts}
-                                type="radio"
-                                name="activation"
-                                id="manual"
-                                value="MANUAL"
-                            />
-                            Manual
-                        </label>
-                    </div>
-                </td>
-            -->
+        <tr
+        class="row-tr"
+        onclick="document.location = '{'#/users/' + user.id}';"
+    >
                 <td>
                     {user.username}
                 </td>

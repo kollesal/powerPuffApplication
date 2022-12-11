@@ -1007,7 +1007,7 @@ var app = (function () {
     	return block;
     }
 
-    function create_fragment$8(ctx) {
+    function create_fragment$9(ctx) {
     	let current_block_type_index;
     	let if_block;
     	let if_block_anchor;
@@ -1080,7 +1080,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$8.name,
+    		id: create_fragment$9.name,
     		type: "component",
     		source: "",
     		ctx
@@ -1281,7 +1281,7 @@ var app = (function () {
     	window.location.hash = href;
     }
 
-    function instance$8($$self, $$props, $$invalidate) {
+    function instance$9($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Router', slots, []);
     	let { routes = {} } = $$props;
@@ -1696,7 +1696,7 @@ var app = (function () {
     	constructor(options) {
     		super(options);
 
-    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {
+    		init(this, options, instance$9, create_fragment$9, safe_not_equal, {
     			routes: 3,
     			prefix: 4,
     			restoreScrollState: 5
@@ -1706,7 +1706,7 @@ var app = (function () {
     			component: this,
     			tagName: "Router",
     			options,
-    			id: create_fragment$8.name
+    			id: create_fragment$9.name
     		});
     	}
 
@@ -4688,7 +4688,7 @@ var app = (function () {
     const { console: console_1$5 } = globals;
     const file$7 = "src\\pages\\Home.svelte";
 
-    function create_fragment$7(ctx) {
+    function create_fragment$8(ctx) {
     	let div3;
     	let div2;
     	let h1;
@@ -4749,7 +4749,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$7.name,
+    		id: create_fragment$8.name,
     		type: "component",
     		source: "",
     		ctx
@@ -4760,7 +4760,7 @@ var app = (function () {
 
     const api_root$5 = "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
 
-    function instance$7($$self, $$props, $$invalidate) {
+    function instance$8($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Home', slots, []);
     	let products = [];
@@ -4821,13 +4821,13 @@ var app = (function () {
     class Home extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {});
+    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Home",
     			options,
-    			id: create_fragment$7.name
+    			id: create_fragment$8.name
     		});
     	}
     }
@@ -4843,8 +4843,8 @@ var app = (function () {
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[11] = list[i];
-    	child_ctx[13] = i;
+    	child_ctx[14] = list[i];
+    	child_ctx[16] = i;
     	return child_ctx;
     }
 
@@ -4854,7 +4854,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (130:8) {#each users as user}
+    // (186:8) {#each users as user}
     function create_each_block_1$2(ctx) {
     	let tr;
     	let td0;
@@ -4897,14 +4897,14 @@ var app = (function () {
     			td4 = element("td");
     			t8 = text(t8_value);
     			t9 = space();
-    			add_location(td0, file$6, 152, 16, 4167);
-    			add_location(td1, file$6, 155, 16, 4249);
-    			add_location(td2, file$6, 158, 16, 4327);
-    			add_location(td3, file$6, 161, 16, 4406);
-    			add_location(td4, file$6, 164, 16, 4488);
+    			add_location(td0, file$6, 190, 16, 5073);
+    			add_location(td1, file$6, 193, 16, 5155);
+    			add_location(td2, file$6, 196, 16, 5233);
+    			add_location(td3, file$6, 199, 16, 5312);
+    			add_location(td4, file$6, 202, 16, 5394);
     			attr_dev(tr, "class", "row-tr");
-    			attr_dev(tr, "onclick", tr_onclick_value = "document.location = '" + ('#/users/' + /*user*/ ctx[3]._id) + "';");
-    			add_location(tr, file$6, 130, 12, 3345);
+    			attr_dev(tr, "onclick", tr_onclick_value = "document.location = '" + ('#/users/' + /*user*/ ctx[3].id) + "';");
+    			add_location(tr, file$6, 186, 8, 4956);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tr, anchor);
@@ -4931,7 +4931,7 @@ var app = (function () {
     			if (dirty & /*users*/ 4 && t6_value !== (t6_value = /*user*/ ctx[3].userType + "")) set_data_dev(t6, t6_value);
     			if (dirty & /*users*/ 4 && t8_value !== (t8_value = /*user*/ ctx[3].userStatus + "")) set_data_dev(t8, t8_value);
 
-    			if (dirty & /*users*/ 4 && tr_onclick_value !== (tr_onclick_value = "document.location = '" + ('#/users/' + /*user*/ ctx[3]._id) + "';")) {
+    			if (dirty & /*users*/ 4 && tr_onclick_value !== (tr_onclick_value = "document.location = '" + ('#/users/' + /*user*/ ctx[3].id) + "';")) {
     				attr_dev(tr, "onclick", tr_onclick_value);
     			}
     		},
@@ -4944,18 +4944,18 @@ var app = (function () {
     		block,
     		id: create_each_block_1$2.name,
     		type: "each",
-    		source: "(130:8) {#each users as user}",
+    		source: "(186:8) {#each users as user}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (176:8) {#each Array(nrOfPages) as _, i}
+    // (214:8) {#each Array(nrOfPages) as _, i}
     function create_each_block$3(ctx) {
     	let li;
     	let a;
-    	let t0_value = /*i*/ ctx[13] + 1 + "";
+    	let t0_value = /*i*/ ctx[16] + 1 + "";
     	let t0;
     	let t1;
 
@@ -4966,11 +4966,11 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = space();
     			attr_dev(a, "class", "page-link");
-    			attr_dev(a, "href", "#/users?page=" + (/*i*/ ctx[13] + 1));
-    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[13] + 1);
-    			add_location(a, file$6, 177, 16, 4757);
+    			attr_dev(a, "href", "#/users?page=" + (/*i*/ ctx[16] + 1));
+    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[16] + 1);
+    			add_location(a, file$6, 215, 16, 5663);
     			attr_dev(li, "class", "page-item");
-    			add_location(li, file$6, 176, 12, 4717);
+    			add_location(li, file$6, 214, 12, 5623);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -4980,7 +4980,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*currentPage*/ 1) {
-    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[13] + 1);
+    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[16] + 1);
     			}
     		},
     		d: function destroy(detaching) {
@@ -4992,14 +4992,14 @@ var app = (function () {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(176:8) {#each Array(nrOfPages) as _, i}",
+    		source: "(214:8) {#each Array(nrOfPages) as _, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    function create_fragment$6(ctx) {
+    function create_fragment$7(ctx) {
     	let h10;
     	let t1;
     	let form;
@@ -5029,19 +5029,17 @@ var app = (function () {
     	let thead;
     	let tr;
     	let th0;
-    	let t16;
+    	let t17;
     	let th1;
-    	let t18;
+    	let t19;
     	let th2;
-    	let t20;
+    	let t21;
     	let th3;
-    	let t22;
+    	let t23;
     	let th4;
-    	let t24;
-    	let th5;
-    	let t26;
+    	let t25;
     	let tbody;
-    	let t27;
+    	let t26;
     	let nav;
     	let ul;
     	let mounted;
@@ -5099,29 +5097,27 @@ var app = (function () {
     			thead = element("thead");
     			tr = element("tr");
     			th0 = element("th");
-    			t16 = space();
+    			th0.textContent = "Username";
+    			t17 = space();
     			th1 = element("th");
-    			th1.textContent = "Username";
-    			t18 = space();
+    			th1.textContent = "Name";
+    			t19 = space();
     			th2 = element("th");
-    			th2.textContent = "Name";
-    			t20 = space();
+    			th2.textContent = "Email";
+    			t21 = space();
     			th3 = element("th");
-    			th3.textContent = "Email";
-    			t22 = space();
+    			th3.textContent = "Type";
+    			t23 = space();
     			th4 = element("th");
-    			th4.textContent = "Type";
-    			t24 = space();
-    			th5 = element("th");
-    			th5.textContent = "Status";
-    			t26 = space();
+    			th4.textContent = "Status";
+    			t25 = space();
     			tbody = element("tbody");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			t27 = space();
+    			t26 = space();
     			nav = element("nav");
     			ul = element("ul");
 
@@ -5130,58 +5126,57 @@ var app = (function () {
     			}
 
     			attr_dev(h10, "class", "mt-3");
-    			add_location(h10, file$6, 72, 0, 1910);
+    			add_location(h10, file$6, 128, 0, 3534);
     			attr_dev(label0, "class", "form-label");
     			attr_dev(label0, "for", "username");
-    			add_location(label0, file$6, 76, 12, 2033);
+    			add_location(label0, file$6, 132, 12, 3657);
     			attr_dev(input0, "class", "form-control");
     			attr_dev(input0, "id", "description");
     			attr_dev(input0, "type", "text");
-    			add_location(input0, file$6, 77, 12, 2104);
+    			add_location(input0, file$6, 133, 12, 3728);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$6, 75, 8, 2002);
+    			add_location(div0, file$6, 131, 8, 3626);
     			attr_dev(label1, "class", "form-label");
     			attr_dev(label1, "for", "name");
-    			add_location(label1, file$6, 86, 12, 2330);
+    			add_location(label1, file$6, 142, 12, 3954);
     			attr_dev(input1, "class", "form-control");
     			attr_dev(input1, "id", "description");
     			attr_dev(input1, "type", "text");
-    			add_location(input1, file$6, 87, 12, 2393);
+    			add_location(input1, file$6, 143, 12, 4017);
     			attr_dev(div1, "class", "col");
-    			add_location(div1, file$6, 85, 8, 2299);
+    			add_location(div1, file$6, 141, 8, 3923);
     			attr_dev(label2, "class", "form-label");
     			attr_dev(label2, "for", "email");
-    			add_location(label2, file$6, 96, 12, 2615);
+    			add_location(label2, file$6, 152, 12, 4239);
     			attr_dev(input2, "class", "form-control");
     			attr_dev(input2, "id", "description");
     			attr_dev(input2, "type", "text");
-    			add_location(input2, file$6, 97, 12, 2681);
+    			add_location(input2, file$6, 153, 12, 4305);
     			attr_dev(div2, "class", "col");
-    			add_location(div2, file$6, 95, 8, 2584);
+    			add_location(div2, file$6, 151, 8, 4208);
     			attr_dev(div3, "class", "row mb-3");
-    			add_location(div3, file$6, 74, 4, 1970);
+    			add_location(div3, file$6, 130, 4, 3594);
     			attr_dev(form, "class", "mb-5");
-    			add_location(form, file$6, 73, 0, 1945);
+    			add_location(form, file$6, 129, 0, 3569);
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$6, 108, 0, 2888);
+    			add_location(button, file$6, 164, 0, 4512);
     			attr_dev(div4, "class", "row mb-3");
-    			add_location(div4, file$6, 112, 0, 2977);
-    			add_location(h11, file$6, 115, 0, 3011);
-    			add_location(th0, file$6, 120, 12, 3107);
-    			add_location(th1, file$6, 121, 12, 3130);
-    			add_location(th2, file$6, 122, 12, 3161);
-    			add_location(th3, file$6, 123, 12, 3188);
-    			add_location(th4, file$6, 124, 12, 3216);
-    			add_location(th5, file$6, 125, 12, 3243);
-    			add_location(tr, file$6, 119, 8, 3089);
-    			add_location(thead, file$6, 118, 4, 3072);
-    			add_location(tbody, file$6, 128, 4, 3293);
+    			add_location(div4, file$6, 168, 0, 4601);
+    			add_location(h11, file$6, 171, 0, 4635);
+    			add_location(th0, file$6, 177, 12, 4745);
+    			add_location(th1, file$6, 178, 12, 4776);
+    			add_location(th2, file$6, 179, 12, 4803);
+    			add_location(th3, file$6, 180, 12, 4831);
+    			add_location(th4, file$6, 181, 12, 4858);
+    			add_location(tr, file$6, 175, 8, 4713);
+    			add_location(thead, file$6, 174, 4, 4696);
+    			add_location(tbody, file$6, 184, 4, 4908);
     			attr_dev(table, "class", "table table-hover");
-    			add_location(table, file$6, 117, 0, 3033);
+    			add_location(table, file$6, 173, 0, 4657);
     			attr_dev(ul, "class", "pagination");
-    			add_location(ul, file$6, 174, 4, 4638);
-    			add_location(nav, file$6, 173, 0, 4627);
+    			add_location(ul, file$6, 212, 4, 5544);
+    			add_location(nav, file$6, 211, 0, 5533);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5219,24 +5214,22 @@ var app = (function () {
     			append_dev(table, thead);
     			append_dev(thead, tr);
     			append_dev(tr, th0);
-    			append_dev(tr, t16);
+    			append_dev(tr, t17);
     			append_dev(tr, th1);
-    			append_dev(tr, t18);
+    			append_dev(tr, t19);
     			append_dev(tr, th2);
-    			append_dev(tr, t20);
+    			append_dev(tr, t21);
     			append_dev(tr, th3);
-    			append_dev(tr, t22);
+    			append_dev(tr, t23);
     			append_dev(tr, th4);
-    			append_dev(tr, t24);
-    			append_dev(tr, th5);
-    			append_dev(table, t26);
+    			append_dev(table, t25);
     			append_dev(table, tbody);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].m(tbody, null);
     			}
 
-    			insert_dev(target, t27, anchor);
+    			insert_dev(target, t26, anchor);
     			insert_dev(target, nav, anchor);
     			append_dev(nav, ul);
 
@@ -5331,7 +5324,7 @@ var app = (function () {
     			if (detaching) detach_dev(t15);
     			if (detaching) detach_dev(table);
     			destroy_each(each_blocks_1, detaching);
-    			if (detaching) detach_dev(t27);
+    			if (detaching) detach_dev(t26);
     			if (detaching) detach_dev(nav);
     			destroy_each(each_blocks, detaching);
     			mounted = false;
@@ -5341,7 +5334,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$6.name,
+    		id: create_fragment$7.name,
     		type: "component",
     		source: "",
     		ctx
@@ -5352,7 +5345,7 @@ var app = (function () {
 
     const api_root$4 = "http://localhost:8080";
 
-    function instance$6($$self, $$props, $$invalidate) {
+    function instance$7($$self, $$props, $$invalidate) {
     	let $jwt_token;
     	let $querystring;
     	validate_store(jwt_token, 'jwt_token');
@@ -5365,6 +5358,21 @@ var app = (function () {
     	let nrOfPages = 0;
     	let users = [];
     	let user = { username: null, name: null, email: null };
+
+    	function getUser() {
+    		var config = {
+    			method: "get",
+    			url: api_root$4 + "/api/products/" + user_id,
+    			headers: {}
+    		};
+
+    		axios(config).then(function (response) {
+    			$$invalidate(3, user = response.data);
+    		}).catch(function (error) {
+    			alert("Could not get user");
+    			console.log(error);
+    		});
+    	}
 
     	function getUsers() {
     		let query = "pageSize=6&page=" + currentPage;
@@ -5404,6 +5412,38 @@ var app = (function () {
     		});
     	}
 
+    	function userActivation() {
+    		var config = {
+    			method: "post",
+    			url: api_root$4 + "/api/service/useractivation",
+    			headers: { Authorization: "Bearer " + $jwt_token },
+    			data: { userId: user.id }
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("User activated");
+    		}).catch(function (error) {
+    			alert("Could not activate User");
+    			console.log(error);
+    		});
+    	}
+
+    	function userCompletion() {
+    		var config = {
+    			method: "post",
+    			url: api_root$4 + "/api/service/usercompletion",
+    			headers: { Authorization: "Bearer " + $jwt_token },
+    			data: { userId: user.id, comment: user.comment }
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("User inactivated");
+    		}).catch(function (error) {
+    			alert("Could not inactivate User");
+    			console.log(error);
+    		});
+    	}
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -5434,8 +5474,11 @@ var app = (function () {
     		nrOfPages,
     		users,
     		user,
+    		getUser,
     		getUsers,
     		createUser,
+    		userActivation,
+    		userCompletion,
     		$jwt_token,
     		$querystring
     	});
@@ -5483,11 +5526,71 @@ var app = (function () {
     class Users extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Users",
+    			options,
+    			id: create_fragment$7.name
+    		});
+    	}
+    }
+
+    /* src\pages\UserDetails.svelte generated by Svelte v3.53.1 */
+
+    function create_fragment$6(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("-->");
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		p: noop$1,
+    		i: noop$1,
+    		o: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$6.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$6($$self, $$props) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('UserDetails', slots, []);
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<UserDetails> was created with unknown prop '${key}'`);
+    	});
+
+    	return [];
+    }
+
+    class UserDetails extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "UserDetails",
     			options,
     			id: create_fragment$6.name
     		});
@@ -5995,10 +6098,10 @@ var app = (function () {
     	}
     }
 
-    /* src\pages\Utilities.svelte generated by Svelte v3.53.1 */
+    /* src\pages\utility\Utilities.svelte generated by Svelte v3.53.1 */
 
     const { console: console_1$3 } = globals;
-    const file$4 = "src\\pages\\Utilities.svelte";
+    const file$4 = "src\\pages\\utility\\Utilities.svelte";
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -8544,7 +8647,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (207:4) {:else}
+    // (206:4) {:else}
     function create_else_block$1(ctx) {
     	let div;
     	let each_value_1 = /*allUsers*/ ctx[1];
@@ -8564,7 +8667,7 @@ var app = (function () {
     			}
 
     			attr_dev(div, "class", "row");
-    			add_location(div, file$1, 208, 4, 5928);
+    			add_location(div, file$1, 207, 4, 5874);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -8608,14 +8711,14 @@ var app = (function () {
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(207:4) {:else}",
+    		source: "(206:4) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (193:4) {#if product.userId === null}
+    // (192:4) {#if product.userId === null}
     function create_if_block_8(ctx) {
     	let div3;
     	let div2;
@@ -8636,17 +8739,17 @@ var app = (function () {
     			t1 = space();
     			p = element("p");
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$1, 197, 28, 5619);
+    			add_location(h5, file$1, 196, 28, 5565);
     			attr_dev(p, "class", "card-text");
-    			add_location(p, file$1, 200, 28, 5760);
+    			add_location(p, file$1, 199, 28, 5706);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$1, 196, 24, 5566);
+    			add_location(div0, file$1, 195, 24, 5512);
     			attr_dev(div1, "class", "card");
-    			add_location(div1, file$1, 195, 20, 5522);
+    			add_location(div1, file$1, 194, 20, 5468);
     			attr_dev(div2, "class", "col-sm-4");
-    			add_location(div2, file$1, 194, 16, 5478);
+    			add_location(div2, file$1, 193, 16, 5424);
     			attr_dev(div3, "class", "row");
-    			add_location(div3, file$1, 193, 4, 5443);
+    			add_location(div3, file$1, 192, 4, 5389);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -8667,14 +8770,14 @@ var app = (function () {
     		block,
     		id: create_if_block_8.name,
     		type: "if",
-    		source: "(193:4) {#if product.userId === null}",
+    		source: "(192:4) {#if product.userId === null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (211:16) {#if product.userId == user.id}
+    // (210:16) {#if product.userId == user.id}
     function create_if_block_9(ctx) {
     	let div2;
     	let div1;
@@ -8711,16 +8814,16 @@ var app = (function () {
     			t6 = text(t6_value);
     			t7 = space();
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$1, 214, 32, 6207);
+    			add_location(h5, file$1, 213, 32, 6153);
     			attr_dev(p0, "class", "card-text");
-    			add_location(p0, file$1, 217, 32, 6356);
-    			add_location(p1, file$1, 220, 32, 6504);
+    			add_location(p0, file$1, 216, 32, 6302);
+    			add_location(p1, file$1, 219, 32, 6450);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$1, 213, 28, 6150);
+    			add_location(div0, file$1, 212, 28, 6096);
     			attr_dev(div1, "class", "card");
-    			add_location(div1, file$1, 212, 24, 6102);
+    			add_location(div1, file$1, 211, 24, 6048);
     			attr_dev(div2, "class", "col-sm-4");
-    			add_location(div2, file$1, 211, 20, 6054);
+    			add_location(div2, file$1, 210, 20, 6000);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -8752,14 +8855,14 @@ var app = (function () {
     		block,
     		id: create_if_block_9.name,
     		type: "if",
-    		source: "(211:16) {#if product.userId == user.id}",
+    		source: "(210:16) {#if product.userId == user.id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (210:12) {#each allUsers as user}
+    // (209:12) {#each allUsers as user}
     function create_each_block_1(ctx) {
     	let if_block_anchor;
     	let if_block = /*product*/ ctx[2].userId == /*user*/ ctx[17].id && create_if_block_9(ctx);
@@ -8797,14 +8900,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(210:12) {#each allUsers as user}",
+    		source: "(209:12) {#each allUsers as user}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (234:4) {#if product.userId === null}
+    // (233:4) {#if product.userId === null}
     function create_if_block_7(ctx) {
     	let h3;
     	let t1;
@@ -8846,19 +8949,19 @@ var app = (function () {
     			t5 = space();
     			button = element("button");
     			button.textContent = "Assign";
-    			add_location(h3, file$1, 234, 4, 6839);
+    			add_location(h3, file$1, 233, 4, 6785);
     			attr_dev(label, "for", "member");
-    			add_location(label, file$1, 235, 4, 6865);
+    			add_location(label, file$1, 234, 4, 6811);
     			attr_dev(select, "class", "form-select");
     			attr_dev(select, "id", "user");
     			if (/*user_id*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[10].call(select));
-    			add_location(select, file$1, 237, 8, 6957);
+    			add_location(select, file$1, 236, 8, 6903);
     			attr_dev(div0, "class", "col-md-4");
-    			add_location(div0, file$1, 236, 4, 6925);
+    			add_location(div0, file$1, 235, 4, 6871);
     			attr_dev(div1, "class", "col-md-6");
-    			add_location(div1, file$1, 245, 4, 7230);
+    			add_location(div1, file$1, 244, 4, 7176);
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$1, 246, 4, 7260);
+    			add_location(button, file$1, 245, 4, 7206);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -8936,14 +9039,14 @@ var app = (function () {
     		block,
     		id: create_if_block_7.name,
     		type: "if",
-    		source: "(234:4) {#if product.userId === null}",
+    		source: "(233:4) {#if product.userId === null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (239:12) {#each allUsers as user}
+    // (238:12) {#each allUsers as user}
     function create_each_block(ctx) {
     	let option;
     	let t_value = /*user*/ ctx[17].username + "";
@@ -8956,7 +9059,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = option_value_value = /*user*/ ctx[17].id;
     			option.value = option.__value;
-    			add_location(option, file$1, 239, 20, 7076);
+    			add_location(option, file$1, 238, 20, 7022);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -8979,14 +9082,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(239:12) {#each allUsers as user}",
+    		source: "(238:12) {#each allUsers as user}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (255:4) {#if product.productState === "ACTIVE"}
+    // (254:4) {#if product.productState === "ACTIVE"}
     function create_if_block_6(ctx) {
     	let form;
     	let div1;
@@ -9007,16 +9110,16 @@ var app = (function () {
     			t1 = space();
     			textarea = element("textarea");
     			attr_dev(label, "for", "comment");
-    			add_location(label, file$1, 258, 20, 7566);
+    			add_location(label, file$1, 257, 20, 7512);
     			attr_dev(textarea, "class", "form-control");
     			attr_dev(textarea, "id", "comment");
     			attr_dev(textarea, "rows", "3");
-    			add_location(textarea, file$1, 261, 20, 7700);
+    			add_location(textarea, file$1, 260, 20, 7646);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$1, 257, 16, 7527);
+    			add_location(div0, file$1, 256, 16, 7473);
     			attr_dev(div1, "class", "row mb-3");
-    			add_location(div1, file$1, 256, 12, 7487);
-    			add_location(form, file$1, 255, 8, 7467);
+    			add_location(div1, file$1, 255, 12, 7433);
+    			add_location(form, file$1, 254, 8, 7413);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, form, anchor);
@@ -9048,14 +9151,14 @@ var app = (function () {
     		block,
     		id: create_if_block_6.name,
     		type: "if",
-    		source: "(255:4) {#if product.productState === \\\"ACTIVE\\\"}",
+    		source: "(254:4) {#if product.productState === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (273:4) {#if product.productState === "INACTIVE"}
+    // (272:4) {#if product.productState === "INACTIVE"}
     function create_if_block_5(ctx) {
     	let div;
     	let ul;
@@ -9076,13 +9179,13 @@ var app = (function () {
     			t2 = text(t2_value);
     			attr_dev(li0, "class", "list-group-item-top active");
     			attr_dev(li0, "aria-current", "true");
-    			add_location(li0, file$1, 275, 12, 8101);
+    			add_location(li0, file$1, 274, 12, 8047);
     			attr_dev(li1, "class", "list-group-item");
-    			add_location(li1, file$1, 278, 12, 8235);
+    			add_location(li1, file$1, 277, 12, 8181);
     			attr_dev(ul, "class", "list-group");
-    			add_location(ul, file$1, 274, 8, 8064);
+    			add_location(ul, file$1, 273, 8, 8010);
     			attr_dev(div, "class", "col-md-4");
-    			add_location(div, file$1, 273, 4, 8032);
+    			add_location(div, file$1, 272, 4, 7978);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -9104,14 +9207,14 @@ var app = (function () {
     		block,
     		id: create_if_block_5.name,
     		type: "if",
-    		source: "(273:4) {#if product.productState === \\\"INACTIVE\\\"}",
+    		source: "(272:4) {#if product.productState === \\\"INACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (290:4) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (289:4) {#if $user.user_roles && $user.user_roles.length > 0}
     function create_if_block$1(ctx) {
     	let a;
     	let t1;
@@ -9138,7 +9241,7 @@ var app = (function () {
     			if_block_anchor = empty();
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "delete-button");
-    			add_location(a, file$1, 290, 8, 8462);
+    			add_location(a, file$1, 289, 8, 8408);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -9182,14 +9285,14 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(290:4) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(289:4) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (306:54) 
+    // (305:54) 
     function create_if_block_4(ctx) {
     	let a;
     	let mounted;
@@ -9201,7 +9304,7 @@ var app = (function () {
     			a.textContent = "Activate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 306, 12, 9194);
+    			add_location(a, file$1, 305, 12, 9140);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -9223,14 +9326,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(306:54) ",
+    		source: "(305:54) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (302:52) 
+    // (301:52) 
     function create_if_block_3$1(ctx) {
     	let a;
     	let mounted;
@@ -9242,7 +9345,7 @@ var app = (function () {
     			a.textContent = "Inactivate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 302, 12, 9002);
+    			add_location(a, file$1, 301, 12, 8948);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -9264,14 +9367,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3$1.name,
     		type: "if",
-    		source: "(302:52) ",
+    		source: "(301:52) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (298:52) 
+    // (297:52) 
     function create_if_block_2$1(ctx) {
     	let a;
     	let mounted;
@@ -9283,7 +9386,7 @@ var app = (function () {
     			a.textContent = "Activate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 298, 12, 8814);
+    			add_location(a, file$1, 297, 12, 8760);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -9305,14 +9408,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2$1.name,
     		type: "if",
-    		source: "(298:52) ",
+    		source: "(297:52) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (294:8) {#if product.productState === "NEW"}
+    // (293:8) {#if product.productState === "NEW"}
     function create_if_block_1$1(ctx) {
     	let a;
     	let mounted;
@@ -9324,7 +9427,7 @@ var app = (function () {
     			a.textContent = "Review Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 294, 12, 8632);
+    			add_location(a, file$1, 293, 12, 8578);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -9346,7 +9449,7 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(294:8) {#if product.productState === \\\"NEW\\\"}",
+    		source: "(293:8) {#if product.productState === \\\"NEW\\\"}",
     		ctx
     	});
 
@@ -9467,37 +9570,37 @@ var app = (function () {
     			t28 = space();
     			div5 = element("div");
     			attr_dev(h1, "class", "md-3");
-    			add_location(h1, file$1, 172, 0, 4885);
-    			add_location(p, file$1, 173, 0, 4938);
-    			add_location(h30, file$1, 174, 0, 4963);
+    			add_location(h1, file$1, 171, 0, 4831);
+    			add_location(p, file$1, 172, 0, 4884);
+    			add_location(h30, file$1, 173, 0, 4909);
     			attr_dev(li0, "class", "list-group-item-top active");
     			attr_dev(li0, "aria-current", "true");
-    			add_location(li0, file$1, 179, 12, 5105);
+    			add_location(li0, file$1, 178, 12, 5051);
     			attr_dev(li1, "class", "list-group-item");
-    			add_location(li1, file$1, 182, 12, 5227);
+    			add_location(li1, file$1, 181, 12, 5173);
     			attr_dev(ul, "class", "list-group");
-    			add_location(ul, file$1, 178, 8, 5068);
+    			add_location(ul, file$1, 177, 8, 5014);
     			attr_dev(div0, "class", "col-md-4");
-    			add_location(div0, file$1, 177, 4, 5036);
+    			add_location(div0, file$1, 176, 4, 4982);
     			attr_dev(div1, "class", "col-md-8");
-    			add_location(div1, file$1, 188, 4, 5351);
-    			add_location(h31, file$1, 190, 4, 5383);
+    			add_location(div1, file$1, 187, 4, 5297);
+    			add_location(h31, file$1, 189, 4, 5329);
     			attr_dev(div2, "class", "col-md-8");
-    			add_location(div2, file$1, 231, 4, 6772);
+    			add_location(div2, file$1, 230, 4, 6718);
     			attr_dev(div3, "class", "col-md-8");
-    			add_location(div3, file$1, 250, 0, 7343);
-    			add_location(h32, file$1, 252, 0, 7371);
+    			add_location(div3, file$1, 249, 0, 7289);
+    			add_location(h32, file$1, 251, 0, 7317);
     			attr_dev(div4, "class", "col-md-8");
-    			add_location(div4, file$1, 286, 4, 8365);
+    			add_location(div4, file$1, 285, 4, 8311);
     			attr_dev(a, "class", "back-button");
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$1, 311, 4, 9346);
+    			add_location(a, file$1, 310, 4, 9292);
     			attr_dev(div5, "class", "md-12");
-    			add_location(div5, file$1, 314, 4, 9451);
+    			add_location(div5, file$1, 313, 4, 9397);
     			attr_dev(div6, "class", "md-12");
-    			add_location(div6, file$1, 176, 0, 5011);
+    			add_location(div6, file$1, 175, 0, 4957);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9820,7 +9923,6 @@ var app = (function () {
 
     	$$self.$capture_state = () => ({
     		axios,
-    		querystring,
     		jwt_token,
     		isAuthenticated,
     		user,
@@ -9913,6 +10015,7 @@ var app = (function () {
 
 
         '/users': Users,
+        '/user/:id': UserDetails,
         '/utilities': Utilities,
     };
 

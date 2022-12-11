@@ -81,7 +81,7 @@ public class ProductService {
             Optional<Product> productToActivate = productRepository.findById(productId);
             if (productToActivate.isPresent()) {
                 Product product = productToActivate.get();
-                if (product.getProductState() == ProductState.REVIEW) {
+                if (product.getProductState() == ProductState.REVIEW || product.getProductState() == ProductState.INACTIVE) {
 
                     // Neuer Zustand setzen
                     product.setProductState(ProductState.ACTIVE);

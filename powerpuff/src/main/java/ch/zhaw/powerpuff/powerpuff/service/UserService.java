@@ -24,6 +24,26 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    public Optional<User> activateUser(String userId) {
+        if (userRepository.findById(userId).isPresent()) {
+            Optional<User> userToActivate = userRepository.findById(userId);
+            if (userToActivate.isPresent()) {
+                User user = userToActivate.get();
+                if (user.getUserStatus() == UserStatus.INACTIVE) {
+
+                    // Neuer Zustand setzen
+                    user.setUserStatus(UserStatus.ACTIVE);
+
+                    // Product speichern
+                    userRepository.save(user);
+
+                    return Optional.of(user);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     public Optional<User> closeUser(String userId, String comment) {
         if(userRepository.findById(userId).isPresent()) {
             Optional<User> userToClose = userRepository.findById(userId);
@@ -45,5 +65,5 @@ public class UserService {
     return Optional.empty();
 }
 
-    
+
 }
