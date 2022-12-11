@@ -14,15 +14,15 @@
 				class="navbar-toggler"
 				type="button"
 				data-bs-toggle="collapse"
-				data-bs-target="#navbarNavDropdown"
-				aria-controls="navbarNavDropdown"
+				data-bs-target="#navbarTogglerDemo01"
+				aria-controls="navbarTogglerDemo01"
 				aria-expanded="false"
 				aria-label="Toggle navigation"
 			>
 				<span class="navbar-toggler-icon" />
 			</button>
 
-			<div class="collapse navbar-collapse" id="navbarNav">
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					{#if $isAuthenticated}
 						<li class="nav-item">
@@ -37,9 +37,10 @@
 							</a>
 						</li>
 					{/if}
-					
+
 					<li class="nav-item">
-						<a class="nav-link" href="#/products">Products</a>
+						<a class="nav-link" href="#/products">Products</a
+						>
 					</li>
 					{#if $isAuthenticated && $user.user_roles.includes("admin")}
 						<li class="nav-item">
@@ -48,14 +49,17 @@
 					{/if}
 					{#if $isAuthenticated}
 						<li class="nav-item">
-							<a class="nav-link" href="#/utilities">Utilities</a>
+							<a class="nav-link" href="#/utilities"
+								>Utilities</a
+							>
 						</li>
 					{/if}
 				</ul>
 				<div class="d-flex">
 					{#if $isAuthenticated}
 						<span class="navbar-text me-2">
-							<a class="nav-link" href="#/account">{$user.name}</a>
+							<a class="nav-link" href="#/account">{$user.name}</a
+							>
 						</span>
 						<button
 							type="button"

@@ -19,6 +19,6 @@ export default {
 
 
     '/users': Users,
-    '/user/:id': UserDetails,
+    '/users/:id': UserDetails,
     '/utilities': Utilities,
 }

@@ -78,8 +78,10 @@ public void testDeleteProduct() throws Exception {
 @Test
 // Test GETpricesabove one object
 public void testGetProductMinPrice() throws Exception {
+    Double min = 35.0;
+
     mvc.perform(get("/api/products/pricesabove")
-    .param("firstName", price))
+   /* .param("price", min)*/ )
 .andExpect(status().isOk())
 .andExpect(jsonPath("$.difficultyType", is("EASY")))
 .andExpect(jsonPath("$.productState", is("REVIEW")))
