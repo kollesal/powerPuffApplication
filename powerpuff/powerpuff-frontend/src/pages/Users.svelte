@@ -1,19 +1,27 @@
 <script>
     import axios from "axios";
     import { querystring } from "svelte-spa-router";
-    import { jwt_token} from "../store";
+    import { jwt_token } from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
     const api_root = "http://localhost:8080";
 
     let currentPage;
     let nrOfPages = 0;
+    let mailChecked = null;
 
     let users = [];
     let user = {
         username: null,
         name: null,
         email: null,
+    };
+
+    let emailCheck = {
+        status: null,
+        email_address: null,
+        domain: null,
+        deliverable: null,
     };
 
     $: {
@@ -26,13 +34,30 @@
         getUsers();
     }
 
+    function getUser() {
+        var config = {
+            method: "get",
+            url: api_root + "/api/products/" + user_id,
+            headers: {},
+        };
+
+        axios(config)
+            .then(function (response) {
+                user = response.data;
+            })
+            .catch(function (error) {
+                alert("Could not get user");
+                console.log(error);
+            });
+    }
+
     function getUsers() {
         let query = "pageSize=6&page=" + currentPage;
 
         var config = {
             method: "get",
             url: api_root + "/api/users?" + query,
-            headers: {Authorization: "Bearer "+$jwt_token},
+            headers: { Authorization: "Bearer " + $jwt_token },
         };
 
         axios(config)
@@ -52,7 +77,7 @@
             url: api_root + "/api/users",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + $jwt_token
+                Authorization: "Bearer " + $jwt_token,
             },
             data: user,
         };
@@ -68,6 +93,32 @@
             });
     }
 
+    // REST API EMAIL CHECK
+    function checkMail(userEmail) {
+        var config = {
+            method: "get",
+            url: api_root + "/api/service/emailvalidation?email=" + userEmail,
+            headers: { Authorization: "Bearer " + $jwt_token },
+        };
+        axios(config)
+            .then(function (response) {
+                let emailVariables = response.data;
+                emailCheck = emailVariables[0];
+                mailChecked = true;
+                alert(
+                    "User Mail " +
+                        emailCheck +
+                        " checked: \nStatus: " +
+                        emailCheck.status
+                );
+                console.log(emailCheck);
+                console.log(mailChecked);
+            })
+            .catch(function (error) {
+                alert("Could not check User Mail");
+                console.log(error);
+            });
+    }
 </script>
 
 <h1 class="mt-3">Create User</h1>
@@ -104,21 +155,92 @@
         </div>
     </div>
 </form>
+{#if mailChecked === null}
+    <button type="button" class="my-button" on:click={checkMail(user.email)}>Check Email</button
+    >{/if}
+{#if mailChecked !== null}
+    <h3>Mail Check Resuts:</h3>
 
+    <form>
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="staticEmail" class="col-sm-2 col-form-label"
+                    >Email</label
+                >
+            </div>
+            <div class="col-sm-3">
+                <label for="staticEmail" class="col-sm-2 col-form-label"
+                    >Status</label
+                >
+            </div>
+            <div class="col-sm-3">
+                <label for="staticEmail" class="col-sm-2 col-form-label"
+                    >Domain</label
+                >
+            </div>
+            <div class="col-sm-3">
+                <label for="staticEmail" class="col-sm-2 col-form-label"
+                    >Deliverable</label
+                >
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input
+                    type="text"
+                    readonly
+                    class="form-control-plaintext"
+                    id="staticEmail"
+                    value={user.email}
+                />
+            </div>
 
-<button type="button" class="my-button" on:click={createUser}
-    >Submit</button
->
+            <div class="col-sm-3">
+                <input
+                    type="text"
+                    readonly
+                    class="form-control-plaintext"
+                    id="staticEmailStatus"
+                    value={emailCheck.status}
+                />
+            </div>
+            <div class="col-sm-3">
+                <input
+                    type="text"
+                    readonly
+                    class="form-control-plaintext"
+                    id="staticEmailStatus"
+                    value={emailCheck.domain}
+                />
+            </div>
+            <div class="col-sm-3">
+                <input
+                    type="text"
+                    readonly
+                    class="form-control-plaintext"
+                    id="staticEmailStatus"
+                    value={emailCheck.deliverable}
+                />
+            </div>
+        </div>
+    </form>
+    <div class="row mb-3" />
 
-<div class="row mb-3">
-</div>
+    {#if emailCheck.status === "success"}
+    <button type="button" class="my-button" on:click={createUser}>Submit</button>
+    {/if}
+    {#if emailCheck.status === "failure"}
+    <button type="button" class="my-button" on:click={checkMail(user.email)}>Check Email</button>
+    {/if}
+{/if}
+
+<div class="row mb-3" />
 
 <h1>All Users</h1>
 
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>Number</th>
             <th>Username</th>
             <th>Name</th>
             <th>Email</th>
@@ -127,14 +249,11 @@
         </tr>
     </thead>
     <tbody>
-        {#each users as user, index}
+        {#each users as user}
             <tr
                 class="row-tr"
-                onclick="document.location = '{'#/users/' + user._id}';"
+                onclick="document.location = '{'#/users/' + user.id}';"
             >
-                <td>
-                    {index + 1}
-                </td>
                 <td>
                     {user.username}
                 </td>
@@ -152,11 +271,6 @@
                 </td>
             </tr>
         {/each}
-        <tr>
-            <dt>
-                Number of Products: {users.length}
-            </dt>
-        </tr>
     </tbody>
 </table>
 
@@ -174,4 +288,3 @@
         {/each}
     </ul>
 </nav>
-

@@ -532,6 +532,10 @@ var app = (function () {
         else
             dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
     }
+    function prop_dev(node, property, value) {
+        node[property] = value;
+        dispatch_dev('SvelteDOMSetProperty', { node, property, value });
+    }
     function set_data_dev(text, data) {
         data = '' + data;
         if (text.wholeText === data)
@@ -817,7 +821,7 @@ var app = (function () {
     const { Error: Error_1, Object: Object_1, console: console_1$6 } = globals;
 
     // (267:0) {:else}
-    function create_else_block$4(ctx) {
+    function create_else_block$5(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
@@ -899,7 +903,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$4.name,
+    		id: create_else_block$5.name,
     		type: "else",
     		source: "(267:0) {:else}",
     		ctx
@@ -909,7 +913,7 @@ var app = (function () {
     }
 
     // (260:0) {#if componentParams}
-    function create_if_block$5(ctx) {
+    function create_if_block$7(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
@@ -994,7 +998,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$5.name,
+    		id: create_if_block$7.name,
     		type: "if",
     		source: "(260:0) {#if componentParams}",
     		ctx
@@ -1003,12 +1007,12 @@ var app = (function () {
     	return block;
     }
 
-    function create_fragment$8(ctx) {
+    function create_fragment$9(ctx) {
     	let current_block_type_index;
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$5, create_else_block$4];
+    	const if_block_creators = [create_if_block$7, create_else_block$5];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -1076,7 +1080,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$8.name,
+    		id: create_fragment$9.name,
     		type: "component",
     		source: "",
     		ctx
@@ -1277,7 +1281,7 @@ var app = (function () {
     	window.location.hash = href;
     }
 
-    function instance$8($$self, $$props, $$invalidate) {
+    function instance$9($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Router', slots, []);
     	let { routes = {} } = $$props;
@@ -1692,7 +1696,7 @@ var app = (function () {
     	constructor(options) {
     		super(options);
 
-    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {
+    		init(this, options, instance$9, create_fragment$9, safe_not_equal, {
     			routes: 3,
     			prefix: 4,
     			restoreScrollState: 5
@@ -1702,7 +1706,7 @@ var app = (function () {
     			component: this,
     			tagName: "Router",
     			options,
-    			id: create_fragment$8.name
+    			id: create_fragment$9.name
     		});
     	}
 
@@ -1963,7 +1967,7 @@ var app = (function () {
      * @param {Function} fn The callback to invoke for each item
      *
      * @param {Boolean} [allOwnKeys = false]
-     * @returns {void}
+     * @returns {any}
      */
     function forEach(obj, fn, {allOwnKeys = false} = {}) {
       // Don't bother if no value provided
@@ -1998,6 +2002,24 @@ var app = (function () {
       }
     }
 
+    function findKey(obj, key) {
+      key = key.toLowerCase();
+      const keys = Object.keys(obj);
+      let i = keys.length;
+      let _key;
+      while (i-- > 0) {
+        _key = keys[i];
+        if (key === _key.toLowerCase()) {
+          return _key;
+        }
+      }
+      return null;
+    }
+
+    const _global = typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self;
+
+    const isContextDefined = (context) => !isUndefined(context) && context !== _global;
+
     /**
      * Accepts varargs expecting each argument to be an object, then
      * immutably merges the properties of each object and returns result.
@@ -2017,16 +2039,18 @@ var app = (function () {
      * @returns {Object} Result of all merge properties
      */
     function merge(/* obj1, obj2, obj3, ... */) {
+      const {caseless} = isContextDefined(this) && this || {};
       const result = {};
       const assignValue = (val, key) => {
-        if (isPlainObject(result[key]) && isPlainObject(val)) {
-          result[key] = merge(result[key], val);
+        const targetKey = caseless && findKey(result, key) || key;
+        if (isPlainObject(result[targetKey]) && isPlainObject(val)) {
+          result[targetKey] = merge(result[targetKey], val);
         } else if (isPlainObject(val)) {
-          result[key] = merge({}, val);
+          result[targetKey] = merge({}, val);
         } else if (isArray(val)) {
-          result[key] = val.slice();
+          result[targetKey] = val.slice();
         } else {
-          result[key] = val;
+          result[targetKey] = val;
         }
       };
 
@@ -2262,6 +2286,11 @@ var app = (function () {
 
     const freezeMethods = (obj) => {
       reduceDescriptors(obj, (descriptor, name) => {
+        // skip restricted props in strict mode
+        if (isFunction(obj) && ['arguments', 'caller', 'callee'].indexOf(name) !== -1) {
+          return false;
+        }
+
         const value = obj[name];
 
         if (!isFunction(value)) return;
@@ -2275,7 +2304,7 @@ var app = (function () {
 
         if (!descriptor.set) {
           descriptor.set = () => {
-            throw Error('Can not read-only method \'' + name + '\'');
+            throw Error('Can not rewrite read-only method \'' + name + '\'');
           };
         }
       });
@@ -2300,6 +2329,37 @@ var app = (function () {
     const toFiniteNumber = (value, defaultValue) => {
       value = +value;
       return Number.isFinite(value) ? value : defaultValue;
+    };
+
+    const toJSONObject = (obj) => {
+      const stack = new Array(10);
+
+      const visit = (source, i) => {
+
+        if (isObject(source)) {
+          if (stack.indexOf(source) >= 0) {
+            return;
+          }
+
+          if(!('toJSON' in source)) {
+            stack[i] = source;
+            const target = isArray(source) ? [] : {};
+
+            forEach(source, (value, key) => {
+              const reducedValue = visit(value, i + 1);
+              !isUndefined(reducedValue) && (target[key] = reducedValue);
+            });
+
+            stack[i] = undefined;
+
+            return target;
+          }
+        }
+
+        return source;
+      };
+
+      return visit(obj, 0);
     };
 
     var utils = {
@@ -2344,7 +2404,11 @@ var app = (function () {
       toObjectSet,
       toCamelCase,
       noop,
-      toFiniteNumber
+      toFiniteNumber,
+      findKey,
+      global: _global,
+      isContextDefined,
+      toJSONObject
     };
 
     /**
@@ -2390,7 +2454,7 @@ var app = (function () {
           columnNumber: this.columnNumber,
           stack: this.stack,
           // Axios
-          config: this.config,
+          config: utils.toJSONObject(this.config),
           code: this.code,
           status: this.response && this.response.status ? this.response.status : null
         };
@@ -2886,6 +2950,24 @@ var app = (function () {
       return typeof window !== 'undefined' && typeof document !== 'undefined';
     })();
 
+    /**
+     * Determine if we're running in a standard browser webWorker environment
+     *
+     * Although the `isStandardBrowserEnv` method indicates that
+     * `allows axios to run in a web worker`, the WebWorker will still be
+     * filtered out due to its judgment standard
+     * `typeof window !== 'undefined' && typeof document !== 'undefined'`.
+     * This leads to a problem when axios post `FormData` in webWorker
+     */
+     const isStandardBrowserWebWorkerEnv = (() => {
+      return (
+        typeof WorkerGlobalScope !== 'undefined' &&
+        self instanceof WorkerGlobalScope &&
+        typeof self.importScripts === 'function'
+      );
+    })();
+
+
     var platform = {
       isBrowser: true,
       classes: {
@@ -2894,6 +2976,7 @@ var app = (function () {
         Blob
       },
       isStandardBrowserEnv,
+      isStandardBrowserWebWorkerEnv,
       protocols: ['http', 'https', 'file', 'blob', 'url', 'data']
     };
 
@@ -2996,6 +3079,530 @@ var app = (function () {
 
       return null;
     }
+
+    const DEFAULT_CONTENT_TYPE = {
+      'Content-Type': undefined
+    };
+
+    /**
+     * It takes a string, tries to parse it, and if it fails, it returns the stringified version
+     * of the input
+     *
+     * @param {any} rawValue - The value to be stringified.
+     * @param {Function} parser - A function that parses a string into a JavaScript object.
+     * @param {Function} encoder - A function that takes a value and returns a string.
+     *
+     * @returns {string} A stringified version of the rawValue.
+     */
+    function stringifySafely(rawValue, parser, encoder) {
+      if (utils.isString(rawValue)) {
+        try {
+          (parser || JSON.parse)(rawValue);
+          return utils.trim(rawValue);
+        } catch (e) {
+          if (e.name !== 'SyntaxError') {
+            throw e;
+          }
+        }
+      }
+
+      return (encoder || JSON.stringify)(rawValue);
+    }
+
+    const defaults = {
+
+      transitional: transitionalDefaults,
+
+      adapter: ['xhr', 'http'],
+
+      transformRequest: [function transformRequest(data, headers) {
+        const contentType = headers.getContentType() || '';
+        const hasJSONContentType = contentType.indexOf('application/json') > -1;
+        const isObjectPayload = utils.isObject(data);
+
+        if (isObjectPayload && utils.isHTMLForm(data)) {
+          data = new FormData(data);
+        }
+
+        const isFormData = utils.isFormData(data);
+
+        if (isFormData) {
+          if (!hasJSONContentType) {
+            return data;
+          }
+          return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
+        }
+
+        if (utils.isArrayBuffer(data) ||
+          utils.isBuffer(data) ||
+          utils.isStream(data) ||
+          utils.isFile(data) ||
+          utils.isBlob(data)
+        ) {
+          return data;
+        }
+        if (utils.isArrayBufferView(data)) {
+          return data.buffer;
+        }
+        if (utils.isURLSearchParams(data)) {
+          headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
+          return data.toString();
+        }
+
+        let isFileList;
+
+        if (isObjectPayload) {
+          if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
+            return toURLEncodedForm(data, this.formSerializer).toString();
+          }
+
+          if ((isFileList = utils.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
+            const _FormData = this.env && this.env.FormData;
+
+            return toFormData(
+              isFileList ? {'files[]': data} : data,
+              _FormData && new _FormData(),
+              this.formSerializer
+            );
+          }
+        }
+
+        if (isObjectPayload || hasJSONContentType ) {
+          headers.setContentType('application/json', false);
+          return stringifySafely(data);
+        }
+
+        return data;
+      }],
+
+      transformResponse: [function transformResponse(data) {
+        const transitional = this.transitional || defaults.transitional;
+        const forcedJSONParsing = transitional && transitional.forcedJSONParsing;
+        const JSONRequested = this.responseType === 'json';
+
+        if (data && utils.isString(data) && ((forcedJSONParsing && !this.responseType) || JSONRequested)) {
+          const silentJSONParsing = transitional && transitional.silentJSONParsing;
+          const strictJSONParsing = !silentJSONParsing && JSONRequested;
+
+          try {
+            return JSON.parse(data);
+          } catch (e) {
+            if (strictJSONParsing) {
+              if (e.name === 'SyntaxError') {
+                throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
+              }
+              throw e;
+            }
+          }
+        }
+
+        return data;
+      }],
+
+      /**
+       * A timeout in milliseconds to abort a request. If set to 0 (default) a
+       * timeout is not created.
+       */
+      timeout: 0,
+
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+
+      maxContentLength: -1,
+      maxBodyLength: -1,
+
+      env: {
+        FormData: platform.classes.FormData,
+        Blob: platform.classes.Blob
+      },
+
+      validateStatus: function validateStatus(status) {
+        return status >= 200 && status < 300;
+      },
+
+      headers: {
+        common: {
+          'Accept': 'application/json, text/plain, */*'
+        }
+      }
+    };
+
+    utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+      defaults.headers[method] = {};
+    });
+
+    utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+      defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+    });
+
+    // RawAxiosHeaders whose duplicates are ignored by node
+    // c.f. https://nodejs.org/api/http.html#http_message_headers
+    const ignoreDuplicateOf = utils.toObjectSet([
+      'age', 'authorization', 'content-length', 'content-type', 'etag',
+      'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
+      'last-modified', 'location', 'max-forwards', 'proxy-authorization',
+      'referer', 'retry-after', 'user-agent'
+    ]);
+
+    /**
+     * Parse headers into an object
+     *
+     * ```
+     * Date: Wed, 27 Aug 2014 08:58:49 GMT
+     * Content-Type: application/json
+     * Connection: keep-alive
+     * Transfer-Encoding: chunked
+     * ```
+     *
+     * @param {String} rawHeaders Headers needing to be parsed
+     *
+     * @returns {Object} Headers parsed into an object
+     */
+    var parseHeaders = rawHeaders => {
+      const parsed = {};
+      let key;
+      let val;
+      let i;
+
+      rawHeaders && rawHeaders.split('\n').forEach(function parser(line) {
+        i = line.indexOf(':');
+        key = line.substring(0, i).trim().toLowerCase();
+        val = line.substring(i + 1).trim();
+
+        if (!key || (parsed[key] && ignoreDuplicateOf[key])) {
+          return;
+        }
+
+        if (key === 'set-cookie') {
+          if (parsed[key]) {
+            parsed[key].push(val);
+          } else {
+            parsed[key] = [val];
+          }
+        } else {
+          parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+        }
+      });
+
+      return parsed;
+    };
+
+    const $internals = Symbol('internals');
+
+    function normalizeHeader(header) {
+      return header && String(header).trim().toLowerCase();
+    }
+
+    function normalizeValue(value) {
+      if (value === false || value == null) {
+        return value;
+      }
+
+      return utils.isArray(value) ? value.map(normalizeValue) : String(value);
+    }
+
+    function parseTokens(str) {
+      const tokens = Object.create(null);
+      const tokensRE = /([^\s,;=]+)\s*(?:=\s*([^,;]+))?/g;
+      let match;
+
+      while ((match = tokensRE.exec(str))) {
+        tokens[match[1]] = match[2];
+      }
+
+      return tokens;
+    }
+
+    function isValidHeaderName(str) {
+      return /^[-_a-zA-Z]+$/.test(str.trim());
+    }
+
+    function matchHeaderValue(context, value, header, filter) {
+      if (utils.isFunction(filter)) {
+        return filter.call(this, value, header);
+      }
+
+      if (!utils.isString(value)) return;
+
+      if (utils.isString(filter)) {
+        return value.indexOf(filter) !== -1;
+      }
+
+      if (utils.isRegExp(filter)) {
+        return filter.test(value);
+      }
+    }
+
+    function formatHeader(header) {
+      return header.trim()
+        .toLowerCase().replace(/([a-z\d])(\w*)/g, (w, char, str) => {
+          return char.toUpperCase() + str;
+        });
+    }
+
+    function buildAccessors(obj, header) {
+      const accessorName = utils.toCamelCase(' ' + header);
+
+      ['get', 'set', 'has'].forEach(methodName => {
+        Object.defineProperty(obj, methodName + accessorName, {
+          value: function(arg1, arg2, arg3) {
+            return this[methodName].call(this, header, arg1, arg2, arg3);
+          },
+          configurable: true
+        });
+      });
+    }
+
+    class AxiosHeaders {
+      constructor(headers) {
+        headers && this.set(headers);
+      }
+
+      set(header, valueOrRewrite, rewrite) {
+        const self = this;
+
+        function setHeader(_value, _header, _rewrite) {
+          const lHeader = normalizeHeader(_header);
+
+          if (!lHeader) {
+            throw new Error('header name must be a non-empty string');
+          }
+
+          const key = utils.findKey(self, lHeader);
+
+          if(!key || self[key] === undefined || _rewrite === true || (_rewrite === undefined && self[key] !== false)) {
+            self[key || _header] = normalizeValue(_value);
+          }
+        }
+
+        const setHeaders = (headers, _rewrite) =>
+          utils.forEach(headers, (_value, _header) => setHeader(_value, _header, _rewrite));
+
+        if (utils.isPlainObject(header) || header instanceof this.constructor) {
+          setHeaders(header, valueOrRewrite);
+        } else if(utils.isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
+          setHeaders(parseHeaders(header), valueOrRewrite);
+        } else {
+          header != null && setHeader(valueOrRewrite, header, rewrite);
+        }
+
+        return this;
+      }
+
+      get(header, parser) {
+        header = normalizeHeader(header);
+
+        if (header) {
+          const key = utils.findKey(this, header);
+
+          if (key) {
+            const value = this[key];
+
+            if (!parser) {
+              return value;
+            }
+
+            if (parser === true) {
+              return parseTokens(value);
+            }
+
+            if (utils.isFunction(parser)) {
+              return parser.call(this, value, key);
+            }
+
+            if (utils.isRegExp(parser)) {
+              return parser.exec(value);
+            }
+
+            throw new TypeError('parser must be boolean|regexp|function');
+          }
+        }
+      }
+
+      has(header, matcher) {
+        header = normalizeHeader(header);
+
+        if (header) {
+          const key = utils.findKey(this, header);
+
+          return !!(key && (!matcher || matchHeaderValue(this, this[key], key, matcher)));
+        }
+
+        return false;
+      }
+
+      delete(header, matcher) {
+        const self = this;
+        let deleted = false;
+
+        function deleteHeader(_header) {
+          _header = normalizeHeader(_header);
+
+          if (_header) {
+            const key = utils.findKey(self, _header);
+
+            if (key && (!matcher || matchHeaderValue(self, self[key], key, matcher))) {
+              delete self[key];
+
+              deleted = true;
+            }
+          }
+        }
+
+        if (utils.isArray(header)) {
+          header.forEach(deleteHeader);
+        } else {
+          deleteHeader(header);
+        }
+
+        return deleted;
+      }
+
+      clear() {
+        return Object.keys(this).forEach(this.delete.bind(this));
+      }
+
+      normalize(format) {
+        const self = this;
+        const headers = {};
+
+        utils.forEach(this, (value, header) => {
+          const key = utils.findKey(headers, header);
+
+          if (key) {
+            self[key] = normalizeValue(value);
+            delete self[header];
+            return;
+          }
+
+          const normalized = format ? formatHeader(header) : String(header).trim();
+
+          if (normalized !== header) {
+            delete self[header];
+          }
+
+          self[normalized] = normalizeValue(value);
+
+          headers[normalized] = true;
+        });
+
+        return this;
+      }
+
+      concat(...targets) {
+        return this.constructor.concat(this, ...targets);
+      }
+
+      toJSON(asStrings) {
+        const obj = Object.create(null);
+
+        utils.forEach(this, (value, header) => {
+          value != null && value !== false && (obj[header] = asStrings && utils.isArray(value) ? value.join(', ') : value);
+        });
+
+        return obj;
+      }
+
+      [Symbol.iterator]() {
+        return Object.entries(this.toJSON())[Symbol.iterator]();
+      }
+
+      toString() {
+        return Object.entries(this.toJSON()).map(([header, value]) => header + ': ' + value).join('\n');
+      }
+
+      get [Symbol.toStringTag]() {
+        return 'AxiosHeaders';
+      }
+
+      static from(thing) {
+        return thing instanceof this ? thing : new this(thing);
+      }
+
+      static concat(first, ...targets) {
+        const computed = new this(first);
+
+        targets.forEach((target) => computed.set(target));
+
+        return computed;
+      }
+
+      static accessor(header) {
+        const internals = this[$internals] = (this[$internals] = {
+          accessors: {}
+        });
+
+        const accessors = internals.accessors;
+        const prototype = this.prototype;
+
+        function defineAccessor(_header) {
+          const lHeader = normalizeHeader(_header);
+
+          if (!accessors[lHeader]) {
+            buildAccessors(prototype, _header);
+            accessors[lHeader] = true;
+          }
+        }
+
+        utils.isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
+
+        return this;
+      }
+    }
+
+    AxiosHeaders.accessor(['Content-Type', 'Content-Length', 'Accept', 'Accept-Encoding', 'User-Agent']);
+
+    utils.freezeMethods(AxiosHeaders.prototype);
+    utils.freezeMethods(AxiosHeaders);
+
+    /**
+     * Transform the data for a request or a response
+     *
+     * @param {Array|Function} fns A single function or Array of functions
+     * @param {?Object} response The response object
+     *
+     * @returns {*} The resulting transformed data
+     */
+    function transformData(fns, response) {
+      const config = this || defaults;
+      const context = response || config;
+      const headers = AxiosHeaders.from(context.headers);
+      let data = context.data;
+
+      utils.forEach(fns, function transform(fn) {
+        data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
+      });
+
+      headers.normalize();
+
+      return data;
+    }
+
+    function isCancel(value) {
+      return !!(value && value.__CANCEL__);
+    }
+
+    /**
+     * A `CanceledError` is an object that is thrown when an operation is canceled.
+     *
+     * @param {string=} message The message.
+     * @param {Object=} config The config.
+     * @param {Object=} request The request.
+     *
+     * @returns {CanceledError} The created error.
+     */
+    function CanceledError(message, config, request) {
+      // eslint-disable-next-line no-eq-null,eqeqeq
+      AxiosError.call(this, message == null ? 'canceled' : message, AxiosError.ERR_CANCELED, config, request);
+      this.name = 'CanceledError';
+    }
+
+    utils.inherits(CanceledError, AxiosError, {
+      __CANCEL__: true
+    });
+
+    // eslint-disable-next-line strict
+    var httpAdapter = null;
 
     /**
      * Resolve or reject a Promise based on response status.
@@ -3177,343 +3784,10 @@ var app = (function () {
         };
       })();
 
-    /**
-     * A `CanceledError` is an object that is thrown when an operation is canceled.
-     *
-     * @param {string=} message The message.
-     * @param {Object=} config The config.
-     * @param {Object=} request The request.
-     *
-     * @returns {CanceledError} The created error.
-     */
-    function CanceledError(message, config, request) {
-      // eslint-disable-next-line no-eq-null,eqeqeq
-      AxiosError.call(this, message == null ? 'canceled' : message, AxiosError.ERR_CANCELED, config, request);
-      this.name = 'CanceledError';
-    }
-
-    utils.inherits(CanceledError, AxiosError, {
-      __CANCEL__: true
-    });
-
     function parseProtocol(url) {
       const match = /^([-+\w]{1,25})(:?\/\/|:)/.exec(url);
       return match && match[1] || '';
     }
-
-    // RawAxiosHeaders whose duplicates are ignored by node
-    // c.f. https://nodejs.org/api/http.html#http_message_headers
-    const ignoreDuplicateOf = utils.toObjectSet([
-      'age', 'authorization', 'content-length', 'content-type', 'etag',
-      'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
-      'last-modified', 'location', 'max-forwards', 'proxy-authorization',
-      'referer', 'retry-after', 'user-agent'
-    ]);
-
-    /**
-     * Parse headers into an object
-     *
-     * ```
-     * Date: Wed, 27 Aug 2014 08:58:49 GMT
-     * Content-Type: application/json
-     * Connection: keep-alive
-     * Transfer-Encoding: chunked
-     * ```
-     *
-     * @param {String} rawHeaders Headers needing to be parsed
-     *
-     * @returns {Object} Headers parsed into an object
-     */
-    var parseHeaders = rawHeaders => {
-      const parsed = {};
-      let key;
-      let val;
-      let i;
-
-      rawHeaders && rawHeaders.split('\n').forEach(function parser(line) {
-        i = line.indexOf(':');
-        key = line.substring(0, i).trim().toLowerCase();
-        val = line.substring(i + 1).trim();
-
-        if (!key || (parsed[key] && ignoreDuplicateOf[key])) {
-          return;
-        }
-
-        if (key === 'set-cookie') {
-          if (parsed[key]) {
-            parsed[key].push(val);
-          } else {
-            parsed[key] = [val];
-          }
-        } else {
-          parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
-        }
-      });
-
-      return parsed;
-    };
-
-    const $internals = Symbol('internals');
-    const $defaults = Symbol('defaults');
-
-    function normalizeHeader(header) {
-      return header && String(header).trim().toLowerCase();
-    }
-
-    function normalizeValue(value) {
-      if (value === false || value == null) {
-        return value;
-      }
-
-      return utils.isArray(value) ? value.map(normalizeValue) : String(value);
-    }
-
-    function parseTokens(str) {
-      const tokens = Object.create(null);
-      const tokensRE = /([^\s,;=]+)\s*(?:=\s*([^,;]+))?/g;
-      let match;
-
-      while ((match = tokensRE.exec(str))) {
-        tokens[match[1]] = match[2];
-      }
-
-      return tokens;
-    }
-
-    function matchHeaderValue(context, value, header, filter) {
-      if (utils.isFunction(filter)) {
-        return filter.call(this, value, header);
-      }
-
-      if (!utils.isString(value)) return;
-
-      if (utils.isString(filter)) {
-        return value.indexOf(filter) !== -1;
-      }
-
-      if (utils.isRegExp(filter)) {
-        return filter.test(value);
-      }
-    }
-
-    function formatHeader(header) {
-      return header.trim()
-        .toLowerCase().replace(/([a-z\d])(\w*)/g, (w, char, str) => {
-          return char.toUpperCase() + str;
-        });
-    }
-
-    function buildAccessors(obj, header) {
-      const accessorName = utils.toCamelCase(' ' + header);
-
-      ['get', 'set', 'has'].forEach(methodName => {
-        Object.defineProperty(obj, methodName + accessorName, {
-          value: function(arg1, arg2, arg3) {
-            return this[methodName].call(this, header, arg1, arg2, arg3);
-          },
-          configurable: true
-        });
-      });
-    }
-
-    function findKey(obj, key) {
-      key = key.toLowerCase();
-      const keys = Object.keys(obj);
-      let i = keys.length;
-      let _key;
-      while (i-- > 0) {
-        _key = keys[i];
-        if (key === _key.toLowerCase()) {
-          return _key;
-        }
-      }
-      return null;
-    }
-
-    function AxiosHeaders(headers, defaults) {
-      headers && this.set(headers);
-      this[$defaults] = defaults || null;
-    }
-
-    Object.assign(AxiosHeaders.prototype, {
-      set: function(header, valueOrRewrite, rewrite) {
-        const self = this;
-
-        function setHeader(_value, _header, _rewrite) {
-          const lHeader = normalizeHeader(_header);
-
-          if (!lHeader) {
-            throw new Error('header name must be a non-empty string');
-          }
-
-          const key = findKey(self, lHeader);
-
-          if (key && _rewrite !== true && (self[key] === false || _rewrite === false)) {
-            return;
-          }
-
-          self[key || _header] = normalizeValue(_value);
-        }
-
-        if (utils.isPlainObject(header)) {
-          utils.forEach(header, (_value, _header) => {
-            setHeader(_value, _header, valueOrRewrite);
-          });
-        } else {
-          setHeader(valueOrRewrite, header, rewrite);
-        }
-
-        return this;
-      },
-
-      get: function(header, parser) {
-        header = normalizeHeader(header);
-
-        if (!header) return undefined;
-
-        const key = findKey(this, header);
-
-        if (key) {
-          const value = this[key];
-
-          if (!parser) {
-            return value;
-          }
-
-          if (parser === true) {
-            return parseTokens(value);
-          }
-
-          if (utils.isFunction(parser)) {
-            return parser.call(this, value, key);
-          }
-
-          if (utils.isRegExp(parser)) {
-            return parser.exec(value);
-          }
-
-          throw new TypeError('parser must be boolean|regexp|function');
-        }
-      },
-
-      has: function(header, matcher) {
-        header = normalizeHeader(header);
-
-        if (header) {
-          const key = findKey(this, header);
-
-          return !!(key && (!matcher || matchHeaderValue(this, this[key], key, matcher)));
-        }
-
-        return false;
-      },
-
-      delete: function(header, matcher) {
-        const self = this;
-        let deleted = false;
-
-        function deleteHeader(_header) {
-          _header = normalizeHeader(_header);
-
-          if (_header) {
-            const key = findKey(self, _header);
-
-            if (key && (!matcher || matchHeaderValue(self, self[key], key, matcher))) {
-              delete self[key];
-
-              deleted = true;
-            }
-          }
-        }
-
-        if (utils.isArray(header)) {
-          header.forEach(deleteHeader);
-        } else {
-          deleteHeader(header);
-        }
-
-        return deleted;
-      },
-
-      clear: function() {
-        return Object.keys(this).forEach(this.delete.bind(this));
-      },
-
-      normalize: function(format) {
-        const self = this;
-        const headers = {};
-
-        utils.forEach(this, (value, header) => {
-          const key = findKey(headers, header);
-
-          if (key) {
-            self[key] = normalizeValue(value);
-            delete self[header];
-            return;
-          }
-
-          const normalized = format ? formatHeader(header) : String(header).trim();
-
-          if (normalized !== header) {
-            delete self[header];
-          }
-
-          self[normalized] = normalizeValue(value);
-
-          headers[normalized] = true;
-        });
-
-        return this;
-      },
-
-      toJSON: function(asStrings) {
-        const obj = Object.create(null);
-
-        utils.forEach(Object.assign({}, this[$defaults] || null, this),
-          (value, header) => {
-            if (value == null || value === false) return;
-            obj[header] = asStrings && utils.isArray(value) ? value.join(', ') : value;
-          });
-
-        return obj;
-      }
-    });
-
-    Object.assign(AxiosHeaders, {
-      from: function(thing) {
-        if (utils.isString(thing)) {
-          return new this(parseHeaders(thing));
-        }
-        return thing instanceof this ? thing : new this(thing);
-      },
-
-      accessor: function(header) {
-        const internals = this[$internals] = (this[$internals] = {
-          accessors: {}
-        });
-
-        const accessors = internals.accessors;
-        const prototype = this.prototype;
-
-        function defineAccessor(_header) {
-          const lHeader = normalizeHeader(_header);
-
-          if (!accessors[lHeader]) {
-            buildAccessors(prototype, _header);
-            accessors[lHeader] = true;
-          }
-        }
-
-        utils.isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
-
-        return this;
-      }
-    });
-
-    AxiosHeaders.accessor(['Content-Type', 'Content-Length', 'Accept', 'Accept-Encoding', 'User-Agent']);
-
-    utils.freezeMethods(AxiosHeaders.prototype);
-    utils.freezeMethods(AxiosHeaders);
 
     /**
      * Calculate data maxRate
@@ -3563,7 +3837,7 @@ var app = (function () {
 
         const passed = startedAt && now - startedAt;
 
-        return  passed ? Math.round(bytesCount * 1000 / passed) : undefined;
+        return passed ? Math.round(bytesCount * 1000 / passed) : undefined;
       };
     }
 
@@ -3586,7 +3860,8 @@ var app = (function () {
           progress: total ? (loaded / total) : undefined,
           bytes: progressBytes,
           rate: rate ? rate : undefined,
-          estimated: rate && total && inRange ? (total - loaded) / rate : undefined
+          estimated: rate && total && inRange ? (total - loaded) / rate : undefined,
+          event: e
         };
 
         data[isDownloadStream ? 'download' : 'upload'] = true;
@@ -3595,7 +3870,9 @@ var app = (function () {
       };
     }
 
-    function xhrAdapter(config) {
+    const isXHRAdapterSupported = typeof XMLHttpRequest !== 'undefined';
+
+    var xhrAdapter = isXHRAdapterSupported && function (config) {
       return new Promise(function dispatchXhrRequest(resolve, reject) {
         let requestData = config.data;
         const requestHeaders = AxiosHeaders.from(config.headers).normalize();
@@ -3611,7 +3888,7 @@ var app = (function () {
           }
         }
 
-        if (utils.isFormData(requestData) && platform.isStandardBrowserEnv) {
+        if (utils.isFormData(requestData) && (platform.isStandardBrowserEnv || platform.isStandardBrowserWebWorkerEnv)) {
           requestHeaders.setContentType(false); // Let the browser set it
         }
 
@@ -3639,7 +3916,7 @@ var app = (function () {
           const responseHeaders = AxiosHeaders.from(
             'getAllResponseHeaders' in request && request.getAllResponseHeaders()
           );
-          const responseData = !responseType || responseType === 'text' ||  responseType === 'json' ?
+          const responseData = !responseType || responseType === 'text' || responseType === 'json' ?
             request.responseText : request.response;
           const response = {
             data: responseData,
@@ -3796,237 +4073,62 @@ var app = (function () {
         // Send the request
         request.send(requestData || null);
       });
-    }
+    };
 
-    const adapters = {
-      http: xhrAdapter,
+    const knownAdapters = {
+      http: httpAdapter,
       xhr: xhrAdapter
     };
 
-    var adapters$1 = {
-      getAdapter: (nameOrAdapter) => {
-        if(utils.isString(nameOrAdapter)){
-          const adapter = adapters[nameOrAdapter];
+    utils.forEach(knownAdapters, (fn, value) => {
+      if(fn) {
+        try {
+          Object.defineProperty(fn, 'name', {value});
+        } catch (e) {
+          // eslint-disable-next-line no-empty
+        }
+        Object.defineProperty(fn, 'adapterName', {value});
+      }
+    });
 
-          if (!nameOrAdapter) {
-            throw Error(
-              utils.hasOwnProp(nameOrAdapter) ?
-                `Adapter '${nameOrAdapter}' is not available in the build` :
-                `Can not resolve adapter '${nameOrAdapter}'`
+    var adapters = {
+      getAdapter: (adapters) => {
+        adapters = utils.isArray(adapters) ? adapters : [adapters];
+
+        const {length} = adapters;
+        let nameOrAdapter;
+        let adapter;
+
+        for (let i = 0; i < length; i++) {
+          nameOrAdapter = adapters[i];
+          if((adapter = utils.isString(nameOrAdapter) ? knownAdapters[nameOrAdapter.toLowerCase()] : nameOrAdapter)) {
+            break;
+          }
+        }
+
+        if (!adapter) {
+          if (adapter === false) {
+            throw new AxiosError(
+              `Adapter ${nameOrAdapter} is not supported by the environment`,
+              'ERR_NOT_SUPPORT'
             );
           }
 
-          return adapter
+          throw new Error(
+            utils.hasOwnProp(knownAdapters, nameOrAdapter) ?
+              `Adapter '${nameOrAdapter}' is not available in the build` :
+              `Unknown adapter '${nameOrAdapter}'`
+          );
         }
 
-        if (!utils.isFunction(nameOrAdapter)) {
+        if (!utils.isFunction(adapter)) {
           throw new TypeError('adapter is not a function');
         }
 
-        return nameOrAdapter;
+        return adapter;
       },
-      adapters
+      adapters: knownAdapters
     };
-
-    const DEFAULT_CONTENT_TYPE = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    };
-
-    /**
-     * If the browser has an XMLHttpRequest object, use the XHR adapter, otherwise use the HTTP
-     * adapter
-     *
-     * @returns {Function}
-     */
-    function getDefaultAdapter() {
-      let adapter;
-      if (typeof XMLHttpRequest !== 'undefined') {
-        // For browsers use XHR adapter
-        adapter = adapters$1.getAdapter('xhr');
-      } else if (typeof process !== 'undefined' && utils.kindOf(process) === 'process') {
-        // For node use HTTP adapter
-        adapter = adapters$1.getAdapter('http');
-      }
-      return adapter;
-    }
-
-    /**
-     * It takes a string, tries to parse it, and if it fails, it returns the stringified version
-     * of the input
-     *
-     * @param {any} rawValue - The value to be stringified.
-     * @param {Function} parser - A function that parses a string into a JavaScript object.
-     * @param {Function} encoder - A function that takes a value and returns a string.
-     *
-     * @returns {string} A stringified version of the rawValue.
-     */
-    function stringifySafely(rawValue, parser, encoder) {
-      if (utils.isString(rawValue)) {
-        try {
-          (parser || JSON.parse)(rawValue);
-          return utils.trim(rawValue);
-        } catch (e) {
-          if (e.name !== 'SyntaxError') {
-            throw e;
-          }
-        }
-      }
-
-      return (encoder || JSON.stringify)(rawValue);
-    }
-
-    const defaults = {
-
-      transitional: transitionalDefaults,
-
-      adapter: getDefaultAdapter(),
-
-      transformRequest: [function transformRequest(data, headers) {
-        const contentType = headers.getContentType() || '';
-        const hasJSONContentType = contentType.indexOf('application/json') > -1;
-        const isObjectPayload = utils.isObject(data);
-
-        if (isObjectPayload && utils.isHTMLForm(data)) {
-          data = new FormData(data);
-        }
-
-        const isFormData = utils.isFormData(data);
-
-        if (isFormData) {
-          if (!hasJSONContentType) {
-            return data;
-          }
-          return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
-        }
-
-        if (utils.isArrayBuffer(data) ||
-          utils.isBuffer(data) ||
-          utils.isStream(data) ||
-          utils.isFile(data) ||
-          utils.isBlob(data)
-        ) {
-          return data;
-        }
-        if (utils.isArrayBufferView(data)) {
-          return data.buffer;
-        }
-        if (utils.isURLSearchParams(data)) {
-          headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
-          return data.toString();
-        }
-
-        let isFileList;
-
-        if (isObjectPayload) {
-          if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
-            return toURLEncodedForm(data, this.formSerializer).toString();
-          }
-
-          if ((isFileList = utils.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
-            const _FormData = this.env && this.env.FormData;
-
-            return toFormData(
-              isFileList ? {'files[]': data} : data,
-              _FormData && new _FormData(),
-              this.formSerializer
-            );
-          }
-        }
-
-        if (isObjectPayload || hasJSONContentType ) {
-          headers.setContentType('application/json', false);
-          return stringifySafely(data);
-        }
-
-        return data;
-      }],
-
-      transformResponse: [function transformResponse(data) {
-        const transitional = this.transitional || defaults.transitional;
-        const forcedJSONParsing = transitional && transitional.forcedJSONParsing;
-        const JSONRequested = this.responseType === 'json';
-
-        if (data && utils.isString(data) && ((forcedJSONParsing && !this.responseType) || JSONRequested)) {
-          const silentJSONParsing = transitional && transitional.silentJSONParsing;
-          const strictJSONParsing = !silentJSONParsing && JSONRequested;
-
-          try {
-            return JSON.parse(data);
-          } catch (e) {
-            if (strictJSONParsing) {
-              if (e.name === 'SyntaxError') {
-                throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
-              }
-              throw e;
-            }
-          }
-        }
-
-        return data;
-      }],
-
-      /**
-       * A timeout in milliseconds to abort a request. If set to 0 (default) a
-       * timeout is not created.
-       */
-      timeout: 0,
-
-      xsrfCookieName: 'XSRF-TOKEN',
-      xsrfHeaderName: 'X-XSRF-TOKEN',
-
-      maxContentLength: -1,
-      maxBodyLength: -1,
-
-      env: {
-        FormData: platform.classes.FormData,
-        Blob: platform.classes.Blob
-      },
-
-      validateStatus: function validateStatus(status) {
-        return status >= 200 && status < 300;
-      },
-
-      headers: {
-        common: {
-          'Accept': 'application/json, text/plain, */*'
-        }
-      }
-    };
-
-    utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-      defaults.headers[method] = {};
-    });
-
-    utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-      defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-    });
-
-    /**
-     * Transform the data for a request or a response
-     *
-     * @param {Array|Function} fns A single function or Array of functions
-     * @param {?Object} response The response object
-     *
-     * @returns {*} The resulting transformed data
-     */
-    function transformData(fns, response) {
-      const config = this || defaults;
-      const context = response || config;
-      const headers = AxiosHeaders.from(context.headers);
-      let data = context.data;
-
-      utils.forEach(fns, function transform(fn) {
-        data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
-      });
-
-      headers.normalize();
-
-      return data;
-    }
-
-    function isCancel(value) {
-      return !!(value && value.__CANCEL__);
-    }
 
     /**
      * Throws a `CanceledError` if cancellation has been requested.
@@ -4041,7 +4143,7 @@ var app = (function () {
       }
 
       if (config.signal && config.signal.aborted) {
-        throw new CanceledError();
+        throw new CanceledError(null, config);
       }
     }
 
@@ -4063,7 +4165,11 @@ var app = (function () {
         config.transformRequest
       );
 
-      const adapter = config.adapter || defaults.adapter;
+      if (['post', 'put', 'patch'].indexOf(config.method) !== -1) {
+        config.headers.setContentType('application/x-www-form-urlencoded', false);
+      }
+
+      const adapter = adapters.getAdapter(config.adapter || defaults.adapter);
 
       return adapter(config).then(function onAdapterResolution(response) {
         throwIfCancellationRequested(config);
@@ -4097,6 +4203,8 @@ var app = (function () {
       });
     }
 
+    const headersToObject = (thing) => thing instanceof AxiosHeaders ? thing.toJSON() : thing;
+
     /**
      * Config-specific merge-function which creates a new config-object
      * by merging two configuration objects together.
@@ -4111,9 +4219,9 @@ var app = (function () {
       config2 = config2 || {};
       const config = {};
 
-      function getMergedValue(target, source) {
+      function getMergedValue(target, source, caseless) {
         if (utils.isPlainObject(target) && utils.isPlainObject(source)) {
-          return utils.merge(target, source);
+          return utils.merge.call({caseless}, target, source);
         } else if (utils.isPlainObject(source)) {
           return utils.merge({}, source);
         } else if (utils.isArray(source)) {
@@ -4123,79 +4231,80 @@ var app = (function () {
       }
 
       // eslint-disable-next-line consistent-return
-      function mergeDeepProperties(prop) {
-        if (!utils.isUndefined(config2[prop])) {
-          return getMergedValue(config1[prop], config2[prop]);
-        } else if (!utils.isUndefined(config1[prop])) {
-          return getMergedValue(undefined, config1[prop]);
+      function mergeDeepProperties(a, b, caseless) {
+        if (!utils.isUndefined(b)) {
+          return getMergedValue(a, b, caseless);
+        } else if (!utils.isUndefined(a)) {
+          return getMergedValue(undefined, a, caseless);
         }
       }
 
       // eslint-disable-next-line consistent-return
-      function valueFromConfig2(prop) {
-        if (!utils.isUndefined(config2[prop])) {
-          return getMergedValue(undefined, config2[prop]);
+      function valueFromConfig2(a, b) {
+        if (!utils.isUndefined(b)) {
+          return getMergedValue(undefined, b);
         }
       }
 
       // eslint-disable-next-line consistent-return
-      function defaultToConfig2(prop) {
-        if (!utils.isUndefined(config2[prop])) {
-          return getMergedValue(undefined, config2[prop]);
-        } else if (!utils.isUndefined(config1[prop])) {
-          return getMergedValue(undefined, config1[prop]);
+      function defaultToConfig2(a, b) {
+        if (!utils.isUndefined(b)) {
+          return getMergedValue(undefined, b);
+        } else if (!utils.isUndefined(a)) {
+          return getMergedValue(undefined, a);
         }
       }
 
       // eslint-disable-next-line consistent-return
-      function mergeDirectKeys(prop) {
+      function mergeDirectKeys(a, b, prop) {
         if (prop in config2) {
-          return getMergedValue(config1[prop], config2[prop]);
+          return getMergedValue(a, b);
         } else if (prop in config1) {
-          return getMergedValue(undefined, config1[prop]);
+          return getMergedValue(undefined, a);
         }
       }
 
       const mergeMap = {
-        'url': valueFromConfig2,
-        'method': valueFromConfig2,
-        'data': valueFromConfig2,
-        'baseURL': defaultToConfig2,
-        'transformRequest': defaultToConfig2,
-        'transformResponse': defaultToConfig2,
-        'paramsSerializer': defaultToConfig2,
-        'timeout': defaultToConfig2,
-        'timeoutMessage': defaultToConfig2,
-        'withCredentials': defaultToConfig2,
-        'adapter': defaultToConfig2,
-        'responseType': defaultToConfig2,
-        'xsrfCookieName': defaultToConfig2,
-        'xsrfHeaderName': defaultToConfig2,
-        'onUploadProgress': defaultToConfig2,
-        'onDownloadProgress': defaultToConfig2,
-        'decompress': defaultToConfig2,
-        'maxContentLength': defaultToConfig2,
-        'maxBodyLength': defaultToConfig2,
-        'beforeRedirect': defaultToConfig2,
-        'transport': defaultToConfig2,
-        'httpAgent': defaultToConfig2,
-        'httpsAgent': defaultToConfig2,
-        'cancelToken': defaultToConfig2,
-        'socketPath': defaultToConfig2,
-        'responseEncoding': defaultToConfig2,
-        'validateStatus': mergeDirectKeys
+        url: valueFromConfig2,
+        method: valueFromConfig2,
+        data: valueFromConfig2,
+        baseURL: defaultToConfig2,
+        transformRequest: defaultToConfig2,
+        transformResponse: defaultToConfig2,
+        paramsSerializer: defaultToConfig2,
+        timeout: defaultToConfig2,
+        timeoutMessage: defaultToConfig2,
+        withCredentials: defaultToConfig2,
+        adapter: defaultToConfig2,
+        responseType: defaultToConfig2,
+        xsrfCookieName: defaultToConfig2,
+        xsrfHeaderName: defaultToConfig2,
+        onUploadProgress: defaultToConfig2,
+        onDownloadProgress: defaultToConfig2,
+        decompress: defaultToConfig2,
+        maxContentLength: defaultToConfig2,
+        maxBodyLength: defaultToConfig2,
+        beforeRedirect: defaultToConfig2,
+        transport: defaultToConfig2,
+        httpAgent: defaultToConfig2,
+        httpsAgent: defaultToConfig2,
+        cancelToken: defaultToConfig2,
+        socketPath: defaultToConfig2,
+        responseEncoding: defaultToConfig2,
+        validateStatus: mergeDirectKeys,
+        headers: (a, b) => mergeDeepProperties(headersToObject(a), headersToObject(b), true)
       };
 
       utils.forEach(Object.keys(config1).concat(Object.keys(config2)), function computeConfigValue(prop) {
         const merge = mergeMap[prop] || mergeDeepProperties;
-        const configValue = merge(prop);
+        const configValue = merge(config1[prop], config2[prop], prop);
         (utils.isUndefined(configValue) && merge !== mergeDirectKeys) || (config[prop] = configValue);
       });
 
       return config;
     }
 
-    const VERSION = "1.1.3";
+    const VERSION = "1.2.1";
 
     const validators$1 = {};
 
@@ -4322,7 +4431,7 @@ var app = (function () {
 
         config = mergeConfig(this.defaults, config);
 
-        const {transitional, paramsSerializer} = config;
+        const {transitional, paramsSerializer, headers} = config;
 
         if (transitional !== undefined) {
           validator.assertOptions(transitional, {
@@ -4342,20 +4451,22 @@ var app = (function () {
         // Set config.method
         config.method = (config.method || this.defaults.method || 'get').toLowerCase();
 
+        let contextHeaders;
+
         // Flatten headers
-        const defaultHeaders = config.headers && utils.merge(
-          config.headers.common,
-          config.headers[config.method]
+        contextHeaders = headers && utils.merge(
+          headers.common,
+          headers[config.method]
         );
 
-        defaultHeaders && utils.forEach(
+        contextHeaders && utils.forEach(
           ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
-          function cleanHeaderConfig(method) {
-            delete config.headers[method];
+          (method) => {
+            delete headers[method];
           }
         );
 
-        config.headers = new AxiosHeaders(config.headers, defaultHeaders);
+        config.headers = AxiosHeaders.concat(contextHeaders, headers);
 
         // filter out skipped interceptors
         const requestInterceptorChain = [];
@@ -4675,16 +4786,19 @@ var app = (function () {
     // Expose isAxiosError
     axios.isAxiosError = isAxiosError;
 
-    axios.formToJSON = thing => {
-      return formDataToJSON(utils.isHTMLForm(thing) ? new FormData(thing) : thing);
-    };
+    // Expose mergeConfig
+    axios.mergeConfig = mergeConfig;
+
+    axios.AxiosHeaders = AxiosHeaders;
+
+    axios.formToJSON = thing => formDataToJSON(utils.isHTMLForm(thing) ? new FormData(thing) : thing);
+
+    axios.default = axios;
 
     /* src\pages\Home.svelte generated by Svelte v3.53.1 */
+    const file$8 = "src\\pages\\Home.svelte";
 
-    const { console: console_1$5 } = globals;
-    const file$7 = "src\\pages\\Home.svelte";
-
-    function create_fragment$7(ctx) {
+    function create_fragment$8(ctx) {
     	let div3;
     	let div2;
     	let h1;
@@ -4707,20 +4821,20 @@ var app = (function () {
     			div1 = element("div");
     			img = element("img");
     			attr_dev(h1, "class", "mt-3");
-    			add_location(h1, file$7, 40, 8, 1015);
+    			add_location(h1, file$8, 18, 8, 376);
     			attr_dev(div0, "class", "col-md-12");
-    			add_location(div0, file$7, 41, 8, 1085);
+    			add_location(div0, file$8, 19, 8, 446);
     			if (!src_url_equal(img.src, img_src_value = "images/homep.webp")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "class", "rounded-circle");
     			attr_dev(img, "alt", "PowerPuff");
     			attr_dev(img, "width", "500");
-    			add_location(img, file$7, 44, 8, 1153);
+    			add_location(img, file$8, 22, 8, 514);
     			attr_dev(div1, "class", "mx-auto");
-    			add_location(div1, file$7, 43, 8, 1122);
+    			add_location(div1, file$8, 21, 8, 483);
     			attr_dev(div2, "class", "mb-5");
-    			add_location(div2, file$7, 39, 4, 987);
+    			add_location(div2, file$8, 17, 4, 348);
     			attr_dev(div3, "class", "container");
-    			add_location(div3, file$7, 38, 0, 958);
+    			add_location(div3, file$8, 16, 0, 319);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4745,7 +4859,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$7.name,
+    		id: create_fragment$8.name,
     		type: "component",
     		source: "",
     		ctx
@@ -4754,57 +4868,26 @@ var app = (function () {
     	return block;
     }
 
-    const api_root$5 = "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
+    const api_root$6 = "http://localhost:8080";
 
-    function instance$7($$self, $$props, $$invalidate) {
+    function instance$8($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Home', slots, []);
-    	let products = [];
 
-    	let product = {
-    		productname: null,
-    		description: null,
-    		productType: null,
-    		difficultyType: null,
-    		clothingType: null,
-    		size: null,
-    		price: null,
-    		patchart: null
+    	let exchangeRates = {
+    		date: { currencyCode: null, ExchangeRate: null }
     	};
 
-    	function getProducts() {
-    		var config = {
-    			method: "get",
-    			url: api_root$5 + "/api/products",
-    			headers: {}
-    		};
-
-    		axios(config).then(function (response) {
-    			products = response.data;
-    		}).catch(function (error) {
-    			alert("Could not get products");
-    			console.log(error);
-    		});
-    	}
-
-    	getProducts();
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$5.warn(`<Home> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Home> was created with unknown prop '${key}'`);
     	});
 
-    	$$self.$capture_state = () => ({
-    		axios,
-    		api_root: api_root$5,
-    		products,
-    		product,
-    		getProducts
-    	});
+    	$$self.$capture_state = () => ({ axios, api_root: api_root$6, exchangeRates });
 
     	$$self.$inject_state = $$props => {
-    		if ('products' in $$props) products = $$props.products;
-    		if ('product' in $$props) product = $$props.product;
+    		if ('exchangeRates' in $$props) exchangeRates = $$props.exchangeRates;
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -4817,13 +4900,13 @@ var app = (function () {
     class Home extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {});
+    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Home",
     			options,
-    			id: create_fragment$7.name
+    			id: create_fragment$8.name
     		});
     	}
     }
@@ -4834,49 +4917,442 @@ var app = (function () {
 
     /* src\pages\Users.svelte generated by Svelte v3.53.1 */
 
-    const { console: console_1$4 } = globals;
-    const file$6 = "src\\pages\\Users.svelte";
+    const { console: console_1$5 } = globals;
+    const file$7 = "src\\pages\\Users.svelte";
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[11] = list[i];
-    	child_ctx[13] = i;
+    	child_ctx[15] = list[i];
+    	child_ctx[17] = i;
     	return child_ctx;
     }
 
-    function get_each_context_1$1(ctx, list, i) {
+    function get_each_context_1$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[3] = list[i];
-    	child_ctx[15] = i;
+    	child_ctx[5] = list[i];
     	return child_ctx;
     }
 
-    // (130:8) {#each users as user, index}
-    function create_each_block_1$1(ctx) {
+    // (158:0) {#if mailChecked === null}
+    function create_if_block_3$4(ctx) {
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			button.textContent = "Check Email";
+    			attr_dev(button, "type", "button");
+    			attr_dev(button, "class", "my-button");
+    			add_location(button, file$7, 158, 4, 4474);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(
+    					button,
+    					"click",
+    					function () {
+    						if (is_function(/*checkMail*/ ctx[7](/*user*/ ctx[5].email))) /*checkMail*/ ctx[7](/*user*/ ctx[5].email).apply(this, arguments);
+    					},
+    					false,
+    					false,
+    					false
+    				);
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3$4.name,
+    		type: "if",
+    		source: "(158:0) {#if mailChecked === null}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (161:0) {#if mailChecked !== null}
+    function create_if_block$6(ctx) {
+    	let h3;
+    	let t1;
+    	let form;
+    	let div4;
+    	let div0;
+    	let label0;
+    	let t3;
+    	let div1;
+    	let label1;
+    	let t5;
+    	let div2;
+    	let label2;
+    	let t7;
+    	let div3;
+    	let label3;
+    	let t9;
+    	let div9;
+    	let div5;
+    	let input0;
+    	let input0_value_value;
+    	let t10;
+    	let div6;
+    	let input1;
+    	let input1_value_value;
+    	let t11;
+    	let div7;
+    	let input2;
+    	let input2_value_value;
+    	let t12;
+    	let div8;
+    	let input3;
+    	let input3_value_value;
+    	let t13;
+    	let div10;
+    	let t14;
+    	let t15;
+    	let if_block1_anchor;
+    	let if_block0 = /*emailCheck*/ ctx[4].status === "success" && create_if_block_2$4(ctx);
+    	let if_block1 = /*emailCheck*/ ctx[4].status === "failure" && create_if_block_1$5(ctx);
+
+    	const block = {
+    		c: function create() {
+    			h3 = element("h3");
+    			h3.textContent = "Mail Check Resuts:";
+    			t1 = space();
+    			form = element("form");
+    			div4 = element("div");
+    			div0 = element("div");
+    			label0 = element("label");
+    			label0.textContent = "Email";
+    			t3 = space();
+    			div1 = element("div");
+    			label1 = element("label");
+    			label1.textContent = "Status";
+    			t5 = space();
+    			div2 = element("div");
+    			label2 = element("label");
+    			label2.textContent = "Domain";
+    			t7 = space();
+    			div3 = element("div");
+    			label3 = element("label");
+    			label3.textContent = "Deliverable";
+    			t9 = space();
+    			div9 = element("div");
+    			div5 = element("div");
+    			input0 = element("input");
+    			t10 = space();
+    			div6 = element("div");
+    			input1 = element("input");
+    			t11 = space();
+    			div7 = element("div");
+    			input2 = element("input");
+    			t12 = space();
+    			div8 = element("div");
+    			input3 = element("input");
+    			t13 = space();
+    			div10 = element("div");
+    			t14 = space();
+    			if (if_block0) if_block0.c();
+    			t15 = space();
+    			if (if_block1) if_block1.c();
+    			if_block1_anchor = empty();
+    			add_location(h3, file$7, 161, 4, 4612);
+    			attr_dev(label0, "for", "staticEmail");
+    			attr_dev(label0, "class", "col-sm-2 col-form-label");
+    			add_location(label0, file$7, 166, 16, 4734);
+    			attr_dev(div0, "class", "col-sm-3");
+    			add_location(div0, file$7, 165, 12, 4694);
+    			attr_dev(label1, "for", "staticEmail");
+    			attr_dev(label1, "class", "col-sm-2 col-form-label");
+    			add_location(label1, file$7, 171, 16, 4918);
+    			attr_dev(div1, "class", "col-sm-3");
+    			add_location(div1, file$7, 170, 12, 4878);
+    			attr_dev(label2, "for", "staticEmail");
+    			attr_dev(label2, "class", "col-sm-2 col-form-label");
+    			add_location(label2, file$7, 176, 16, 5103);
+    			attr_dev(div2, "class", "col-sm-3");
+    			add_location(div2, file$7, 175, 12, 5063);
+    			attr_dev(label3, "for", "staticEmail");
+    			attr_dev(label3, "class", "col-sm-2 col-form-label");
+    			add_location(label3, file$7, 181, 16, 5288);
+    			attr_dev(div3, "class", "col-sm-3");
+    			add_location(div3, file$7, 180, 12, 5248);
+    			attr_dev(div4, "class", "row");
+    			add_location(div4, file$7, 164, 8, 4663);
+    			attr_dev(input0, "type", "text");
+    			input0.readOnly = true;
+    			attr_dev(input0, "class", "form-control-plaintext");
+    			attr_dev(input0, "id", "staticEmail");
+    			input0.value = input0_value_value = /*user*/ ctx[5].email;
+    			add_location(input0, file$7, 188, 16, 5521);
+    			attr_dev(div5, "class", "col-sm-3");
+    			add_location(div5, file$7, 187, 12, 5481);
+    			attr_dev(input1, "type", "text");
+    			input1.readOnly = true;
+    			attr_dev(input1, "class", "form-control-plaintext");
+    			attr_dev(input1, "id", "staticEmailStatus");
+    			input1.value = input1_value_value = /*emailCheck*/ ctx[4].status;
+    			add_location(input1, file$7, 198, 16, 5816);
+    			attr_dev(div6, "class", "col-sm-3");
+    			add_location(div6, file$7, 197, 12, 5776);
+    			attr_dev(input2, "type", "text");
+    			input2.readOnly = true;
+    			attr_dev(input2, "class", "form-control-plaintext");
+    			attr_dev(input2, "id", "staticEmailStatus");
+    			input2.value = input2_value_value = /*emailCheck*/ ctx[4].domain;
+    			add_location(input2, file$7, 207, 16, 6122);
+    			attr_dev(div7, "class", "col-sm-3");
+    			add_location(div7, file$7, 206, 12, 6082);
+    			attr_dev(input3, "type", "text");
+    			input3.readOnly = true;
+    			attr_dev(input3, "class", "form-control-plaintext");
+    			attr_dev(input3, "id", "staticEmailStatus");
+    			input3.value = input3_value_value = /*emailCheck*/ ctx[4].deliverable;
+    			add_location(input3, file$7, 216, 16, 6428);
+    			attr_dev(div8, "class", "col-sm-3");
+    			add_location(div8, file$7, 215, 12, 6388);
+    			attr_dev(div9, "class", "row");
+    			add_location(div9, file$7, 186, 8, 5450);
+    			add_location(form, file$7, 163, 4, 4647);
+    			attr_dev(div10, "class", "row mb-3");
+    			add_location(div10, file$7, 226, 4, 6720);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, h3, anchor);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, form, anchor);
+    			append_dev(form, div4);
+    			append_dev(div4, div0);
+    			append_dev(div0, label0);
+    			append_dev(div4, t3);
+    			append_dev(div4, div1);
+    			append_dev(div1, label1);
+    			append_dev(div4, t5);
+    			append_dev(div4, div2);
+    			append_dev(div2, label2);
+    			append_dev(div4, t7);
+    			append_dev(div4, div3);
+    			append_dev(div3, label3);
+    			append_dev(form, t9);
+    			append_dev(form, div9);
+    			append_dev(div9, div5);
+    			append_dev(div5, input0);
+    			append_dev(div9, t10);
+    			append_dev(div9, div6);
+    			append_dev(div6, input1);
+    			append_dev(div9, t11);
+    			append_dev(div9, div7);
+    			append_dev(div7, input2);
+    			append_dev(div9, t12);
+    			append_dev(div9, div8);
+    			append_dev(div8, input3);
+    			insert_dev(target, t13, anchor);
+    			insert_dev(target, div10, anchor);
+    			insert_dev(target, t14, anchor);
+    			if (if_block0) if_block0.m(target, anchor);
+    			insert_dev(target, t15, anchor);
+    			if (if_block1) if_block1.m(target, anchor);
+    			insert_dev(target, if_block1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*user*/ 32 && input0_value_value !== (input0_value_value = /*user*/ ctx[5].email) && input0.value !== input0_value_value) {
+    				prop_dev(input0, "value", input0_value_value);
+    			}
+
+    			if (dirty & /*emailCheck*/ 16 && input1_value_value !== (input1_value_value = /*emailCheck*/ ctx[4].status) && input1.value !== input1_value_value) {
+    				prop_dev(input1, "value", input1_value_value);
+    			}
+
+    			if (dirty & /*emailCheck*/ 16 && input2_value_value !== (input2_value_value = /*emailCheck*/ ctx[4].domain) && input2.value !== input2_value_value) {
+    				prop_dev(input2, "value", input2_value_value);
+    			}
+
+    			if (dirty & /*emailCheck*/ 16 && input3_value_value !== (input3_value_value = /*emailCheck*/ ctx[4].deliverable) && input3.value !== input3_value_value) {
+    				prop_dev(input3, "value", input3_value_value);
+    			}
+
+    			if (/*emailCheck*/ ctx[4].status === "success") {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_2$4(ctx);
+    					if_block0.c();
+    					if_block0.m(t15.parentNode, t15);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (/*emailCheck*/ ctx[4].status === "failure") {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_1$5(ctx);
+    					if_block1.c();
+    					if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(h3);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(form);
+    			if (detaching) detach_dev(t13);
+    			if (detaching) detach_dev(div10);
+    			if (detaching) detach_dev(t14);
+    			if (if_block0) if_block0.d(detaching);
+    			if (detaching) detach_dev(t15);
+    			if (if_block1) if_block1.d(detaching);
+    			if (detaching) detach_dev(if_block1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$6.name,
+    		type: "if",
+    		source: "(161:0) {#if mailChecked !== null}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (229:4) {#if emailCheck.status === "success"}
+    function create_if_block_2$4(ctx) {
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			button.textContent = "Submit";
+    			attr_dev(button, "type", "button");
+    			attr_dev(button, "class", "my-button");
+    			add_location(button, file$7, 229, 4, 6795);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(button, "click", /*createUser*/ ctx[6], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2$4.name,
+    		type: "if",
+    		source: "(229:4) {#if emailCheck.status === \\\"success\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (232:4) {#if emailCheck.status === "failure"}
+    function create_if_block_1$5(ctx) {
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			button.textContent = "Check Email";
+    			attr_dev(button, "type", "button");
+    			attr_dev(button, "class", "my-button");
+    			add_location(button, file$7, 232, 4, 6932);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(
+    					button,
+    					"click",
+    					function () {
+    						if (is_function(/*checkMail*/ ctx[7](/*user*/ ctx[5].email))) /*checkMail*/ ctx[7](/*user*/ ctx[5].email).apply(this, arguments);
+    					},
+    					false,
+    					false,
+    					false
+    				);
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$5.name,
+    		type: "if",
+    		source: "(232:4) {#if emailCheck.status === \\\"failure\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (252:8) {#each users as user}
+    function create_each_block_1$2(ctx) {
     	let tr;
     	let td0;
-    	let t0_value = /*index*/ ctx[15] + 1 + "";
+    	let t0_value = /*user*/ ctx[5].username + "";
     	let t0;
     	let t1;
     	let td1;
-    	let t2_value = /*user*/ ctx[3].username + "";
+    	let t2_value = /*user*/ ctx[5].name + "";
     	let t2;
     	let t3;
     	let td2;
-    	let t4_value = /*user*/ ctx[3].name + "";
+    	let t4_value = /*user*/ ctx[5].email + "";
     	let t4;
     	let t5;
     	let td3;
-    	let t6_value = /*user*/ ctx[3].email + "";
+    	let t6_value = /*user*/ ctx[5].userType + "";
     	let t6;
     	let t7;
     	let td4;
-    	let t8_value = /*user*/ ctx[3].userType + "";
+    	let t8_value = /*user*/ ctx[5].userStatus + "";
     	let t8;
     	let t9;
-    	let td5;
-    	let t10_value = /*user*/ ctx[3].userStatus + "";
-    	let t10;
     	let tr_onclick_value;
 
     	const block = {
@@ -4897,17 +5373,14 @@ var app = (function () {
     			td4 = element("td");
     			t8 = text(t8_value);
     			t9 = space();
-    			td5 = element("td");
-    			t10 = text(t10_value);
-    			add_location(td0, file$6, 134, 16, 3500);
-    			add_location(td1, file$6, 137, 16, 3578);
-    			add_location(td2, file$6, 140, 16, 3660);
-    			add_location(td3, file$6, 143, 16, 3738);
-    			add_location(td4, file$6, 146, 16, 3817);
-    			add_location(td5, file$6, 149, 16, 3899);
+    			add_location(td0, file$7, 256, 16, 7527);
+    			add_location(td1, file$7, 259, 16, 7609);
+    			add_location(td2, file$7, 262, 16, 7687);
+    			add_location(td3, file$7, 265, 16, 7766);
+    			add_location(td4, file$7, 268, 16, 7848);
     			attr_dev(tr, "class", "row-tr");
-    			attr_dev(tr, "onclick", tr_onclick_value = "document.location = '" + ('#/users/' + /*user*/ ctx[3]._id) + "';");
-    			add_location(tr, file$6, 130, 12, 3358);
+    			attr_dev(tr, "onclick", tr_onclick_value = "document.location = '" + ('#/users/' + /*user*/ ctx[5].id) + "';");
+    			add_location(tr, file$7, 252, 12, 7386);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tr, anchor);
@@ -4926,17 +5399,15 @@ var app = (function () {
     			append_dev(tr, td4);
     			append_dev(td4, t8);
     			append_dev(tr, t9);
-    			append_dev(tr, td5);
-    			append_dev(td5, t10);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*users*/ 4 && t2_value !== (t2_value = /*user*/ ctx[3].username + "")) set_data_dev(t2, t2_value);
-    			if (dirty & /*users*/ 4 && t4_value !== (t4_value = /*user*/ ctx[3].name + "")) set_data_dev(t4, t4_value);
-    			if (dirty & /*users*/ 4 && t6_value !== (t6_value = /*user*/ ctx[3].email + "")) set_data_dev(t6, t6_value);
-    			if (dirty & /*users*/ 4 && t8_value !== (t8_value = /*user*/ ctx[3].userType + "")) set_data_dev(t8, t8_value);
-    			if (dirty & /*users*/ 4 && t10_value !== (t10_value = /*user*/ ctx[3].userStatus + "")) set_data_dev(t10, t10_value);
+    			if (dirty & /*users*/ 8 && t0_value !== (t0_value = /*user*/ ctx[5].username + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*users*/ 8 && t2_value !== (t2_value = /*user*/ ctx[5].name + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*users*/ 8 && t4_value !== (t4_value = /*user*/ ctx[5].email + "")) set_data_dev(t4, t4_value);
+    			if (dirty & /*users*/ 8 && t6_value !== (t6_value = /*user*/ ctx[5].userType + "")) set_data_dev(t6, t6_value);
+    			if (dirty & /*users*/ 8 && t8_value !== (t8_value = /*user*/ ctx[5].userStatus + "")) set_data_dev(t8, t8_value);
 
-    			if (dirty & /*users*/ 4 && tr_onclick_value !== (tr_onclick_value = "document.location = '" + ('#/users/' + /*user*/ ctx[3]._id) + "';")) {
+    			if (dirty & /*users*/ 8 && tr_onclick_value !== (tr_onclick_value = "document.location = '" + ('#/users/' + /*user*/ ctx[5].id) + "';")) {
     				attr_dev(tr, "onclick", tr_onclick_value);
     			}
     		},
@@ -4947,20 +5418,20 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_1$1.name,
+    		id: create_each_block_1$2.name,
     		type: "each",
-    		source: "(130:8) {#each users as user, index}",
+    		source: "(252:8) {#each users as user}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (165:8) {#each Array(nrOfPages) as _, i}
+    // (279:8) {#each Array(nrOfPages) as _, i}
     function create_each_block$3(ctx) {
     	let li;
     	let a;
-    	let t0_value = /*i*/ ctx[13] + 1 + "";
+    	let t0_value = /*i*/ ctx[17] + 1 + "";
     	let t0;
     	let t1;
 
@@ -4971,11 +5442,11 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = space();
     			attr_dev(a, "class", "page-link");
-    			attr_dev(a, "href", "#/users?page=" + (/*i*/ ctx[13] + 1));
-    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[13] + 1);
-    			add_location(a, file$6, 166, 16, 4277);
+    			attr_dev(a, "href", "#/users?page=" + (/*i*/ ctx[17] + 1));
+    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[17] + 1);
+    			add_location(a, file$7, 280, 16, 8108);
     			attr_dev(li, "class", "page-item");
-    			add_location(li, file$6, 165, 12, 4237);
+    			add_location(li, file$7, 279, 12, 8068);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -4985,7 +5456,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*currentPage*/ 1) {
-    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[13] + 1);
+    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[17] + 1);
     			}
     		},
     		d: function destroy(detaching) {
@@ -4997,14 +5468,14 @@ var app = (function () {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(165:8) {#each Array(nrOfPages) as _, i}",
+    		source: "(279:8) {#each Array(nrOfPages) as _, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    function create_fragment$6(ctx) {
+    function create_fragment$7(ctx) {
     	let h10;
     	let t1;
     	let form;
@@ -5024,7 +5495,7 @@ var app = (function () {
     	let t9;
     	let input2;
     	let t10;
-    	let button;
+    	let t11;
     	let t12;
     	let div4;
     	let t13;
@@ -5032,7 +5503,7 @@ var app = (function () {
     	let t15;
     	let table;
     	let thead;
-    	let tr0;
+    	let tr;
     	let th0;
     	let t17;
     	let th1;
@@ -5043,26 +5514,20 @@ var app = (function () {
     	let t23;
     	let th4;
     	let t25;
-    	let th5;
-    	let t27;
     	let tbody;
-    	let t28;
-    	let tr1;
-    	let dt;
-    	let t29;
-    	let t30_value = /*users*/ ctx[2].length + "";
-    	let t30;
-    	let t31;
+    	let t26;
     	let nav;
     	let ul;
     	let mounted;
     	let dispose;
-    	let each_value_1 = /*users*/ ctx[2];
+    	let if_block0 = /*mailChecked*/ ctx[2] === null && create_if_block_3$4(ctx);
+    	let if_block1 = /*mailChecked*/ ctx[2] !== null && create_if_block$6(ctx);
+    	let each_value_1 = /*users*/ ctx[3];
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
 
     	for (let i = 0; i < each_value_1.length; i += 1) {
-    		each_blocks_1[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
+    		each_blocks_1[i] = create_each_block_1$2(get_each_context_1$2(ctx, each_value_1, i));
     	}
 
     	let each_value = Array(/*nrOfPages*/ ctx[1]);
@@ -5098,8 +5563,9 @@ var app = (function () {
     			t9 = space();
     			input2 = element("input");
     			t10 = space();
-    			button = element("button");
-    			button.textContent = "Submit";
+    			if (if_block0) if_block0.c();
+    			t11 = space();
+    			if (if_block1) if_block1.c();
     			t12 = space();
     			div4 = element("div");
     			t13 = space();
@@ -5108,37 +5574,29 @@ var app = (function () {
     			t15 = space();
     			table = element("table");
     			thead = element("thead");
-    			tr0 = element("tr");
+    			tr = element("tr");
     			th0 = element("th");
-    			th0.textContent = "Number";
+    			th0.textContent = "Username";
     			t17 = space();
     			th1 = element("th");
-    			th1.textContent = "Username";
+    			th1.textContent = "Name";
     			t19 = space();
     			th2 = element("th");
-    			th2.textContent = "Name";
+    			th2.textContent = "Email";
     			t21 = space();
     			th3 = element("th");
-    			th3.textContent = "Email";
+    			th3.textContent = "Type";
     			t23 = space();
     			th4 = element("th");
-    			th4.textContent = "Type";
+    			th4.textContent = "Status";
     			t25 = space();
-    			th5 = element("th");
-    			th5.textContent = "Status";
-    			t27 = space();
     			tbody = element("tbody");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			t28 = space();
-    			tr1 = element("tr");
-    			dt = element("dt");
-    			t29 = text("Number of Products: ");
-    			t30 = text(t30_value);
-    			t31 = space();
+    			t26 = space();
     			nav = element("nav");
     			ul = element("ul");
 
@@ -5147,60 +5605,54 @@ var app = (function () {
     			}
 
     			attr_dev(h10, "class", "mt-3");
-    			add_location(h10, file$6, 72, 0, 1910);
+    			add_location(h10, file$7, 123, 0, 3468);
     			attr_dev(label0, "class", "form-label");
     			attr_dev(label0, "for", "username");
-    			add_location(label0, file$6, 76, 12, 2033);
+    			add_location(label0, file$7, 127, 12, 3591);
     			attr_dev(input0, "class", "form-control");
     			attr_dev(input0, "id", "description");
     			attr_dev(input0, "type", "text");
-    			add_location(input0, file$6, 77, 12, 2104);
+    			add_location(input0, file$7, 128, 12, 3662);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$6, 75, 8, 2002);
+    			add_location(div0, file$7, 126, 8, 3560);
     			attr_dev(label1, "class", "form-label");
     			attr_dev(label1, "for", "name");
-    			add_location(label1, file$6, 86, 12, 2330);
+    			add_location(label1, file$7, 137, 12, 3888);
     			attr_dev(input1, "class", "form-control");
     			attr_dev(input1, "id", "description");
     			attr_dev(input1, "type", "text");
-    			add_location(input1, file$6, 87, 12, 2393);
+    			add_location(input1, file$7, 138, 12, 3951);
     			attr_dev(div1, "class", "col");
-    			add_location(div1, file$6, 85, 8, 2299);
+    			add_location(div1, file$7, 136, 8, 3857);
     			attr_dev(label2, "class", "form-label");
     			attr_dev(label2, "for", "email");
-    			add_location(label2, file$6, 96, 12, 2615);
+    			add_location(label2, file$7, 147, 12, 4173);
     			attr_dev(input2, "class", "form-control");
     			attr_dev(input2, "id", "description");
     			attr_dev(input2, "type", "text");
-    			add_location(input2, file$6, 97, 12, 2681);
+    			add_location(input2, file$7, 148, 12, 4239);
     			attr_dev(div2, "class", "col");
-    			add_location(div2, file$6, 95, 8, 2584);
+    			add_location(div2, file$7, 146, 8, 4142);
     			attr_dev(div3, "class", "row mb-3");
-    			add_location(div3, file$6, 74, 4, 1970);
+    			add_location(div3, file$7, 125, 4, 3528);
     			attr_dev(form, "class", "mb-5");
-    			add_location(form, file$6, 73, 0, 1945);
-    			attr_dev(button, "type", "button");
-    			attr_dev(button, "class", "my-button");
-    			add_location(button, file$6, 108, 0, 2888);
+    			add_location(form, file$7, 124, 0, 3503);
     			attr_dev(div4, "class", "row mb-3");
-    			add_location(div4, file$6, 112, 0, 2977);
-    			add_location(h11, file$6, 115, 0, 3011);
-    			add_location(th0, file$6, 120, 12, 3107);
-    			add_location(th1, file$6, 121, 12, 3136);
-    			add_location(th2, file$6, 122, 12, 3167);
-    			add_location(th3, file$6, 123, 12, 3194);
-    			add_location(th4, file$6, 124, 12, 3222);
-    			add_location(th5, file$6, 125, 12, 3249);
-    			add_location(tr0, file$6, 119, 8, 3089);
-    			add_location(thead, file$6, 118, 4, 3072);
-    			add_location(dt, file$6, 155, 12, 4029);
-    			add_location(tr1, file$6, 154, 8, 4011);
-    			add_location(tbody, file$6, 128, 4, 3299);
+    			add_location(div4, file$7, 236, 0, 7047);
+    			add_location(h11, file$7, 238, 0, 7075);
+    			add_location(th0, file$7, 243, 12, 7171);
+    			add_location(th1, file$7, 244, 12, 7202);
+    			add_location(th2, file$7, 245, 12, 7229);
+    			add_location(th3, file$7, 246, 12, 7257);
+    			add_location(th4, file$7, 247, 12, 7284);
+    			add_location(tr, file$7, 242, 8, 7153);
+    			add_location(thead, file$7, 241, 4, 7136);
+    			add_location(tbody, file$7, 250, 4, 7334);
     			attr_dev(table, "class", "table table-hover");
-    			add_location(table, file$6, 117, 0, 3033);
+    			add_location(table, file$7, 240, 0, 7097);
     			attr_dev(ul, "class", "pagination");
-    			add_location(ul, file$6, 163, 4, 4158);
-    			add_location(nav, file$6, 162, 0, 4147);
+    			add_location(ul, file$7, 277, 4, 7989);
+    			add_location(nav, file$7, 276, 0, 7978);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5214,21 +5666,23 @@ var app = (function () {
     			append_dev(div0, label0);
     			append_dev(div0, t3);
     			append_dev(div0, input0);
-    			set_input_value(input0, /*user*/ ctx[3].username);
+    			set_input_value(input0, /*user*/ ctx[5].username);
     			append_dev(div3, t4);
     			append_dev(div3, div1);
     			append_dev(div1, label1);
     			append_dev(div1, t6);
     			append_dev(div1, input1);
-    			set_input_value(input1, /*user*/ ctx[3].name);
+    			set_input_value(input1, /*user*/ ctx[5].name);
     			append_dev(div3, t7);
     			append_dev(div3, div2);
     			append_dev(div2, label2);
     			append_dev(div2, t9);
     			append_dev(div2, input2);
-    			set_input_value(input2, /*user*/ ctx[3].email);
+    			set_input_value(input2, /*user*/ ctx[5].email);
     			insert_dev(target, t10, anchor);
-    			insert_dev(target, button, anchor);
+    			if (if_block0) if_block0.m(target, anchor);
+    			insert_dev(target, t11, anchor);
+    			if (if_block1) if_block1.m(target, anchor);
     			insert_dev(target, t12, anchor);
     			insert_dev(target, div4, anchor);
     			insert_dev(target, t13, anchor);
@@ -5236,31 +5690,24 @@ var app = (function () {
     			insert_dev(target, t15, anchor);
     			insert_dev(target, table, anchor);
     			append_dev(table, thead);
-    			append_dev(thead, tr0);
-    			append_dev(tr0, th0);
-    			append_dev(tr0, t17);
-    			append_dev(tr0, th1);
-    			append_dev(tr0, t19);
-    			append_dev(tr0, th2);
-    			append_dev(tr0, t21);
-    			append_dev(tr0, th3);
-    			append_dev(tr0, t23);
-    			append_dev(tr0, th4);
-    			append_dev(tr0, t25);
-    			append_dev(tr0, th5);
-    			append_dev(table, t27);
+    			append_dev(thead, tr);
+    			append_dev(tr, th0);
+    			append_dev(tr, t17);
+    			append_dev(tr, th1);
+    			append_dev(tr, t19);
+    			append_dev(tr, th2);
+    			append_dev(tr, t21);
+    			append_dev(tr, th3);
+    			append_dev(tr, t23);
+    			append_dev(tr, th4);
+    			append_dev(table, t25);
     			append_dev(table, tbody);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].m(tbody, null);
     			}
 
-    			append_dev(tbody, t28);
-    			append_dev(tbody, tr1);
-    			append_dev(tr1, dt);
-    			append_dev(dt, t29);
-    			append_dev(dt, t30);
-    			insert_dev(target, t31, anchor);
+    			insert_dev(target, t26, anchor);
     			insert_dev(target, nav, anchor);
     			append_dev(nav, ul);
 
@@ -5270,42 +5717,67 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[6]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[7]),
-    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[8]),
-    					listen_dev(button, "click", /*createUser*/ ctx[4], false, false, false)
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[9]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[10]),
+    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[11])
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*user*/ 8 && input0.value !== /*user*/ ctx[3].username) {
-    				set_input_value(input0, /*user*/ ctx[3].username);
+    			if (dirty & /*user*/ 32 && input0.value !== /*user*/ ctx[5].username) {
+    				set_input_value(input0, /*user*/ ctx[5].username);
     			}
 
-    			if (dirty & /*user*/ 8 && input1.value !== /*user*/ ctx[3].name) {
-    				set_input_value(input1, /*user*/ ctx[3].name);
+    			if (dirty & /*user*/ 32 && input1.value !== /*user*/ ctx[5].name) {
+    				set_input_value(input1, /*user*/ ctx[5].name);
     			}
 
-    			if (dirty & /*user*/ 8 && input2.value !== /*user*/ ctx[3].email) {
-    				set_input_value(input2, /*user*/ ctx[3].email);
+    			if (dirty & /*user*/ 32 && input2.value !== /*user*/ ctx[5].email) {
+    				set_input_value(input2, /*user*/ ctx[5].email);
     			}
 
-    			if (dirty & /*users*/ 4) {
-    				each_value_1 = /*users*/ ctx[2];
+    			if (/*mailChecked*/ ctx[2] === null) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_3$4(ctx);
+    					if_block0.c();
+    					if_block0.m(t11.parentNode, t11);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (/*mailChecked*/ ctx[2] !== null) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block$6(ctx);
+    					if_block1.c();
+    					if_block1.m(t12.parentNode, t12);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+
+    			if (dirty & /*users*/ 8) {
+    				each_value_1 = /*users*/ ctx[3];
     				validate_each_argument(each_value_1);
     				let i;
 
     				for (i = 0; i < each_value_1.length; i += 1) {
-    					const child_ctx = get_each_context_1$1(ctx, each_value_1, i);
+    					const child_ctx = get_each_context_1$2(ctx, each_value_1, i);
 
     					if (each_blocks_1[i]) {
     						each_blocks_1[i].p(child_ctx, dirty);
     					} else {
-    						each_blocks_1[i] = create_each_block_1$1(child_ctx);
+    						each_blocks_1[i] = create_each_block_1$2(child_ctx);
     						each_blocks_1[i].c();
-    						each_blocks_1[i].m(tbody, t28);
+    						each_blocks_1[i].m(tbody, null);
     					}
     				}
 
@@ -5315,8 +5787,6 @@ var app = (function () {
 
     				each_blocks_1.length = each_value_1.length;
     			}
-
-    			if (dirty & /*users*/ 4 && t30_value !== (t30_value = /*users*/ ctx[2].length + "")) set_data_dev(t30, t30_value);
 
     			if (dirty & /*currentPage, nrOfPages*/ 3) {
     				each_value = Array(/*nrOfPages*/ ctx[1]);
@@ -5349,7 +5819,9 @@ var app = (function () {
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(form);
     			if (detaching) detach_dev(t10);
-    			if (detaching) detach_dev(button);
+    			if (if_block0) if_block0.d(detaching);
+    			if (detaching) detach_dev(t11);
+    			if (if_block1) if_block1.d(detaching);
     			if (detaching) detach_dev(t12);
     			if (detaching) detach_dev(div4);
     			if (detaching) detach_dev(t13);
@@ -5357,11 +5829,970 @@ var app = (function () {
     			if (detaching) detach_dev(t15);
     			if (detaching) detach_dev(table);
     			destroy_each(each_blocks_1, detaching);
-    			if (detaching) detach_dev(t31);
+    			if (detaching) detach_dev(t26);
     			if (detaching) detach_dev(nav);
     			destroy_each(each_blocks, detaching);
     			mounted = false;
     			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$7.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    const api_root$5 = "http://localhost:8080";
+
+    function instance$7($$self, $$props, $$invalidate) {
+    	let $jwt_token;
+    	let $querystring;
+    	validate_store(jwt_token, 'jwt_token');
+    	component_subscribe($$self, jwt_token, $$value => $$invalidate(12, $jwt_token = $$value));
+    	validate_store(querystring, 'querystring');
+    	component_subscribe($$self, querystring, $$value => $$invalidate(8, $querystring = $$value));
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Users', slots, []);
+    	let currentPage;
+    	let nrOfPages = 0;
+    	let mailChecked = null;
+    	let users = [];
+    	let user = { username: null, name: null, email: null };
+
+    	let emailCheck = {
+    		status: null,
+    		email_address: null,
+    		domain: null,
+    		deliverable: null
+    	};
+
+    	function getUser() {
+    		var config = {
+    			method: "get",
+    			url: api_root$5 + "/api/products/" + user_id,
+    			headers: {}
+    		};
+
+    		axios(config).then(function (response) {
+    			$$invalidate(5, user = response.data);
+    		}).catch(function (error) {
+    			alert("Could not get user");
+    			console.log(error);
+    		});
+    	}
+
+    	function getUsers() {
+    		let query = "pageSize=6&page=" + currentPage;
+
+    		var config = {
+    			method: "get",
+    			url: api_root$5 + "/api/users?" + query,
+    			headers: { Authorization: "Bearer " + $jwt_token }
+    		};
+
+    		axios(config).then(function (response) {
+    			$$invalidate(3, users = response.data.content);
+    			$$invalidate(1, nrOfPages = response.data.totalPages);
+    		}).catch(function (error) {
+    			alert("Could not get users");
+    			console.log(error);
+    		});
+    	}
+
+    	function createUser() {
+    		var config = {
+    			method: "post",
+    			url: api_root$5 + "/api/users",
+    			headers: {
+    				"Content-Type": "application/json",
+    				Authorization: "Bearer " + $jwt_token
+    			},
+    			data: user
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("User created");
+    			getUsers();
+    		}).catch(function (error) {
+    			alert("Could not create User");
+    			console.log(error);
+    		});
+    	}
+
+    	// REST API EMAIL CHECK
+    	function checkMail(userEmail) {
+    		var config = {
+    			method: "get",
+    			url: api_root$5 + "/api/service/emailvalidation?email=" + userEmail,
+    			headers: { Authorization: "Bearer " + $jwt_token }
+    		};
+
+    		axios(config).then(function (response) {
+    			let emailVariables = response.data;
+    			$$invalidate(4, emailCheck = emailVariables[0]);
+    			$$invalidate(2, mailChecked = true);
+    			alert("User Mail " + emailCheck + " checked: \nStatus: " + emailCheck.status);
+    			console.log(emailCheck);
+    			console.log(mailChecked);
+    		}).catch(function (error) {
+    			alert("Could not check User Mail");
+    			console.log(error);
+    		});
+    	}
+
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$5.warn(`<Users> was created with unknown prop '${key}'`);
+    	});
+
+    	function input0_input_handler() {
+    		user.username = this.value;
+    		$$invalidate(5, user);
+    	}
+
+    	function input1_input_handler() {
+    		user.name = this.value;
+    		$$invalidate(5, user);
+    	}
+
+    	function input2_input_handler() {
+    		user.email = this.value;
+    		$$invalidate(5, user);
+    	}
+
+    	$$self.$capture_state = () => ({
+    		axios,
+    		querystring,
+    		jwt_token,
+    		api_root: api_root$5,
+    		currentPage,
+    		nrOfPages,
+    		mailChecked,
+    		users,
+    		user,
+    		emailCheck,
+    		getUser,
+    		getUsers,
+    		createUser,
+    		checkMail,
+    		$jwt_token,
+    		$querystring
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('currentPage' in $$props) $$invalidate(0, currentPage = $$props.currentPage);
+    		if ('nrOfPages' in $$props) $$invalidate(1, nrOfPages = $$props.nrOfPages);
+    		if ('mailChecked' in $$props) $$invalidate(2, mailChecked = $$props.mailChecked);
+    		if ('users' in $$props) $$invalidate(3, users = $$props.users);
+    		if ('user' in $$props) $$invalidate(5, user = $$props.user);
+    		if ('emailCheck' in $$props) $$invalidate(4, emailCheck = $$props.emailCheck);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*$querystring*/ 256) {
+    			{
+    				let searchParams = new URLSearchParams($querystring);
+
+    				if (searchParams.has("page")) {
+    					$$invalidate(0, currentPage = searchParams.get("page"));
+    				} else {
+    					$$invalidate(0, currentPage = "1");
+    				}
+
+    				getUsers();
+    			}
+    		}
+    	};
+
+    	return [
+    		currentPage,
+    		nrOfPages,
+    		mailChecked,
+    		users,
+    		emailCheck,
+    		user,
+    		createUser,
+    		checkMail,
+    		$querystring,
+    		input0_input_handler,
+    		input1_input_handler,
+    		input2_input_handler
+    	];
+    }
+
+    class Users extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Users",
+    			options,
+    			id: create_fragment$7.name
+    		});
+    	}
+    }
+
+    /* src\pages\UserDetails.svelte generated by Svelte v3.53.1 */
+
+    const { console: console_1$4 } = globals;
+    const file$6 = "src\\pages\\UserDetails.svelte";
+
+    // (136:47) 
+    function create_if_block_8$1(ctx) {
+    	let option0;
+    	let option1;
+
+    	const block = {
+    		c: function create() {
+    			option0 = element("option");
+    			option0.textContent = "Buyer";
+    			option1 = element("option");
+    			option1.textContent = "Supplier";
+    			option0.__value = "BUYER";
+    			option0.value = option0.__value;
+    			add_location(option0, file$6, 136, 12, 4027);
+    			option1.__value = "SUPPLIER";
+    			option1.value = option1.__value;
+    			add_location(option1, file$6, 137, 12, 4077);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, option0, anchor);
+    			insert_dev(target, option1, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(option0);
+    			if (detaching) detach_dev(option1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_8$1.name,
+    		type: "if",
+    		source: "(136:47) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (133:50) 
+    function create_if_block_7$2(ctx) {
+    	let option0;
+    	let option1;
+
+    	const block = {
+    		c: function create() {
+    			option0 = element("option");
+    			option0.textContent = "Buyer";
+    			option1 = element("option");
+    			option1.textContent = "Admin";
+    			option0.__value = "BUYER";
+    			option0.value = option0.__value;
+    			add_location(option0, file$6, 133, 12, 3878);
+    			option1.__value = "ADMIN";
+    			option1.value = option1.__value;
+    			add_location(option1, file$6, 134, 12, 3928);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, option0, anchor);
+    			insert_dev(target, option1, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(option0);
+    			if (detaching) detach_dev(option1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_7$2.name,
+    		type: "if",
+    		source: "(133:50) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (130:8) {#if userper.userType === "BUYER"}
+    function create_if_block_6$2(ctx) {
+    	let option0;
+    	let option1;
+
+    	const block = {
+    		c: function create() {
+    			option0 = element("option");
+    			option0.textContent = "Supplier";
+    			option1 = element("option");
+    			option1.textContent = "Admin";
+    			option0.__value = "SUPPLIER";
+    			option0.value = option0.__value;
+    			add_location(option0, file$6, 130, 12, 3720);
+    			option1.__value = "ADMIN";
+    			option1.value = option1.__value;
+    			add_location(option1, file$6, 131, 12, 3776);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, option0, anchor);
+    			insert_dev(target, option1, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(option0);
+    			if (detaching) detach_dev(option1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_6$2.name,
+    		type: "if",
+    		source: "(130:8) {#if userper.userType === \\\"BUYER\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (145:0) {#if userper.userStatus === "ACTIVE"}
+    function create_if_block_5$2(ctx) {
+    	let form;
+    	let div3;
+    	let div0;
+    	let label;
+    	let t1;
+    	let textarea;
+    	let t2;
+    	let div1;
+    	let t3;
+    	let div2;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			form = element("form");
+    			div3 = element("div");
+    			div0 = element("div");
+    			label = element("label");
+    			label.textContent = "Comment for Inactivation of User";
+    			t1 = space();
+    			textarea = element("textarea");
+    			t2 = space();
+    			div1 = element("div");
+    			t3 = space();
+    			div2 = element("div");
+    			attr_dev(label, "for", "comment");
+    			add_location(label, file$6, 148, 16, 4319);
+    			attr_dev(textarea, "class", "form-control");
+    			attr_dev(textarea, "id", "comment");
+    			attr_dev(textarea, "rows", "3");
+    			add_location(textarea, file$6, 149, 16, 4398);
+    			attr_dev(div0, "class", "col");
+    			add_location(div0, file$6, 147, 12, 4284);
+    			attr_dev(div1, "class", "row mb-3");
+    			add_location(div1, file$6, 156, 12, 4617);
+    			attr_dev(div2, "class", "row mb-3");
+    			add_location(div2, file$6, 157, 12, 4655);
+    			attr_dev(div3, "class", "row mb-3");
+    			add_location(div3, file$6, 146, 8, 4248);
+    			add_location(form, file$6, 145, 4, 4232);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, form, anchor);
+    			append_dev(form, div3);
+    			append_dev(div3, div0);
+    			append_dev(div0, label);
+    			append_dev(div0, t1);
+    			append_dev(div0, textarea);
+    			set_input_value(textarea, /*userper*/ ctx[0].comment);
+    			append_dev(div3, t2);
+    			append_dev(div3, div1);
+    			append_dev(div3, t3);
+    			append_dev(div3, div2);
+
+    			if (!mounted) {
+    				dispose = listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[8]);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*userper*/ 1) {
+    				set_input_value(textarea, /*userper*/ ctx[0].comment);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(form);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_5$2.name,
+    		type: "if",
+    		source: "(145:0) {#if userper.userStatus === \\\"ACTIVE\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (163:0) {#if userper.userStatus === "INACTIVE"}
+    function create_if_block_4$2(ctx) {
+    	let div;
+    	let ul;
+    	let li0;
+    	let t1;
+    	let li1;
+    	let t2_value = /*userper*/ ctx[0].comment + "";
+    	let t2;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			ul = element("ul");
+    			li0 = element("li");
+    			li0.textContent = "Reason for Inactivation:";
+    			t1 = space();
+    			li1 = element("li");
+    			t2 = text(t2_value);
+    			attr_dev(li0, "class", "list-group-item-top active");
+    			attr_dev(li0, "aria-current", "true");
+    			add_location(li0, file$6, 165, 12, 4833);
+    			attr_dev(li1, "class", "list-group-item");
+    			add_location(li1, file$6, 168, 12, 4967);
+    			attr_dev(ul, "class", "list-group");
+    			add_location(ul, file$6, 164, 8, 4796);
+    			attr_dev(div, "class", "col-md-4");
+    			add_location(div, file$6, 163, 4, 4764);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, ul);
+    			append_dev(ul, li0);
+    			append_dev(ul, t1);
+    			append_dev(ul, li1);
+    			append_dev(li1, t2);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*userper*/ 1 && t2_value !== (t2_value = /*userper*/ ctx[0].comment + "")) set_data_dev(t2, t2_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_4$2.name,
+    		type: "if",
+    		source: "(163:0) {#if userper.userStatus === \\\"INACTIVE\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (178:0) {#if $user.user_roles && $user.user_roles.length > 0}
+    function create_if_block_1$4(ctx) {
+    	let a;
+    	let t1;
+    	let if_block_anchor;
+    	let mounted;
+    	let dispose;
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (/*userper*/ ctx[0].userStatus === "ACTIVE") return create_if_block_2$3;
+    		if (/*userper*/ ctx[0].userStatus === "INACTIVE") return create_if_block_3$3;
+    	}
+
+    	let current_block_type = select_block_type_1(ctx);
+    	let if_block = current_block_type && current_block_type(ctx);
+
+    	const block = {
+    		c: function create() {
+    			a = element("a");
+    			a.textContent = "Delete User";
+    			t1 = space();
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    			attr_dev(a, "href", "#/users");
+    			attr_dev(a, "class", "delete-button");
+    			add_location(a, file$6, 178, 4, 5174);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, a, anchor);
+    			insert_dev(target, t1, anchor);
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(a, "click", /*deleteUser*/ ctx[2], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block) {
+    				if_block.p(ctx, dirty);
+    			} else {
+    				if (if_block) if_block.d(1);
+    				if_block = current_block_type && current_block_type(ctx);
+
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(a);
+    			if (detaching) detach_dev(t1);
+
+    			if (if_block) {
+    				if_block.d(detaching);
+    			}
+
+    			if (detaching) detach_dev(if_block_anchor);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$4.name,
+    		type: "if",
+    		source: "(178:0) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (186:48) 
+    function create_if_block_3$3(ctx) {
+    	let a;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			a = element("a");
+    			a.textContent = "Activate User";
+    			attr_dev(a, "href", "#/users");
+    			attr_dev(a, "class", "my-button");
+    			add_location(a, file$6, 186, 8, 5477);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, a, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(a, "click", /*userActivation*/ ctx[3], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(a);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3$3.name,
+    		type: "if",
+    		source: "(186:48) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (182:4) {#if userper.userStatus === "ACTIVE"}
+    function create_if_block_2$3(ctx) {
+    	let a;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			a = element("a");
+    			a.textContent = "Inactivate User";
+    			attr_dev(a, "href", "#/users");
+    			attr_dev(a, "class", "my-button");
+    			add_location(a, file$6, 182, 8, 5312);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, a, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(a, "click", /*userCompletion*/ ctx[4], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(a);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2$3.name,
+    		type: "if",
+    		source: "(182:4) {#if userper.userStatus === \\\"ACTIVE\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (193:0) {#if $user.user_roles && $user.user_roles.length > 0}
+    function create_if_block$5(ctx) {
+    	let a;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			a = element("a");
+    			a.textContent = "Change User Type";
+    			attr_dev(a, "href", "#/users");
+    			attr_dev(a, "class", "my-button");
+    			add_location(a, file$6, 194, 4, 5663);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, a, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(a, "click", /*changeUserType*/ ctx[5], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(a);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$5.name,
+    		type: "if",
+    		source: "(193:0) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$6(ctx) {
+    	let h1;
+    	let t0;
+    	let t1_value = /*userper*/ ctx[0].username + "";
+    	let t1;
+    	let t2;
+    	let p;
+    	let t3;
+    	let t4_value = /*userper*/ ctx[0].id + "";
+    	let t4;
+    	let t5;
+    	let h30;
+    	let t6;
+    	let t7_value = /*userper*/ ctx[0].userType + "";
+    	let t7;
+    	let t8;
+    	let div0;
+    	let t9;
+    	let h31;
+    	let t10;
+    	let t11_value = /*userper*/ ctx[0].userStatus + "";
+    	let t11;
+    	let t12;
+    	let label;
+    	let t14;
+    	let div1;
+    	let select;
+    	let t15;
+    	let div2;
+    	let t16;
+    	let t17;
+    	let t18;
+    	let div3;
+    	let t19;
+    	let t20;
+    	let t21;
+    	let a;
+    	let t23;
+    	let div4;
+    	let mounted;
+    	let dispose;
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*userper*/ ctx[0].userType === "BUYER") return create_if_block_6$2;
+    		if (/*userper*/ ctx[0].userType === "SUPPLIER") return create_if_block_7$2;
+    		if (/*userper*/ ctx[0].userType === "ADMIN") return create_if_block_8$1;
+    	}
+
+    	let current_block_type = select_block_type(ctx);
+    	let if_block0 = current_block_type && current_block_type(ctx);
+    	let if_block1 = /*userper*/ ctx[0].userStatus === "ACTIVE" && create_if_block_5$2(ctx);
+    	let if_block2 = /*userper*/ ctx[0].userStatus === "INACTIVE" && create_if_block_4$2(ctx);
+    	let if_block3 = /*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0 && create_if_block_1$4(ctx);
+    	let if_block4 = /*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0 && create_if_block$5(ctx);
+
+    	const block = {
+    		c: function create() {
+    			h1 = element("h1");
+    			t0 = text("User ");
+    			t1 = text(t1_value);
+    			t2 = space();
+    			p = element("p");
+    			t3 = text("ID: ");
+    			t4 = text(t4_value);
+    			t5 = space();
+    			h30 = element("h3");
+    			t6 = text("User Type: ");
+    			t7 = text(t7_value);
+    			t8 = space();
+    			div0 = element("div");
+    			t9 = space();
+    			h31 = element("h3");
+    			t10 = text("Status: ");
+    			t11 = text(t11_value);
+    			t12 = space();
+    			label = element("label");
+    			label.textContent = "Change User Type";
+    			t14 = space();
+    			div1 = element("div");
+    			select = element("select");
+    			if (if_block0) if_block0.c();
+    			t15 = space();
+    			div2 = element("div");
+    			t16 = space();
+    			if (if_block1) if_block1.c();
+    			t17 = space();
+    			if (if_block2) if_block2.c();
+    			t18 = space();
+    			div3 = element("div");
+    			t19 = space();
+    			if (if_block3) if_block3.c();
+    			t20 = space();
+    			if (if_block4) if_block4.c();
+    			t21 = space();
+    			a = element("a");
+    			a.textContent = "Back";
+    			t23 = space();
+    			div4 = element("div");
+    			attr_dev(h1, "class", "md-3");
+    			add_location(h1, file$6, 118, 0, 3339);
+    			add_location(p, file$6, 119, 0, 3386);
+    			add_location(h30, file$6, 120, 0, 3411);
+    			attr_dev(div0, "class", "col-md-8");
+    			add_location(div0, file$6, 122, 0, 3453);
+    			add_location(h31, file$6, 124, 0, 3481);
+    			attr_dev(label, "for", "user");
+    			add_location(label, file$6, 126, 0, 3522);
+    			attr_dev(select, "class", "form-select");
+    			attr_dev(select, "id", "user");
+    			if (/*userper*/ ctx[0].userType === void 0) add_render_callback(() => /*select_change_handler*/ ctx[7].call(select));
+    			add_location(select, file$6, 128, 4, 3594);
+    			attr_dev(div1, "class", "col-md-4");
+    			add_location(div1, file$6, 127, 0, 3566);
+    			attr_dev(div2, "class", "col-md-8");
+    			add_location(div2, file$6, 142, 0, 4161);
+    			attr_dev(div3, "class", "col-md-8");
+    			add_location(div3, file$6, 175, 0, 5087);
+    			attr_dev(a, "class", "back-button");
+    			attr_dev(a, "href", "#/products");
+    			attr_dev(a, "role", "button");
+    			attr_dev(a, "aria-pressed", "true");
+    			add_location(a, file$6, 199, 0, 5772);
+    			attr_dev(div4, "class", "md-12");
+    			add_location(div4, file$6, 202, 0, 5865);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, h1, anchor);
+    			append_dev(h1, t0);
+    			append_dev(h1, t1);
+    			insert_dev(target, t2, anchor);
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t3);
+    			append_dev(p, t4);
+    			insert_dev(target, t5, anchor);
+    			insert_dev(target, h30, anchor);
+    			append_dev(h30, t6);
+    			append_dev(h30, t7);
+    			insert_dev(target, t8, anchor);
+    			insert_dev(target, div0, anchor);
+    			insert_dev(target, t9, anchor);
+    			insert_dev(target, h31, anchor);
+    			append_dev(h31, t10);
+    			append_dev(h31, t11);
+    			insert_dev(target, t12, anchor);
+    			insert_dev(target, label, anchor);
+    			insert_dev(target, t14, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, select);
+    			if (if_block0) if_block0.m(select, null);
+    			select_option(select, /*userper*/ ctx[0].userType);
+    			insert_dev(target, t15, anchor);
+    			insert_dev(target, div2, anchor);
+    			insert_dev(target, t16, anchor);
+    			if (if_block1) if_block1.m(target, anchor);
+    			insert_dev(target, t17, anchor);
+    			if (if_block2) if_block2.m(target, anchor);
+    			insert_dev(target, t18, anchor);
+    			insert_dev(target, div3, anchor);
+    			insert_dev(target, t19, anchor);
+    			if (if_block3) if_block3.m(target, anchor);
+    			insert_dev(target, t20, anchor);
+    			if (if_block4) if_block4.m(target, anchor);
+    			insert_dev(target, t21, anchor);
+    			insert_dev(target, a, anchor);
+    			insert_dev(target, t23, anchor);
+    			insert_dev(target, div4, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(select, "change", /*select_change_handler*/ ctx[7]);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*userper*/ 1 && t1_value !== (t1_value = /*userper*/ ctx[0].username + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*userper*/ 1 && t4_value !== (t4_value = /*userper*/ ctx[0].id + "")) set_data_dev(t4, t4_value);
+    			if (dirty & /*userper*/ 1 && t7_value !== (t7_value = /*userper*/ ctx[0].userType + "")) set_data_dev(t7, t7_value);
+    			if (dirty & /*userper*/ 1 && t11_value !== (t11_value = /*userper*/ ctx[0].userStatus + "")) set_data_dev(t11, t11_value);
+
+    			if (current_block_type !== (current_block_type = select_block_type(ctx))) {
+    				if (if_block0) if_block0.d(1);
+    				if_block0 = current_block_type && current_block_type(ctx);
+
+    				if (if_block0) {
+    					if_block0.c();
+    					if_block0.m(select, null);
+    				}
+    			}
+
+    			if (dirty & /*userper*/ 1) {
+    				select_option(select, /*userper*/ ctx[0].userType);
+    			}
+
+    			if (/*userper*/ ctx[0].userStatus === "ACTIVE") {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_5$2(ctx);
+    					if_block1.c();
+    					if_block1.m(t17.parentNode, t17);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+
+    			if (/*userper*/ ctx[0].userStatus === "INACTIVE") {
+    				if (if_block2) {
+    					if_block2.p(ctx, dirty);
+    				} else {
+    					if_block2 = create_if_block_4$2(ctx);
+    					if_block2.c();
+    					if_block2.m(t18.parentNode, t18);
+    				}
+    			} else if (if_block2) {
+    				if_block2.d(1);
+    				if_block2 = null;
+    			}
+
+    			if (/*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0) {
+    				if (if_block3) {
+    					if_block3.p(ctx, dirty);
+    				} else {
+    					if_block3 = create_if_block_1$4(ctx);
+    					if_block3.c();
+    					if_block3.m(t20.parentNode, t20);
+    				}
+    			} else if (if_block3) {
+    				if_block3.d(1);
+    				if_block3 = null;
+    			}
+
+    			if (/*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0) {
+    				if (if_block4) {
+    					if_block4.p(ctx, dirty);
+    				} else {
+    					if_block4 = create_if_block$5(ctx);
+    					if_block4.c();
+    					if_block4.m(t21.parentNode, t21);
+    				}
+    			} else if (if_block4) {
+    				if_block4.d(1);
+    				if_block4 = null;
+    			}
+    		},
+    		i: noop$1,
+    		o: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(h1);
+    			if (detaching) detach_dev(t2);
+    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(h30);
+    			if (detaching) detach_dev(t8);
+    			if (detaching) detach_dev(div0);
+    			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(h31);
+    			if (detaching) detach_dev(t12);
+    			if (detaching) detach_dev(label);
+    			if (detaching) detach_dev(t14);
+    			if (detaching) detach_dev(div1);
+
+    			if (if_block0) {
+    				if_block0.d();
+    			}
+
+    			if (detaching) detach_dev(t15);
+    			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(t16);
+    			if (if_block1) if_block1.d(detaching);
+    			if (detaching) detach_dev(t17);
+    			if (if_block2) if_block2.d(detaching);
+    			if (detaching) detach_dev(t18);
+    			if (detaching) detach_dev(div3);
+    			if (detaching) detach_dev(t19);
+    			if (if_block3) if_block3.d(detaching);
+    			if (detaching) detach_dev(t20);
+    			if (if_block4) if_block4.d(detaching);
+    			if (detaching) detach_dev(t21);
+    			if (detaching) detach_dev(a);
+    			if (detaching) detach_dev(t23);
+    			if (detaching) detach_dev(div4);
+    			mounted = false;
+    			dispose();
     		}
     	};
 
@@ -5380,97 +6811,150 @@ var app = (function () {
 
     function instance$6($$self, $$props, $$invalidate) {
     	let $jwt_token;
-    	let $querystring;
+    	let $user;
     	validate_store(jwt_token, 'jwt_token');
-    	component_subscribe($$self, jwt_token, $$value => $$invalidate(9, $jwt_token = $$value));
-    	validate_store(querystring, 'querystring');
-    	component_subscribe($$self, querystring, $$value => $$invalidate(5, $querystring = $$value));
+    	component_subscribe($$self, jwt_token, $$value => $$invalidate(10, $jwt_token = $$value));
+    	validate_store(user, 'user');
+    	component_subscribe($$self, user, $$value => $$invalidate(1, $user = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('Users', slots, []);
-    	let currentPage;
-    	let nrOfPages = 0;
-    	let users = [];
-    	let user = { username: null, name: null, email: null };
+    	validate_slots('UserDetails', slots, []);
+    	let { params = {} } = $$props;
+    	let user_id;
 
-    	function getUsers() {
-    		let query = "pageSize=6&page=" + currentPage;
+    	let userper = {
+    		username: null,
+    		name: null,
+    		email: null,
+    		userStatus: null,
+    		userType: null
+    	};
 
+    	function getUser() {
     		var config = {
     			method: "get",
-    			url: api_root$4 + "/api/users?" + query,
+    			url: api_root$4 + "/api/users/" + user_id,
     			headers: { Authorization: "Bearer " + $jwt_token }
     		};
 
     		axios(config).then(function (response) {
-    			$$invalidate(2, users = response.data.content);
-    			$$invalidate(1, nrOfPages = response.data.totalPages);
+    			$$invalidate(0, userper = response.data);
     		}).catch(function (error) {
-    			alert("Could not get users");
+    			alert("Could not get user");
     			console.log(error);
     		});
     	}
 
-    	function createUser() {
+    	function deleteUser() {
     		var config = {
-    			method: "post",
-    			url: api_root$4 + "/api/users",
-    			headers: {
-    				"Content-Type": "application/json",
-    				Authorization: "Bearer " + $jwt_token
-    			},
-    			data: user
+    			method: "delete",
+    			url: api_root$4 + "/api/users/" + user_id,
+    			headers: { Authorization: "Bearer " + $jwt_token }
     		};
 
     		axios(config).then(function (response) {
-    			alert("User created");
-    			getUsers();
+    			alert("User " + userper.username + " deleted");
     		}).catch(function (error) {
-    			alert("Could not create User");
+    			alert(error);
     			console.log(error);
     		});
     	}
 
-    	const writable_props = [];
+    	function userActivation() {
+    		var config = {
+    			method: "post",
+    			url: api_root$4 + "/api/service/useractivation",
+    			headers: { Authorization: "Bearer " + $jwt_token },
+    			data: { userId: userper.id }
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("User activated");
+    		}).catch(function (error) {
+    			alert("Could not activate User");
+    			console.log(error);
+    		});
+    	}
+
+    	function userCompletion() {
+    		var config = {
+    			method: "post",
+    			url: api_root$4 + "/api/service/usercompletion",
+    			headers: { Authorization: "Bearer " + $jwt_token },
+    			data: {
+    				userId: userper.id,
+    				comment: userper.comment
+    			}
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("User inactivated");
+    		}).catch(function (error) {
+    			alert("Could not inactivate User");
+    			console.log(error);
+    		});
+    	}
+
+    	function changeUserType() {
+    		var config = {
+    			method: "post",
+    			url: api_root$4 + "/api/service/userchangetype",
+    			headers: { Authorization: "Bearer " + $jwt_token },
+    			data: {
+    				userId: userper.id,
+    				userType: userper.userType
+    			}
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("User Type Changed");
+    		}).catch(function (error) {
+    			alert("Could not Change User Type");
+    			console.log(error);
+    		});
+    	}
+
+    	const writable_props = ['params'];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$4.warn(`<Users> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$4.warn(`<UserDetails> was created with unknown prop '${key}'`);
     	});
 
-    	function input0_input_handler() {
-    		user.username = this.value;
-    		$$invalidate(3, user);
+    	function select_change_handler() {
+    		userper.userType = select_value(this);
+    		$$invalidate(0, userper);
     	}
 
-    	function input1_input_handler() {
-    		user.name = this.value;
-    		$$invalidate(3, user);
+    	function textarea_input_handler() {
+    		userper.comment = this.value;
+    		$$invalidate(0, userper);
     	}
 
-    	function input2_input_handler() {
-    		user.email = this.value;
-    		$$invalidate(3, user);
-    	}
+    	$$self.$$set = $$props => {
+    		if ('params' in $$props) $$invalidate(6, params = $$props.params);
+    	};
 
     	$$self.$capture_state = () => ({
     		axios,
-    		querystring,
     		jwt_token,
-    		api_root: api_root$4,
-    		currentPage,
-    		nrOfPages,
-    		users,
+    		isAuthenticated,
     		user,
-    		getUsers,
-    		createUser,
+    		api_root: api_root$4,
+    		params,
+    		user_id,
+    		userper,
+    		getUser,
+    		deleteUser,
+    		userActivation,
+    		userCompletion,
+    		changeUserType,
     		$jwt_token,
-    		$querystring
+    		$user
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('currentPage' in $$props) $$invalidate(0, currentPage = $$props.currentPage);
-    		if ('nrOfPages' in $$props) $$invalidate(1, nrOfPages = $$props.nrOfPages);
-    		if ('users' in $$props) $$invalidate(2, users = $$props.users);
-    		if ('user' in $$props) $$invalidate(3, user = $$props.user);
+    		if ('params' in $$props) $$invalidate(6, params = $$props.params);
+    		if ('user_id' in $$props) user_id = $$props.user_id;
+    		if ('userper' in $$props) $$invalidate(0, userper = $$props.userper);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -5478,45 +6962,46 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*$querystring*/ 32) {
+    		if ($$self.$$.dirty & /*params*/ 64) {
     			{
-    				let searchParams = new URLSearchParams($querystring);
-
-    				if (searchParams.has("page")) {
-    					$$invalidate(0, currentPage = searchParams.get("page"));
-    				} else {
-    					$$invalidate(0, currentPage = "1");
-    				}
-
-    				getUsers();
+    				user_id = params.id;
+    				getUser();
     			}
     		}
     	};
 
     	return [
-    		currentPage,
-    		nrOfPages,
-    		users,
-    		user,
-    		createUser,
-    		$querystring,
-    		input0_input_handler,
-    		input1_input_handler,
-    		input2_input_handler
+    		userper,
+    		$user,
+    		deleteUser,
+    		userActivation,
+    		userCompletion,
+    		changeUserType,
+    		params,
+    		select_change_handler,
+    		textarea_input_handler
     	];
     }
 
-    class Users extends SvelteComponentDev {
+    class UserDetails extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, { params: 6 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "Users",
+    			tagName: "UserDetails",
     			options,
     			id: create_fragment$6.name
     		});
+    	}
+
+    	get params() {
+    		throw new Error("<UserDetails>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set params(value) {
+    		throw new Error("<UserDetails>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
@@ -5524,7 +7009,7 @@ var app = (function () {
     const file$5 = "src\\pages\\Account.svelte";
 
     // (89:4) {:else}
-    function create_else_block$3(ctx) {
+    function create_else_block$4(ctx) {
     	let div;
     	let h3;
     	let b;
@@ -5554,7 +7039,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$3.name,
+    		id: create_else_block$4.name,
     		type: "else",
     		source: "(89:4) {:else}",
     		ctx
@@ -5932,7 +7417,7 @@ var app = (function () {
 
     	function select_block_type(ctx, dirty) {
     		if (/*$isAuthenticated*/ ctx[0]) return create_if_block$4;
-    		return create_else_block$3;
+    		return create_else_block$4;
     	}
 
     	let current_block_type = select_block_type(ctx);
@@ -6021,10 +7506,10 @@ var app = (function () {
     	}
     }
 
-    /* src\pages\Utilities.svelte generated by Svelte v3.53.1 */
+    /* src\pages\utility\Utilities.svelte generated by Svelte v3.53.1 */
 
     const { console: console_1$3 } = globals;
-    const file$4 = "src\\pages\\Utilities.svelte";
+    const file$4 = "src\\pages\\utility\\Utilities.svelte";
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -6627,15 +8112,15 @@ var app = (function () {
     	return child_ctx;
     }
 
-    function get_each_context_1(ctx, list, i) {
+    function get_each_context_1$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
     	child_ctx[20] = list[i];
     	child_ctx[22] = i;
     	return child_ctx;
     }
 
-    // (86:0) {#if $user.user_roles && $user.user_roles.length > 0}
-    function create_if_block_6(ctx) {
+    // (75:0) {#if $user.user_roles && $user.user_roles.length > 0}
+    function create_if_block_7$1(ctx) {
     	let a;
 
     	const block = {
@@ -6646,7 +8131,7 @@ var app = (function () {
     			attr_dev(a, "href", "#/create-product");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$3, 86, 4, 2400);
+    			add_location(a, file$3, 75, 4, 2110);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -6658,17 +8143,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_6.name,
+    		id: create_if_block_7$1.name,
     		type: "if",
-    		source: "(86:0) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(75:0) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (235:74) 
-    function create_if_block_5(ctx) {
+    // (204:74) 
+    function create_if_block_6$1(ctx) {
     	let p;
     	let span;
     	let t_value = /*product*/ ctx[20].productState + "";
@@ -6680,8 +8165,8 @@ var app = (function () {
     			span = element("span");
     			t = text(t_value);
     			attr_dev(span, "class", "badge bg-secondary");
-    			add_location(span, file$3, 236, 36, 7620);
-    			add_location(p, file$3, 235, 32, 7579);
+    			add_location(span, file$3, 205, 36, 6580);
+    			add_location(p, file$3, 204, 32, 6539);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -6698,17 +8183,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_5.name,
+    		id: create_if_block_6$1.name,
     		type: "if",
-    		source: "(235:74) ",
+    		source: "(204:74) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (229:106) 
-    function create_if_block_4(ctx) {
+    // (198:106) 
+    function create_if_block_5$1(ctx) {
     	let p;
     	let span;
     	let t_value = /*product*/ ctx[20].productState + "";
@@ -6720,8 +8205,8 @@ var app = (function () {
     			span = element("span");
     			t = text(t_value);
     			attr_dev(span, "class", "badge bg-warning");
-    			add_location(span, file$3, 230, 36, 7291);
-    			add_location(p, file$3, 229, 32, 7250);
+    			add_location(span, file$3, 199, 36, 6251);
+    			add_location(p, file$3, 198, 32, 6210);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -6738,17 +8223,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_4.name,
+    		id: create_if_block_5$1.name,
     		type: "if",
-    		source: "(229:106) ",
+    		source: "(198:106) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (223:28) {#if product.productState === "ACTIVE"}
-    function create_if_block_3$1(ctx) {
+    // (192:28) {#if product.productState === "ACTIVE"}
+    function create_if_block_4$1(ctx) {
     	let p;
     	let span;
     	let t_value = /*product*/ ctx[20].productState + "";
@@ -6760,8 +8245,8 @@ var app = (function () {
     			span = element("span");
     			t = text(t_value);
     			attr_dev(span, "class", "badge bg-success");
-    			add_location(span, file$3, 224, 36, 6930);
-    			add_location(p, file$3, 223, 32, 6889);
+    			add_location(span, file$3, 193, 36, 5890);
+    			add_location(p, file$3, 192, 32, 5849);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -6778,21 +8263,70 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_3$1.name,
+    		id: create_if_block_4$1.name,
     		type: "if",
-    		source: "(223:28) {#if product.productState === \\\"ACTIVE\\\"}",
+    		source: "(192:28) {#if product.productState === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (243:28) {#if product.userId === null}
-    function create_if_block_2$1(ctx) {
+    // (211:28) {#if $user.user_roles && $user.user_roles.length > 0}
+    function create_if_block_2$2(ctx) {
+    	let if_block_anchor;
+    	let if_block = /*product*/ ctx[20].userId === null && create_if_block_3$2(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*product*/ ctx[20].userId === null) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_3$2(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2$2.name,
+    		type: "if",
+    		source: "(211:28) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (212:28) {#if product.userId === null}
+    function create_if_block_3$2(ctx) {
     	let p;
     	let button;
     	let mounted;
     	let dispose;
+
+    	function click_handler() {
+    		return /*click_handler*/ ctx[15](/*product*/ ctx[20]);
+    	}
 
     	const block = {
     		c: function create() {
@@ -6801,19 +8335,21 @@ var app = (function () {
     			button.textContent = "Assign to me";
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "btn btn-primary btn-sm");
-    			add_location(button, file$3, 244, 36, 7971);
-    			add_location(p, file$3, 243, 32, 7930);
+    			add_location(button, file$3, 213, 36, 7012);
+    			add_location(p, file$3, 212, 32, 6971);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
     			append_dev(p, button);
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*click_handler*/ ctx[15], false, false, false);
+    				dispose = listen_dev(button, "click", click_handler, false, false, false);
     				mounted = true;
     			}
     		},
-    		p: noop$1,
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(p);
     			mounted = false;
@@ -6823,17 +8359,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_2$1.name,
+    		id: create_if_block_3$2.name,
     		type: "if",
-    		source: "(243:28) {#if product.userId === null}",
+    		source: "(212:28) {#if product.userId === null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (262:28) {:else}
-    function create_else_block$2(ctx) {
+    // (232:28) {:else}
+    function create_else_block$3(ctx) {
     	let p;
     	let small;
 
@@ -6843,9 +8379,9 @@ var app = (function () {
     			small = element("small");
     			small.textContent = "Creator: No Creator defined";
     			attr_dev(small, "class", "text-muted");
-    			add_location(small, file$3, 263, 36, 8946);
+    			add_location(small, file$3, 233, 36, 8025);
     			attr_dev(p, "class", "card-text");
-    			add_location(p, file$3, 262, 32, 8887);
+    			add_location(p, file$3, 232, 32, 7966);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -6859,16 +8395,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$2.name,
+    		id: create_else_block$3.name,
     		type: "else",
-    		source: "(262:28) {:else}",
+    		source: "(232:28) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (256:28) {#if product.userId !== null}
+    // (226:28) {#if product.userId !== null}
     function create_if_block_1$2(ctx) {
     	let p;
     	let small;
@@ -6883,9 +8419,9 @@ var app = (function () {
     			t0 = text("Creator: ");
     			t1 = text(t1_value);
     			attr_dev(small, "class", "text-muted");
-    			add_location(small, file$3, 257, 36, 8639);
+    			add_location(small, file$3, 227, 36, 7718);
     			attr_dev(p, "class", "card-text");
-    			add_location(p, file$3, 256, 32, 8580);
+    			add_location(p, file$3, 226, 32, 7659);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -6905,15 +8441,15 @@ var app = (function () {
     		block,
     		id: create_if_block_1$2.name,
     		type: "if",
-    		source: "(256:28) {#if product.userId !== null}",
+    		source: "(226:28) {#if product.userId !== null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (181:4) {#each products as product, index}
-    function create_each_block_1(ctx) {
+    // (150:4) {#each products as product, index}
+    function create_each_block_1$1(ctx) {
     	let div4;
     	let div3;
     	let div2;
@@ -6959,18 +8495,18 @@ var app = (function () {
     	let t20;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*product*/ ctx[20].productState === "ACTIVE") return create_if_block_3$1;
-    		if (/*product*/ ctx[20].productState === "REVIEW" || /*product*/ ctx[20].productState === "NEW") return create_if_block_4;
-    		if (/*product*/ ctx[20].productState === "INACTIVE") return create_if_block_5;
+    		if (/*product*/ ctx[20].productState === "ACTIVE") return create_if_block_4$1;
+    		if (/*product*/ ctx[20].productState === "REVIEW" || /*product*/ ctx[20].productState === "NEW") return create_if_block_5$1;
+    		if (/*product*/ ctx[20].productState === "INACTIVE") return create_if_block_6$1;
     	}
 
     	let current_block_type = select_block_type(ctx);
     	let if_block0 = current_block_type && current_block_type(ctx);
-    	let if_block1 = /*product*/ ctx[20].userId === null && create_if_block_2$1(ctx);
+    	let if_block1 = /*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0 && create_if_block_2$2(ctx);
 
     	function select_block_type_1(ctx, dirty) {
     		if (/*product*/ ctx[20].userId !== null) return create_if_block_1$2;
-    		return create_else_block$2;
+    		return create_else_block$3;
     	}
 
     	let current_block_type_1 = select_block_type_1(ctx);
@@ -7019,30 +8555,30 @@ var app = (function () {
     			attr_dev(img, "class", "card-img-top");
     			if (!src_url_equal(img.src, img_src_value = "/images/default.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "Card image cap");
-    			add_location(img, file$3, 190, 24, 5556);
+    			add_location(img, file$3, 159, 24, 4516);
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$3, 196, 28, 5822);
+    			add_location(h5, file$3, 165, 28, 4782);
     			attr_dev(span, "class", "badge bg-primary");
-    			add_location(span, file$3, 201, 32, 6023);
+    			add_location(span, file$3, 170, 32, 4983);
     			attr_dev(p0, "class", "card-title");
-    			add_location(p0, file$3, 200, 28, 5967);
+    			add_location(p0, file$3, 169, 28, 4927);
     			attr_dev(p1, "class", "card-text");
-    			add_location(p1, file$3, 206, 28, 6223);
-    			add_location(p2, file$3, 207, 28, 6276);
-    			add_location(p3, file$3, 210, 28, 6412);
-    			add_location(p4, file$3, 214, 28, 6552);
-    			add_location(p5, file$3, 218, 28, 6685);
+    			add_location(p1, file$3, 175, 28, 5183);
+    			add_location(p2, file$3, 176, 28, 5236);
+    			add_location(p3, file$3, 179, 28, 5372);
+    			add_location(p4, file$3, 183, 28, 5512);
+    			add_location(p5, file$3, 187, 28, 5645);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$3, 195, 24, 5769);
+    			add_location(div0, file$3, 164, 24, 4729);
     			attr_dev(div1, "class", "card");
     			attr_dev(div1, "onclick", div1_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[20].id) + "';");
-    			add_location(div1, file$3, 184, 20, 5278);
+    			add_location(div1, file$3, 153, 20, 4238);
     			attr_dev(div2, "class", "card mb-2");
-    			add_location(div2, file$3, 183, 16, 5233);
+    			add_location(div2, file$3, 152, 16, 4193);
     			attr_dev(div3, "class", "col-10");
-    			add_location(div3, file$3, 182, 12, 5195);
+    			add_location(div3, file$3, 151, 12, 4155);
     			attr_dev(div4, "class", "container");
-    			add_location(div4, file$3, 181, 8, 5158);
+    			add_location(div4, file$3, 150, 8, 4118);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div4, anchor);
@@ -7104,11 +8640,11 @@ var app = (function () {
     				}
     			}
 
-    			if (/*product*/ ctx[20].userId === null) {
+    			if (/*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0) {
     				if (if_block1) {
     					if_block1.p(ctx, dirty);
     				} else {
-    					if_block1 = create_if_block_2$1(ctx);
+    					if_block1 = create_if_block_2$2(ctx);
     					if_block1.c();
     					if_block1.m(div0, t19);
     				}
@@ -7147,16 +8683,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_1.name,
+    		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(181:4) {#each products as product, index}",
+    		source: "(150:4) {#each products as product, index}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (284:8) {#each Array(nrOfPages) as _, i}
+    // (254:8) {#each Array(nrOfPages) as _, i}
     function create_each_block$1(ctx) {
     	let li;
     	let a;
@@ -7171,9 +8707,9 @@ var app = (function () {
     			attr_dev(a, "class", "page-link");
     			attr_dev(a, "href", "#/products?page=" + (/*i*/ ctx[19] + 1));
     			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[19] + 1);
-    			add_location(a, file$3, 285, 16, 9607);
+    			add_location(a, file$3, 255, 16, 8686);
     			attr_dev(li, "class", "page-item");
-    			add_location(li, file$3, 284, 12, 9567);
+    			add_location(li, file$3, 254, 12, 8646);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -7194,14 +8730,14 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(284:8) {#each Array(nrOfPages) as _, i}",
+    		source: "(254:8) {#each Array(nrOfPages) as _, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (302:0) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (272:0) {#if $user.user_roles && $user.user_roles.length > 0}
     function create_if_block$3(ctx) {
     	let a;
 
@@ -7213,7 +8749,7 @@ var app = (function () {
     			attr_dev(a, "href", "#/create-product");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$3, 302, 4, 10098);
+    			add_location(a, file$3, 272, 4, 9177);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -7227,7 +8763,7 @@ var app = (function () {
     		block,
     		id: create_if_block$3.name,
     		type: "if",
-    		source: "(302:0) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(272:0) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
@@ -7289,13 +8825,13 @@ var app = (function () {
     	let a3;
     	let mounted;
     	let dispose;
-    	let if_block0 = /*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0 && create_if_block_6(ctx);
+    	let if_block0 = /*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0 && create_if_block_7$1(ctx);
     	let each_value_1 = /*products*/ ctx[5];
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
 
     	for (let i = 0; i < each_value_1.length; i += 1) {
-    		each_blocks_1[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    		each_blocks_1[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
     	}
 
     	let each_value = Array(/*nrOfPages*/ ctx[1]);
@@ -7378,48 +8914,48 @@ var app = (function () {
     			t24 = space();
     			a3 = element("a");
     			a3.textContent = "Back";
-    			add_location(h1, file$3, 84, 0, 2318);
+    			add_location(h1, file$3, 73, 0, 2028);
     			attr_dev(a0, "class", "back-button");
     			attr_dev(a0, "href", "#/");
     			attr_dev(a0, "role", "button");
     			attr_dev(a0, "aria-pressed", "true");
-    			add_location(a0, file$3, 93, 0, 2545);
+    			add_location(a0, file$3, 82, 0, 2255);
     			attr_dev(label0, "for", "");
     			attr_dev(label0, "class", "col-form-label");
-    			add_location(label0, file$3, 97, 8, 2684);
+    			add_location(label0, file$3, 86, 8, 2394);
     			attr_dev(div0, "class", "col-auto");
-    			add_location(div0, file$3, 96, 4, 2652);
+    			add_location(div0, file$3, 85, 4, 2362);
     			attr_dev(input0, "class", "form-control");
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "from");
-    			add_location(input0, file$3, 100, 8, 2783);
+    			add_location(input0, file$3, 89, 8, 2493);
     			attr_dev(div1, "class", "col-3");
-    			add_location(div1, file$3, 99, 4, 2754);
+    			add_location(div1, file$3, 88, 4, 2464);
     			attr_dev(input1, "class", "form-control");
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "to");
-    			add_location(input1, file$3, 108, 8, 2977);
+    			add_location(input1, file$3, 97, 8, 2687);
     			attr_dev(div2, "class", "col-3");
-    			add_location(div2, file$3, 107, 4, 2948);
+    			add_location(div2, file$3, 96, 4, 2658);
     			attr_dev(div3, "class", "col-3");
-    			add_location(div3, file$3, 115, 4, 3140);
+    			add_location(div3, file$3, 104, 4, 2850);
     			attr_dev(div4, "class", "row my-3");
-    			add_location(div4, file$3, 95, 0, 2624);
+    			add_location(div4, file$3, 84, 0, 2334);
     			attr_dev(label1, "for", "");
     			attr_dev(label1, "class", "col-form-label");
-    			add_location(label1, file$3, 120, 8, 3233);
+    			add_location(label1, file$3, 109, 8, 2943);
     			attr_dev(div5, "class", "col-auto");
-    			add_location(div5, file$3, 119, 4, 3201);
+    			add_location(div5, file$3, 108, 4, 2911);
     			attr_dev(input2, "class", "form-check-input");
     			attr_dev(input2, "type", "radio");
     			attr_dev(input2, "name", "schittmuster");
     			input2.__value = "SCHNITTMUSTER";
     			input2.value = input2.__value;
     			/*$$binding_groups*/ ctx[13][0].push(input2);
-    			add_location(input2, file$3, 125, 16, 3402);
-    			add_location(label2, file$3, 124, 12, 3377);
+    			add_location(input2, file$3, 114, 16, 3112);
+    			add_location(label2, file$3, 113, 12, 3087);
     			attr_dev(div6, "class", "form-check");
-    			add_location(div6, file$3, 123, 8, 3339);
+    			add_location(div6, file$3, 112, 8, 3049);
     			attr_dev(input3, "class", "form-check-input");
     			attr_dev(input3, "type", "radio");
     			attr_dev(input3, "name", "manual");
@@ -7427,38 +8963,38 @@ var app = (function () {
     			input3.__value = "MANUAL";
     			input3.value = input3.__value;
     			/*$$binding_groups*/ ctx[13][0].push(input3);
-    			add_location(input3, file$3, 138, 16, 3817);
-    			add_location(label3, file$3, 137, 12, 3792);
+    			add_location(input3, file$3, 127, 16, 3527);
+    			add_location(label3, file$3, 126, 12, 3502);
     			attr_dev(div7, "class", "form-check");
-    			add_location(div7, file$3, 136, 8, 3754);
+    			add_location(div7, file$3, 125, 8, 3464);
     			attr_dev(div8, "class", "col-3");
-    			add_location(div8, file$3, 122, 4, 3310);
+    			add_location(div8, file$3, 111, 4, 3020);
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$3, 153, 8, 4221);
+    			add_location(button, file$3, 142, 8, 3931);
     			attr_dev(div9, "class", "col-3");
-    			add_location(div9, file$3, 152, 4, 4192);
+    			add_location(div9, file$3, 141, 4, 3902);
     			attr_dev(div10, "class", "row my-3");
-    			add_location(div10, file$3, 118, 0, 3173);
+    			add_location(div10, file$3, 107, 0, 2883);
     			attr_dev(div11, "class", "row row-cols-1 row-cols-md-3 g-4");
-    			add_location(div11, file$3, 179, 0, 5062);
+    			add_location(div11, file$3, 148, 0, 4022);
     			attr_dev(a1, "class", "page-link");
     			attr_dev(a1, "href", a1_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] - 1));
-    			add_location(a1, file$3, 279, 12, 9385);
+    			add_location(a1, file$3, 249, 12, 8464);
     			attr_dev(li0, "class", "page-item");
-    			add_location(li0, file$3, 278, 8, 9349);
+    			add_location(li0, file$3, 248, 8, 8428);
     			attr_dev(a2, "class", "page-link");
     			attr_dev(a2, "href", a2_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] + 1));
-    			add_location(a2, file$3, 294, 12, 9896);
+    			add_location(a2, file$3, 264, 12, 8975);
     			attr_dev(li1, "class", "page-item");
-    			add_location(li1, file$3, 293, 8, 9860);
+    			add_location(li1, file$3, 263, 8, 8939);
     			attr_dev(ul, "class", "pagination");
-    			add_location(ul, file$3, 277, 4, 9316);
-    			add_location(nav, file$3, 276, 0, 9305);
+    			add_location(ul, file$3, 247, 4, 8395);
+    			add_location(nav, file$3, 246, 0, 8384);
     			attr_dev(a3, "class", "back-button");
     			attr_dev(a3, "href", "#/");
     			attr_dev(a3, "role", "button");
     			attr_dev(a3, "aria-pressed", "true");
-    			add_location(a3, file$3, 309, 0, 10243);
+    			add_location(a3, file$3, 279, 0, 9322);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7548,7 +9084,7 @@ var app = (function () {
     		p: function update(ctx, [dirty]) {
     			if (/*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0) {
     				if (if_block0) ; else {
-    					if_block0 = create_if_block_6(ctx);
+    					if_block0 = create_if_block_7$1(ctx);
     					if_block0.c();
     					if_block0.m(t2.parentNode, t2);
     				}
@@ -7573,18 +9109,18 @@ var app = (function () {
     				input3.checked = input3.__value === /*type*/ ctx[4];
     			}
 
-    			if (dirty & /*products, assignToMe, user*/ 288) {
+    			if (dirty & /*products, assignToMe, $user*/ 352) {
     				each_value_1 = /*products*/ ctx[5];
     				validate_each_argument(each_value_1);
     				let i;
 
     				for (i = 0; i < each_value_1.length; i += 1) {
-    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+    					const child_ctx = get_each_context_1$1(ctx, each_value_1, i);
 
     					if (each_blocks_1[i]) {
     						each_blocks_1[i].p(child_ctx, dirty);
     					} else {
-    						each_blocks_1[i] = create_each_block_1(child_ctx);
+    						each_blocks_1[i] = create_each_block_1$1(child_ctx);
     						each_blocks_1[i].c();
     						each_blocks_1[i].m(div11, null);
     					}
@@ -7772,8 +9308,8 @@ var app = (function () {
     		$$invalidate(4, type);
     	}
 
-    	const click_handler = () => {
-    		assignToMe(user.id);
+    	const click_handler = product => {
+    		assignToMe(product.id);
     	};
 
     	$$self.$capture_state = () => ({
@@ -7811,18 +9347,6 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*$querystring*/ 512) {
-    			/*let product = {
-        productname: null,
-        description: null,
-        productType: null,
-        difficultyType: null,
-        clothingType: null,
-        size: null,
-        price: null,
-        patchart: null,
-        userId: null,
-        comment: null,
-    };*/
     			{
     				let searchParams = new URLSearchParams($querystring);
 
@@ -7877,7 +9401,7 @@ var app = (function () {
     const file$2 = "src\\pages\\CreateProduct.svelte";
 
     // (146:4) {:else}
-    function create_else_block$1(ctx) {
+    function create_else_block$2(ctx) {
     	let div;
     	let h3;
     	let b;
@@ -7907,7 +9431,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$1.name,
+    		id: create_else_block$2.name,
     		type: "else",
     		source: "(146:4) {:else}",
     		ctx
@@ -8330,7 +9854,7 @@ var app = (function () {
 
     	function select_block_type(ctx, dirty) {
     		if (/*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0) return create_if_block$2;
-    		return create_else_block$1;
+    		return create_else_block$2;
     	}
 
     	let current_block_type = select_block_type(ctx);
@@ -8521,27 +10045,163 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[10] = list[i];
+    	child_ctx[17] = list[i];
     	return child_ctx;
     }
 
-    // (133:16) {#if product.userId === differentUser._id}
-    function create_if_block_1$1(ctx) {
+    function get_each_context_1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[17] = list[i];
+    	return child_ctx;
+    }
+
+    // (206:4) {:else}
+    function create_else_block$1(ctx) {
+    	let div;
+    	let each_value_1 = /*allUsers*/ ctx[1];
+    	validate_each_argument(each_value_1);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			attr_dev(div, "class", "row");
+    			add_location(div, file$1, 207, 4, 5874);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div, null);
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*allUsers, product*/ 6) {
+    				each_value_1 = /*allUsers*/ ctx[1];
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(div, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_1.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_each(each_blocks, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block$1.name,
+    		type: "else",
+    		source: "(206:4) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (192:4) {#if product.userId === null}
+    function create_if_block_8(ctx) {
+    	let div3;
     	let div2;
     	let div1;
     	let div0;
     	let h5;
-    	let t0_value = /*differentUser*/ ctx[10].username + "";
+    	let t1;
+    	let p;
+
+    	const block = {
+    		c: function create() {
+    			div3 = element("div");
+    			div2 = element("div");
+    			div1 = element("div");
+    			div0 = element("div");
+    			h5 = element("h5");
+    			h5.textContent = "No Creator assigned";
+    			t1 = space();
+    			p = element("p");
+    			attr_dev(h5, "class", "card-title");
+    			add_location(h5, file$1, 196, 28, 5565);
+    			attr_dev(p, "class", "card-text");
+    			add_location(p, file$1, 199, 28, 5706);
+    			attr_dev(div0, "class", "card-body");
+    			add_location(div0, file$1, 195, 24, 5512);
+    			attr_dev(div1, "class", "card");
+    			add_location(div1, file$1, 194, 20, 5468);
+    			attr_dev(div2, "class", "col-sm-4");
+    			add_location(div2, file$1, 193, 16, 5424);
+    			attr_dev(div3, "class", "row");
+    			add_location(div3, file$1, 192, 4, 5389);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div2);
+    			append_dev(div2, div1);
+    			append_dev(div1, div0);
+    			append_dev(div0, h5);
+    			append_dev(div0, t1);
+    			append_dev(div0, p);
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div3);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_8.name,
+    		type: "if",
+    		source: "(192:4) {#if product.userId === null}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (210:16) {#if product.userId == user.id}
+    function create_if_block_9(ctx) {
+    	let div2;
+    	let div1;
+    	let div0;
+    	let h5;
+    	let t0_value = /*user*/ ctx[17].username + "";
     	let t0;
     	let t1;
     	let p0;
     	let t2;
-    	let t3_value = /*differentUser*/ ctx[10].name + "";
+    	let t3_value = /*user*/ ctx[17].name + "";
     	let t3;
     	let t4;
     	let p1;
     	let t5;
-    	let t6_value = /*differentUser*/ ctx[10].email + "";
+    	let t6_value = /*user*/ ctx[17].email + "";
     	let t6;
     	let t7;
 
@@ -8562,16 +10222,16 @@ var app = (function () {
     			t6 = text(t6_value);
     			t7 = space();
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$1, 136, 32, 3855);
+    			add_location(h5, file$1, 213, 32, 6153);
     			attr_dev(p0, "class", "card-text");
-    			add_location(p0, file$1, 139, 32, 4013);
-    			add_location(p1, file$1, 142, 32, 4170);
+    			add_location(p0, file$1, 216, 32, 6302);
+    			add_location(p1, file$1, 219, 32, 6450);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$1, 135, 28, 3798);
+    			add_location(div0, file$1, 212, 28, 6096);
     			attr_dev(div1, "class", "card");
-    			add_location(div1, file$1, 134, 24, 3750);
+    			add_location(div1, file$1, 211, 24, 6048);
     			attr_dev(div2, "class", "col-sm-4");
-    			add_location(div2, file$1, 133, 20, 3702);
+    			add_location(div2, file$1, 210, 20, 6000);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -8590,9 +10250,9 @@ var app = (function () {
     			append_dev(div2, t7);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*allUsers*/ 1 && t0_value !== (t0_value = /*differentUser*/ ctx[10].username + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*allUsers*/ 1 && t3_value !== (t3_value = /*differentUser*/ ctx[10].name + "")) set_data_dev(t3, t3_value);
-    			if (dirty & /*allUsers*/ 1 && t6_value !== (t6_value = /*differentUser*/ ctx[10].email + "")) set_data_dev(t6, t6_value);
+    			if (dirty & /*allUsers*/ 2 && t0_value !== (t0_value = /*user*/ ctx[17].username + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*allUsers*/ 2 && t3_value !== (t3_value = /*user*/ ctx[17].name + "")) set_data_dev(t3, t3_value);
+    			if (dirty & /*allUsers*/ 2 && t6_value !== (t6_value = /*user*/ ctx[17].email + "")) set_data_dev(t6, t6_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
@@ -8601,19 +10261,19 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$1.name,
+    		id: create_if_block_9.name,
     		type: "if",
-    		source: "(133:16) {#if product.userId === differentUser._id}",
+    		source: "(210:16) {#if product.userId == user.id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (132:12) {#each allUsers as differentUser}
-    function create_each_block(ctx) {
+    // (209:12) {#each allUsers as user}
+    function create_each_block_1(ctx) {
     	let if_block_anchor;
-    	let if_block = /*product*/ ctx[1].userId === /*differentUser*/ ctx[10]._id && create_if_block_1$1(ctx);
+    	let if_block = /*product*/ ctx[2].userId == /*user*/ ctx[17].id && create_if_block_9(ctx);
 
     	const block = {
     		c: function create() {
@@ -8625,11 +10285,11 @@ var app = (function () {
     			insert_dev(target, if_block_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (/*product*/ ctx[1].userId === /*differentUser*/ ctx[10]._id) {
+    			if (/*product*/ ctx[2].userId == /*user*/ ctx[17].id) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
-    					if_block = create_if_block_1$1(ctx);
+    					if_block = create_if_block_9(ctx);
     					if_block.c();
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
     				}
@@ -8646,17 +10306,402 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block.name,
+    		id: create_each_block_1.name,
     		type: "each",
-    		source: "(132:12) {#each allUsers as differentUser}",
+    		source: "(209:12) {#each allUsers as user}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (157:4) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (233:4) {#if product.userId === null}
+    function create_if_block_7(ctx) {
+    	let h3;
+    	let t1;
+    	let label;
+    	let t3;
+    	let div0;
+    	let select;
+    	let t4;
+    	let div1;
+    	let t5;
+    	let button;
+    	let mounted;
+    	let dispose;
+    	let each_value = /*allUsers*/ ctx[1];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			h3 = element("h3");
+    			h3.textContent = "Assign User";
+    			t1 = space();
+    			label = element("label");
+    			label.textContent = "Add a User to this Product";
+    			t3 = space();
+    			div0 = element("div");
+    			select = element("select");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t4 = space();
+    			div1 = element("div");
+    			t5 = space();
+    			button = element("button");
+    			button.textContent = "Assign";
+    			add_location(h3, file$1, 233, 4, 6785);
+    			attr_dev(label, "for", "member");
+    			add_location(label, file$1, 234, 4, 6811);
+    			attr_dev(select, "class", "form-select");
+    			attr_dev(select, "id", "user");
+    			if (/*user_id*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[10].call(select));
+    			add_location(select, file$1, 236, 8, 6903);
+    			attr_dev(div0, "class", "col-md-4");
+    			add_location(div0, file$1, 235, 4, 6871);
+    			attr_dev(div1, "class", "col-md-6");
+    			add_location(div1, file$1, 244, 4, 7176);
+    			attr_dev(button, "class", "my-button");
+    			add_location(button, file$1, 245, 4, 7206);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, h3, anchor);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, label, anchor);
+    			insert_dev(target, t3, anchor);
+    			insert_dev(target, div0, anchor);
+    			append_dev(div0, select);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(select, null);
+    			}
+
+    			select_option(select, /*user_id*/ ctx[0]);
+    			insert_dev(target, t4, anchor);
+    			insert_dev(target, div1, anchor);
+    			insert_dev(target, t5, anchor);
+    			insert_dev(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[10]),
+    					listen_dev(button, "click", /*productassignment*/ ctx[5], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*allUsers*/ 2) {
+    				each_value = /*allUsers*/ ctx[1];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(select, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+
+    			if (dirty & /*user_id, allUsers*/ 3) {
+    				select_option(select, /*user_id*/ ctx[0]);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(h3);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(label);
+    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(div0);
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(t4);
+    			if (detaching) detach_dev(div1);
+    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(button);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_7.name,
+    		type: "if",
+    		source: "(233:4) {#if product.userId === null}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (238:12) {#each allUsers as user}
+    function create_each_block(ctx) {
+    	let option;
+    	let t_value = /*user*/ ctx[17].username + "";
+    	let t;
+    	let option_value_value;
+
+    	const block = {
+    		c: function create() {
+    			option = element("option");
+    			t = text(t_value);
+    			option.__value = option_value_value = /*user*/ ctx[17].id;
+    			option.value = option.__value;
+    			add_location(option, file$1, 238, 20, 7022);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, option, anchor);
+    			append_dev(option, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*allUsers*/ 2 && t_value !== (t_value = /*user*/ ctx[17].username + "")) set_data_dev(t, t_value);
+
+    			if (dirty & /*allUsers*/ 2 && option_value_value !== (option_value_value = /*user*/ ctx[17].id)) {
+    				prop_dev(option, "__value", option_value_value);
+    				option.value = option.__value;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(option);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block.name,
+    		type: "each",
+    		source: "(238:12) {#each allUsers as user}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (254:4) {#if product.productState === "ACTIVE"}
+    function create_if_block_6(ctx) {
+    	let form;
+    	let div1;
+    	let div0;
+    	let label;
+    	let t1;
+    	let textarea;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			form = element("form");
+    			div1 = element("div");
+    			div0 = element("div");
+    			label = element("label");
+    			label.textContent = "Comment for Inactivation of Product";
+    			t1 = space();
+    			textarea = element("textarea");
+    			attr_dev(label, "for", "comment");
+    			add_location(label, file$1, 257, 20, 7512);
+    			attr_dev(textarea, "class", "form-control");
+    			attr_dev(textarea, "id", "comment");
+    			attr_dev(textarea, "rows", "3");
+    			add_location(textarea, file$1, 260, 20, 7646);
+    			attr_dev(div0, "class", "col");
+    			add_location(div0, file$1, 256, 16, 7473);
+    			attr_dev(div1, "class", "row mb-3");
+    			add_location(div1, file$1, 255, 12, 7433);
+    			add_location(form, file$1, 254, 8, 7413);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, form, anchor);
+    			append_dev(form, div1);
+    			append_dev(div1, div0);
+    			append_dev(div0, label);
+    			append_dev(div0, t1);
+    			append_dev(div0, textarea);
+    			set_input_value(textarea, /*product*/ ctx[2].comment);
+
+    			if (!mounted) {
+    				dispose = listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[11]);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*product*/ 4) {
+    				set_input_value(textarea, /*product*/ ctx[2].comment);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(form);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_6.name,
+    		type: "if",
+    		source: "(254:4) {#if product.productState === \\\"ACTIVE\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (272:4) {#if product.productState === "INACTIVE"}
+    function create_if_block_5(ctx) {
+    	let div;
+    	let ul;
+    	let li0;
+    	let t1;
+    	let li1;
+    	let t2_value = /*product*/ ctx[2].comment + "";
+    	let t2;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			ul = element("ul");
+    			li0 = element("li");
+    			li0.textContent = "Reason for Inactivation:";
+    			t1 = space();
+    			li1 = element("li");
+    			t2 = text(t2_value);
+    			attr_dev(li0, "class", "list-group-item-top active");
+    			attr_dev(li0, "aria-current", "true");
+    			add_location(li0, file$1, 274, 12, 8047);
+    			attr_dev(li1, "class", "list-group-item");
+    			add_location(li1, file$1, 277, 12, 8181);
+    			attr_dev(ul, "class", "list-group");
+    			add_location(ul, file$1, 273, 8, 8010);
+    			attr_dev(div, "class", "col-md-4");
+    			add_location(div, file$1, 272, 4, 7978);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, ul);
+    			append_dev(ul, li0);
+    			append_dev(ul, t1);
+    			append_dev(ul, li1);
+    			append_dev(li1, t2);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*product*/ 4 && t2_value !== (t2_value = /*product*/ ctx[2].comment + "")) set_data_dev(t2, t2_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_5.name,
+    		type: "if",
+    		source: "(272:4) {#if product.productState === \\\"INACTIVE\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (289:4) {#if $user.user_roles && $user.user_roles.length > 0}
     function create_if_block$1(ctx) {
+    	let a;
+    	let t1;
+    	let if_block_anchor;
+    	let mounted;
+    	let dispose;
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (/*product*/ ctx[2].productState === "NEW") return create_if_block_1$1;
+    		if (/*product*/ ctx[2].productState === "REVIEW") return create_if_block_2$1;
+    		if (/*product*/ ctx[2].productState === "ACTIVE") return create_if_block_3$1;
+    		if (/*product*/ ctx[2].productState === "INACTIVE") return create_if_block_4;
+    	}
+
+    	let current_block_type = select_block_type_1(ctx);
+    	let if_block = current_block_type && current_block_type(ctx);
+
+    	const block = {
+    		c: function create() {
+    			a = element("a");
+    			a.textContent = "Delete Product";
+    			t1 = space();
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    			attr_dev(a, "href", "#/products");
+    			attr_dev(a, "class", "delete-button");
+    			add_location(a, file$1, 289, 8, 8408);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, a, anchor);
+    			insert_dev(target, t1, anchor);
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(a, "click", /*deleteProduct*/ ctx[4], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block) {
+    				if_block.p(ctx, dirty);
+    			} else {
+    				if (if_block) if_block.d(1);
+    				if_block = current_block_type && current_block_type(ctx);
+
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(a);
+    			if (detaching) detach_dev(t1);
+
+    			if (if_block) {
+    				if_block.d(detaching);
+    			}
+
+    			if (detaching) detach_dev(if_block_anchor);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(289:4) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (305:54) 
+    function create_if_block_4(ctx) {
     	let a;
     	let mounted;
     	let dispose;
@@ -8664,16 +10709,16 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			a = element("a");
-    			a.textContent = "Delete Product";
+    			a.textContent = "Activate Product";
     			attr_dev(a, "href", "#/products");
-    			attr_dev(a, "class", "delete-button");
-    			add_location(a, file$1, 157, 4, 4612);
+    			attr_dev(a, "class", "my-button");
+    			add_location(a, file$1, 305, 12, 9140);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
 
     			if (!mounted) {
-    				dispose = listen_dev(a, "click", /*deleteProduct*/ ctx[3], false, false, false);
+    				dispose = listen_dev(a, "click", /*productActivation*/ ctx[6], false, false, false);
     				mounted = true;
     			}
     		},
@@ -8687,9 +10732,132 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$1.name,
+    		id: create_if_block_4.name,
     		type: "if",
-    		source: "(157:4) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(305:54) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (301:52) 
+    function create_if_block_3$1(ctx) {
+    	let a;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			a = element("a");
+    			a.textContent = "Inactivate Product";
+    			attr_dev(a, "href", "#/products");
+    			attr_dev(a, "class", "my-button");
+    			add_location(a, file$1, 301, 12, 8948);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, a, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(a, "click", /*productCompletion*/ ctx[8], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(a);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3$1.name,
+    		type: "if",
+    		source: "(301:52) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (297:52) 
+    function create_if_block_2$1(ctx) {
+    	let a;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			a = element("a");
+    			a.textContent = "Activate Product";
+    			attr_dev(a, "href", "#/products");
+    			attr_dev(a, "class", "my-button");
+    			add_location(a, file$1, 297, 12, 8760);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, a, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(a, "click", /*productActivation*/ ctx[6], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(a);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2$1.name,
+    		type: "if",
+    		source: "(297:52) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (293:8) {#if product.productState === "NEW"}
+    function create_if_block_1$1(ctx) {
+    	let a;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			a = element("a");
+    			a.textContent = "Review Product";
+    			attr_dev(a, "href", "#/products");
+    			attr_dev(a, "class", "my-button");
+    			add_location(a, file$1, 293, 12, 8578);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, a, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(a, "click", /*productReview*/ ctx[7], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(a);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$1.name,
+    		type: "if",
+    		source: "(293:8) {#if product.productState === \\\"NEW\\\"}",
     		ctx
     	});
 
@@ -8699,49 +10867,63 @@ var app = (function () {
     function create_fragment$1(ctx) {
     	let h1;
     	let t0;
-    	let t1_value = /*product*/ ctx[1].productname + "";
+    	let t1_value = /*product*/ ctx[2].productname + "";
     	let t1;
     	let t2;
     	let p;
     	let t3;
-    	let t4_value = /*product*/ ctx[1].id + "";
+    	let t4_value = /*product*/ ctx[2].id + "";
     	let t4;
     	let t5;
     	let h30;
     	let t6;
-    	let t7_value = /*product*/ ctx[1].productType + "";
+    	let t7_value = /*product*/ ctx[2].productType + "";
     	let t7;
     	let t8;
-    	let div5;
+    	let div6;
     	let div0;
     	let ul;
     	let li0;
     	let t10;
     	let li1;
-    	let t11_value = /*product*/ ctx[1].description + "";
+    	let t11_value = /*product*/ ctx[2].description + "";
     	let t11;
     	let t12;
     	let div1;
     	let t13;
     	let h31;
     	let t15;
-    	let div2;
     	let t16;
-    	let div3;
+    	let div2;
     	let t17;
     	let t18;
-    	let a;
+    	let div3;
+    	let t19;
+    	let h32;
     	let t20;
+    	let t21_value = /*product*/ ctx[2].productState + "";
+    	let t21;
+    	let t22;
+    	let t23;
+    	let t24;
     	let div4;
-    	let each_value = /*allUsers*/ ctx[0];
-    	validate_each_argument(each_value);
-    	let each_blocks = [];
+    	let t25;
+    	let t26;
+    	let a;
+    	let t28;
+    	let div5;
 
-    	for (let i = 0; i < each_value.length; i += 1) {
-    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    	function select_block_type(ctx, dirty) {
+    		if (/*product*/ ctx[2].userId === null) return create_if_block_8;
+    		return create_else_block$1;
     	}
 
-    	let if_block = /*$user*/ ctx[2].user_roles && /*$user*/ ctx[2].user_roles.length > 0 && create_if_block$1(ctx);
+    	let current_block_type = select_block_type(ctx);
+    	let if_block0 = current_block_type(ctx);
+    	let if_block1 = /*product*/ ctx[2].userId === null && create_if_block_7(ctx);
+    	let if_block2 = /*product*/ ctx[2].productState === "ACTIVE" && create_if_block_6(ctx);
+    	let if_block3 = /*product*/ ctx[2].productState === "INACTIVE" && create_if_block_5(ctx);
+    	let if_block4 = /*$user*/ ctx[3].user_roles && /*$user*/ ctx[3].user_roles.length > 0 && create_if_block$1(ctx);
 
     	const block = {
     		c: function create() {
@@ -8757,7 +10939,7 @@ var app = (function () {
     			t6 = text("Product Type: ");
     			t7 = text(t7_value);
     			t8 = space();
-    			div5 = element("div");
+    			div6 = element("div");
     			div0 = element("div");
     			ul = element("ul");
     			li0 = element("li");
@@ -8771,49 +10953,62 @@ var app = (function () {
     			h31 = element("h3");
     			h31.textContent = "Creator:";
     			t15 = space();
-    			div2 = element("div");
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
+    			if_block0.c();
     			t16 = space();
-    			div3 = element("div");
+    			div2 = element("div");
     			t17 = space();
-    			if (if_block) if_block.c();
+    			if (if_block1) if_block1.c();
     			t18 = space();
+    			div3 = element("div");
+    			t19 = space();
+    			h32 = element("h3");
+    			t20 = text("Status: ");
+    			t21 = text(t21_value);
+    			t22 = space();
+    			if (if_block2) if_block2.c();
+    			t23 = space();
+    			if (if_block3) if_block3.c();
+    			t24 = space();
+    			div4 = element("div");
+    			t25 = space();
+    			if (if_block4) if_block4.c();
+    			t26 = space();
     			a = element("a");
     			a.textContent = "Back";
-    			t20 = space();
-    			div4 = element("div");
-    			add_location(h1, file$1, 96, 4, 2546);
-    			add_location(p, file$1, 97, 4, 2590);
-    			add_location(h30, file$1, 98, 4, 2619);
+    			t28 = space();
+    			div5 = element("div");
+    			attr_dev(h1, "class", "md-3");
+    			add_location(h1, file$1, 171, 0, 4831);
+    			add_location(p, file$1, 172, 0, 4884);
+    			add_location(h30, file$1, 173, 0, 4909);
     			attr_dev(li0, "class", "list-group-item-top active");
     			attr_dev(li0, "aria-current", "true");
-    			add_location(li0, file$1, 103, 16, 2777);
+    			add_location(li0, file$1, 178, 12, 5051);
     			attr_dev(li1, "class", "list-group-item");
-    			add_location(li1, file$1, 106, 16, 2911);
+    			add_location(li1, file$1, 181, 12, 5173);
     			attr_dev(ul, "class", "list-group");
-    			add_location(ul, file$1, 102, 12, 2736);
+    			add_location(ul, file$1, 177, 8, 5014);
     			attr_dev(div0, "class", "col-md-4");
-    			add_location(div0, file$1, 101, 8, 2700);
-    			attr_dev(div1, "class", "col-md-1");
-    			add_location(div1, file$1, 111, 8, 3050);
-    			add_location(h31, file$1, 128, 4, 3531);
-    			attr_dev(div2, "class", "row");
-    			add_location(div2, file$1, 130, 4, 3556);
-    			attr_dev(div3, "class", "col-md-12");
-    			add_location(div3, file$1, 153, 4, 4439);
+    			add_location(div0, file$1, 176, 4, 4982);
+    			attr_dev(div1, "class", "col-md-8");
+    			add_location(div1, file$1, 187, 4, 5297);
+    			add_location(h31, file$1, 189, 4, 5329);
+    			attr_dev(div2, "class", "col-md-8");
+    			add_location(div2, file$1, 230, 4, 6718);
+    			attr_dev(div3, "class", "col-md-8");
+    			add_location(div3, file$1, 249, 0, 7289);
+    			add_location(h32, file$1, 251, 0, 7317);
+    			attr_dev(div4, "class", "col-md-8");
+    			add_location(div4, file$1, 285, 4, 8311);
     			attr_dev(a, "class", "back-button");
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$1, 160, 4, 4721);
-    			attr_dev(div4, "class", "md-12");
-    			add_location(div4, file$1, 163, 4, 4826);
+    			add_location(a, file$1, 310, 4, 9292);
     			attr_dev(div5, "class", "md-12");
-    			add_location(div5, file$1, 100, 4, 2671);
+    			add_location(div5, file$1, 313, 4, 9397);
+    			attr_dev(div6, "class", "md-12");
+    			add_location(div6, file$1, 175, 0, 4957);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8831,74 +11026,112 @@ var app = (function () {
     			append_dev(h30, t6);
     			append_dev(h30, t7);
     			insert_dev(target, t8, anchor);
-    			insert_dev(target, div5, anchor);
-    			append_dev(div5, div0);
+    			insert_dev(target, div6, anchor);
+    			append_dev(div6, div0);
     			append_dev(div0, ul);
     			append_dev(ul, li0);
     			append_dev(ul, t10);
     			append_dev(ul, li1);
     			append_dev(li1, t11);
-    			append_dev(div5, t12);
-    			append_dev(div5, div1);
-    			append_dev(div5, t13);
-    			append_dev(div5, h31);
-    			append_dev(div5, t15);
-    			append_dev(div5, div2);
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div2, null);
-    			}
-
-    			append_dev(div5, t16);
-    			append_dev(div5, div3);
-    			append_dev(div5, t17);
-    			if (if_block) if_block.m(div5, null);
-    			append_dev(div5, t18);
-    			append_dev(div5, a);
-    			append_dev(div5, t20);
-    			append_dev(div5, div4);
+    			append_dev(div6, t12);
+    			append_dev(div6, div1);
+    			append_dev(div6, t13);
+    			append_dev(div6, h31);
+    			append_dev(div6, t15);
+    			if_block0.m(div6, null);
+    			append_dev(div6, t16);
+    			append_dev(div6, div2);
+    			append_dev(div6, t17);
+    			if (if_block1) if_block1.m(div6, null);
+    			append_dev(div6, t18);
+    			append_dev(div6, div3);
+    			append_dev(div6, t19);
+    			append_dev(div6, h32);
+    			append_dev(h32, t20);
+    			append_dev(h32, t21);
+    			append_dev(div6, t22);
+    			if (if_block2) if_block2.m(div6, null);
+    			append_dev(div6, t23);
+    			if (if_block3) if_block3.m(div6, null);
+    			append_dev(div6, t24);
+    			append_dev(div6, div4);
+    			append_dev(div6, t25);
+    			if (if_block4) if_block4.m(div6, null);
+    			append_dev(div6, t26);
+    			append_dev(div6, a);
+    			append_dev(div6, t28);
+    			append_dev(div6, div5);
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*product*/ 2 && t1_value !== (t1_value = /*product*/ ctx[1].productname + "")) set_data_dev(t1, t1_value);
-    			if (dirty & /*product*/ 2 && t4_value !== (t4_value = /*product*/ ctx[1].id + "")) set_data_dev(t4, t4_value);
-    			if (dirty & /*product*/ 2 && t7_value !== (t7_value = /*product*/ ctx[1].productType + "")) set_data_dev(t7, t7_value);
-    			if (dirty & /*product*/ 2 && t11_value !== (t11_value = /*product*/ ctx[1].description + "")) set_data_dev(t11, t11_value);
+    			if (dirty & /*product*/ 4 && t1_value !== (t1_value = /*product*/ ctx[2].productname + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*product*/ 4 && t4_value !== (t4_value = /*product*/ ctx[2].id + "")) set_data_dev(t4, t4_value);
+    			if (dirty & /*product*/ 4 && t7_value !== (t7_value = /*product*/ ctx[2].productType + "")) set_data_dev(t7, t7_value);
+    			if (dirty & /*product*/ 4 && t11_value !== (t11_value = /*product*/ ctx[2].description + "")) set_data_dev(t11, t11_value);
 
-    			if (dirty & /*allUsers, product*/ 3) {
-    				each_value = /*allUsers*/ ctx[0];
-    				validate_each_argument(each_value);
-    				let i;
+    			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
+    				if_block0.p(ctx, dirty);
+    			} else {
+    				if_block0.d(1);
+    				if_block0 = current_block_type(ctx);
 
-    				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context(ctx, each_value, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(div2, null);
-    					}
+    				if (if_block0) {
+    					if_block0.c();
+    					if_block0.m(div6, t16);
     				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value.length;
     			}
 
-    			if (/*$user*/ ctx[2].user_roles && /*$user*/ ctx[2].user_roles.length > 0) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
+    			if (/*product*/ ctx[2].userId === null) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
     				} else {
-    					if_block = create_if_block$1(ctx);
-    					if_block.c();
-    					if_block.m(div5, t18);
+    					if_block1 = create_if_block_7(ctx);
+    					if_block1.c();
+    					if_block1.m(div6, t18);
     				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+
+    			if (dirty & /*product*/ 4 && t21_value !== (t21_value = /*product*/ ctx[2].productState + "")) set_data_dev(t21, t21_value);
+
+    			if (/*product*/ ctx[2].productState === "ACTIVE") {
+    				if (if_block2) {
+    					if_block2.p(ctx, dirty);
+    				} else {
+    					if_block2 = create_if_block_6(ctx);
+    					if_block2.c();
+    					if_block2.m(div6, t23);
+    				}
+    			} else if (if_block2) {
+    				if_block2.d(1);
+    				if_block2 = null;
+    			}
+
+    			if (/*product*/ ctx[2].productState === "INACTIVE") {
+    				if (if_block3) {
+    					if_block3.p(ctx, dirty);
+    				} else {
+    					if_block3 = create_if_block_5(ctx);
+    					if_block3.c();
+    					if_block3.m(div6, t24);
+    				}
+    			} else if (if_block3) {
+    				if_block3.d(1);
+    				if_block3 = null;
+    			}
+
+    			if (/*$user*/ ctx[3].user_roles && /*$user*/ ctx[3].user_roles.length > 0) {
+    				if (if_block4) {
+    					if_block4.p(ctx, dirty);
+    				} else {
+    					if_block4 = create_if_block$1(ctx);
+    					if_block4.c();
+    					if_block4.m(div6, t26);
+    				}
+    			} else if (if_block4) {
+    				if_block4.d(1);
+    				if_block4 = null;
     			}
     		},
     		i: noop$1,
@@ -8910,9 +11143,12 @@ var app = (function () {
     			if (detaching) detach_dev(t5);
     			if (detaching) detach_dev(h30);
     			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(div5);
-    			destroy_each(each_blocks, detaching);
-    			if (if_block) if_block.d();
+    			if (detaching) detach_dev(div6);
+    			if_block0.d();
+    			if (if_block1) if_block1.d();
+    			if (if_block2) if_block2.d();
+    			if (if_block3) if_block3.d();
+    			if (if_block4) if_block4.d();
     		}
     	};
 
@@ -8933,9 +11169,9 @@ var app = (function () {
     	let $jwt_token;
     	let $user;
     	validate_store(jwt_token, 'jwt_token');
-    	component_subscribe($$self, jwt_token, $$value => $$invalidate(6, $jwt_token = $$value));
+    	component_subscribe($$self, jwt_token, $$value => $$invalidate(13, $jwt_token = $$value));
     	validate_store(user, 'user');
-    	component_subscribe($$self, user, $$value => $$invalidate(2, $user = $$value));
+    	component_subscribe($$self, user, $$value => $$invalidate(3, $user = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('ProductDetails', slots, []);
     	let { params = {} } = $$props;
@@ -8956,6 +11192,8 @@ var app = (function () {
     		comment: null
     	};
 
+    	let productId = { productId: product.id };
+
     	function getProduct() {
     		var config = {
     			method: "get",
@@ -8964,7 +11202,7 @@ var app = (function () {
     		};
 
     		axios(config).then(function (response) {
-    			$$invalidate(1, product = response.data);
+    			$$invalidate(2, product = response.data);
     		}).catch(function (error) {
     			alert("Could not get product");
     			console.log(error);
@@ -8972,11 +11210,6 @@ var app = (function () {
     	}
 
     	function getUsers() {
-    		/* axios.get("http://localhost:3001/api/members").then((response) => {
-        allMembers = response.data;
-        console.log(allMembers.length);
-    });
-    */
     		var config = {
     			method: "get",
     			url: api_root + "/api/users",
@@ -8984,8 +11217,9 @@ var app = (function () {
     		};
 
     		axios(config).then(function (response) {
-    			$$invalidate(0, allUsers = response.data);
-    			console.log(allMembers.length);
+    			$$invalidate(1, allUsers = response.data.content);
+    			console.log(allUsers.length);
+    			console.log(allUsers);
     		}).catch(function (error) {
     			alert("Could not get users");
     			console.log(error);
@@ -9007,19 +11241,96 @@ var app = (function () {
     		});
     	}
 
+    	function productassignment() {
+    		var config = {
+    			method: "post",
+    			url: api_root + "/api/service/productassignment",
+    			headers: { Authorization: "Bearer " + $jwt_token },
+    			data: { productId: product.id, userId: user_id }
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("Product is assigned to user");
+    		}).catch(function (error) {
+    			alert("Could not assign Product to user");
+    			console.log(error);
+    		});
+    	}
+
+    	function productActivation() {
+    		var config = {
+    			method: "post",
+    			url: api_root + "/api/service/productactivation",
+    			headers: { Authorization: "Bearer " + $jwt_token },
+    			data: { productId: product.id }
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("Product activated");
+    		}).catch(function (error) {
+    			alert("Could not activate Product");
+    			console.log(error);
+    		});
+    	}
+
+    	function productReview() {
+    		var config = {
+    			method: "post",
+    			url: api_root + "/api/service/productreview",
+    			headers: { Authorization: "Bearer " + $jwt_token },
+    			data: { productId: product.id }
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("Product reviewed");
+    		}).catch(function (error) {
+    			alert("Could not review Product");
+    			console.log(error);
+    		});
+    	}
+
+    	function productCompletion() {
+    		var config = {
+    			method: "post",
+    			url: api_root + "/api/service/productcompletion",
+    			headers: { Authorization: "Bearer " + $jwt_token },
+    			data: {
+    				productId: product.id,
+    				comment: product.comment
+    			}
+    		};
+
+    		axios(config).then(function (response) {
+    			alert("Product inactivated");
+    		}).catch(function (error) {
+    			alert("Could not inactivate Product");
+    			console.log(error);
+    		});
+    	}
+
     	const writable_props = ['params'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<ProductDetails> was created with unknown prop '${key}'`);
     	});
 
+    	function select_change_handler() {
+    		user_id = select_value(this);
+    		$$invalidate(0, user_id);
+    		$$invalidate(1, allUsers);
+    	}
+
+    	function textarea_input_handler() {
+    		product.comment = this.value;
+    		$$invalidate(2, product);
+    	}
+
     	$$self.$$set = $$props => {
-    		if ('params' in $$props) $$invalidate(4, params = $$props.params);
+    		if ('params' in $$props) $$invalidate(9, params = $$props.params);
     	};
 
     	$$self.$capture_state = () => ({
     		axios,
-    		querystring,
     		jwt_token,
     		isAuthenticated,
     		user,
@@ -9029,19 +11340,25 @@ var app = (function () {
     		user_id,
     		allUsers,
     		product,
+    		productId,
     		getProduct,
     		getUsers,
     		deleteProduct,
+    		productassignment,
+    		productActivation,
+    		productReview,
+    		productCompletion,
     		$jwt_token,
     		$user
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('params' in $$props) $$invalidate(4, params = $$props.params);
+    		if ('params' in $$props) $$invalidate(9, params = $$props.params);
     		if ('product_id' in $$props) product_id = $$props.product_id;
-    		if ('user_id' in $$props) user_id = $$props.user_id;
-    		if ('allUsers' in $$props) $$invalidate(0, allUsers = $$props.allUsers);
-    		if ('product' in $$props) $$invalidate(1, product = $$props.product);
+    		if ('user_id' in $$props) $$invalidate(0, user_id = $$props.user_id);
+    		if ('allUsers' in $$props) $$invalidate(1, allUsers = $$props.allUsers);
+    		if ('product' in $$props) $$invalidate(2, product = $$props.product);
+    		if ('productId' in $$props) productId = $$props.productId;
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -9049,7 +11366,7 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*params*/ 16) {
+    		if ($$self.$$.dirty & /*params*/ 512) {
     			{
     				product_id = params.id;
     				getProduct();
@@ -9058,13 +11375,26 @@ var app = (function () {
     		}
     	};
 
-    	return [allUsers, product, $user, deleteProduct, params];
+    	return [
+    		user_id,
+    		allUsers,
+    		product,
+    		$user,
+    		deleteProduct,
+    		productassignment,
+    		productActivation,
+    		productReview,
+    		productCompletion,
+    		params,
+    		select_change_handler,
+    		textarea_input_handler
+    	];
     }
 
     class ProductDetails extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { params: 4 });
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { params: 9 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -9093,6 +11423,7 @@ var app = (function () {
 
 
         '/users': Users,
+        '/users/:id': UserDetails,
         '/utilities': Utilities,
     };
 
@@ -9157,12 +11488,12 @@ var app = (function () {
     			attr_dev(img, "height", "30");
     			attr_dev(img, "class", "d-inline-block align-top");
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 29, 8, 869);
+    			add_location(img, file, 29, 8, 883);
     			attr_dev(a, "class", "navbar-brand");
     			attr_dev(a, "href", "/#");
-    			add_location(a, file, 28, 7, 825);
+    			add_location(a, file, 28, 7, 839);
     			attr_dev(li, "class", "nav-item");
-    			add_location(li, file, 27, 6, 795);
+    			add_location(li, file, 27, 6, 809);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -9185,7 +11516,7 @@ var app = (function () {
     	return block;
     }
 
-    // (44:5) {#if $isAuthenticated && $user.user_roles.includes("admin")}
+    // (45:5) {#if $isAuthenticated && $user.user_roles.includes("admin")}
     function create_if_block_2(ctx) {
     	let li;
     	let a;
@@ -9197,9 +11528,9 @@ var app = (function () {
     			a.textContent = "Users";
     			attr_dev(a, "class", "nav-link");
     			attr_dev(a, "href", "#/users");
-    			add_location(a, file, 45, 7, 1269);
+    			add_location(a, file, 46, 7, 1286);
     			attr_dev(li, "class", "nav-item");
-    			add_location(li, file, 44, 6, 1239);
+    			add_location(li, file, 45, 6, 1256);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -9214,14 +11545,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(44:5) {#if $isAuthenticated && $user.user_roles.includes(\\\"admin\\\")}",
+    		source: "(45:5) {#if $isAuthenticated && $user.user_roles.includes(\\\"admin\\\")}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (49:5) {#if $isAuthenticated}
+    // (50:5) {#if $isAuthenticated}
     function create_if_block_1(ctx) {
     	let li;
     	let a;
@@ -9233,9 +11564,9 @@ var app = (function () {
     			a.textContent = "Utilities";
     			attr_dev(a, "class", "nav-link");
     			attr_dev(a, "href", "#/utilities");
-    			add_location(a, file, 50, 7, 1405);
+    			add_location(a, file, 51, 7, 1422);
     			attr_dev(li, "class", "nav-item");
-    			add_location(li, file, 49, 6, 1375);
+    			add_location(li, file, 50, 6, 1392);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -9250,14 +11581,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(49:5) {#if $isAuthenticated}",
+    		source: "(50:5) {#if $isAuthenticated}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (65:5) {:else}
+    // (69:5) {:else}
     function create_else_block(ctx) {
     	let button;
     	let mounted;
@@ -9269,7 +11600,7 @@ var app = (function () {
     			button.textContent = "Log In";
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file, 65, 6, 1805);
+    			add_location(button, file, 69, 6, 1850);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -9291,14 +11622,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(65:5) {:else}",
+    		source: "(69:5) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (56:5) {#if $isAuthenticated}
+    // (59:5) {#if $isAuthenticated}
     function create_if_block(ctx) {
     	let span;
     	let a;
@@ -9319,12 +11650,12 @@ var app = (function () {
     			button.textContent = "Log Out";
     			attr_dev(a, "class", "nav-link");
     			attr_dev(a, "href", "#/account");
-    			add_location(a, file, 57, 7, 1596);
+    			add_location(a, file, 60, 7, 1632);
     			attr_dev(span, "class", "navbar-text me-2");
-    			add_location(span, file, 56, 6, 1556);
+    			add_location(span, file, 59, 6, 1592);
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file, 59, 6, 1672);
+    			add_location(button, file, 63, 6, 1717);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -9354,7 +11685,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(56:5) {#if $isAuthenticated}",
+    		source: "(59:5) {#if $isAuthenticated}",
     		ctx
     	});
 
@@ -9429,33 +11760,33 @@ var app = (function () {
     			attr_dev(a0, "href", "#/");
     			add_location(a0, file, 11, 3, 305);
     			attr_dev(span, "class", "navbar-toggler-icon");
-    			add_location(span, file, 21, 4, 598);
+    			add_location(span, file, 21, 4, 602);
     			attr_dev(button, "class", "navbar-toggler");
     			attr_dev(button, "type", "button");
     			attr_dev(button, "data-bs-toggle", "collapse");
-    			attr_dev(button, "data-bs-target", "#navbarNavDropdown");
-    			attr_dev(button, "aria-controls", "navbarNavDropdown");
+    			attr_dev(button, "data-bs-target", "#navbarTogglerDemo01");
+    			attr_dev(button, "aria-controls", "navbarTogglerDemo01");
     			attr_dev(button, "aria-expanded", "false");
     			attr_dev(button, "aria-label", "Toggle navigation");
     			add_location(button, file, 12, 3, 358);
     			attr_dev(a1, "class", "nav-link");
     			attr_dev(a1, "href", "#/products");
-    			add_location(a1, file, 41, 6, 1102);
+    			add_location(a1, file, 41, 6, 1111);
     			attr_dev(li, "class", "nav-item");
-    			add_location(li, file, 40, 5, 1073);
+    			add_location(li, file, 40, 5, 1082);
     			attr_dev(ul, "class", "navbar-nav me-auto mb-2 mb-lg-0");
-    			add_location(ul, file, 25, 4, 714);
+    			add_location(ul, file, 25, 4, 728);
     			attr_dev(div0, "class", "d-flex");
-    			add_location(div0, file, 54, 4, 1499);
+    			add_location(div0, file, 57, 4, 1535);
     			attr_dev(div1, "class", "collapse navbar-collapse");
-    			attr_dev(div1, "id", "navbarNav");
-    			add_location(div1, file, 24, 3, 655);
+    			attr_dev(div1, "id", "navbarTogglerDemo01");
+    			add_location(div1, file, 24, 3, 659);
     			attr_dev(div2, "class", "container-fluid");
     			add_location(div2, file, 10, 2, 271);
     			attr_dev(nav, "class", "navbar navbar-expand-lg bg-light");
     			add_location(nav, file, 9, 1, 221);
     			attr_dev(div3, "class", "container");
-    			add_location(div3, file, 76, 1, 1982);
+    			add_location(div3, file, 80, 1, 2027);
     			attr_dev(div4, "id", "app");
     			add_location(div4, file, 7, 0, 186);
     		},
