@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
-import ch.zhaw.powerpuff.powerpuff.model.ProductCreateDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByProducttypeAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByUserAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductStateAggregationDTO;
+import ch.zhaw.powerpuff.powerpuff.model.status.ProductCreateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
 import ch.zhaw.powerpuff.powerpuff.security.UserValidator;
 

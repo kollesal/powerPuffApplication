@@ -1,5 +1,6 @@
-package ch.zhaw.powerpuff.powerpuff.model;
+package ch.zhaw.powerpuff.powerpuff.model.status;
 
+import ch.zhaw.powerpuff.powerpuff.model.UtilityType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

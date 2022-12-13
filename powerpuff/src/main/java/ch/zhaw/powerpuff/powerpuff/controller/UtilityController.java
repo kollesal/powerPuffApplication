@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Utility;
-import ch.zhaw.powerpuff.powerpuff.model.UtilityCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.status.UtilityCreateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.UtilityRepository;
 
 @RestController

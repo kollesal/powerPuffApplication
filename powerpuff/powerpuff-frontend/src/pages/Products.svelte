@@ -12,18 +12,7 @@ var currentPage;
     let pricesMin, pricesMax, type;
 
     let products = [];
-    /*let product = {
-        productname: null,
-        description: null,
-        productType: null,
-        difficultyType: null,
-        clothingType: null,
-        size: null,
-        price: null,
-        patchart: null,
-        userId: null,
-        comment: null,
-    };*/
+
 
     $: {
         let searchParams = new URLSearchParams($querystring);
@@ -154,28 +143,8 @@ var currentPage;
         <button class="my-button" on:click={getProducts}>Apply</button>
     </div>
 </div>
-<!--
-<div class="row my-3">
-    <div class="col-auto">
-        <label class="form-label" for="producttype">Product Type: </label>
-    </div>
-    <div class="col-3">
-        <select bind:value={type} class="form-select" id="type" type="text">
-            <option disabled>No type selected</option>
-            <option value="SCHNITTMUSTER" on:click={getProducts}
-                >Schnittmuster</option
-            >
-            <option value="MANUAL" on:click={getProducts}>Manual</option>
-        </select>
-    </div>
-    <div class="col-3" />
-    <div class="col-3">
-        <button class="btn btn-primary" on:click={getProducts}>Apply</button>
-    </div>
-</div>
--->
 
-<!-- <button on:click={getProducts}>Schnittmuster</button> -->
+
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {#each products as product, index}
@@ -239,19 +208,20 @@ var currentPage;
                                     >
                                 </p>
                             {/if}
-
+                            {#if $user.user_roles && $user.user_roles.length > 0}
                             {#if product.userId === null}
                                 <p>
                                     <button
                                         type="button"
                                         class="btn btn-primary btn-sm"
                                         on:click={() => {
-                                            assignToMe(user.id);
+                                            assignToMe(product.id);
                                         }}
                                     >
                                         Assign to me
                                     </button>
                                 </p>
+                            {/if}
                             {/if}
                             {#if product.userId !== null}
                                 <p class="card-text">

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.5</version>
+		<version>2.7.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ch.zhaw.powerpuff</groupId>
@@ -17,6 +17,32 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+			<exclusions>
+        		<exclusion>
+            		<artifactId>hamcrest-core</artifactId>
+            		<groupId>org.hamcrest</groupId>
+       		 	</exclusion>
+   			</exclusions>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -35,14 +61,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-			<version>2.7.5</version>
 		</dependency>
 
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.24</version>
 		</dependency>
 
 		<dependency>
@@ -56,6 +80,27 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>3.2.2.RELEASE</version>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+    <groupId>com.jayway.jsonpath</groupId>
+    <artifactId>json-path</artifactId>
+    <version>0.8.1</version>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+    <groupId>com.jayway.jsonpath</groupId>
+    <artifactId>json-path-assert</artifactId>
+    <version>0.8.1</version>
+    <scope>test</scope>
+</dependency>
 
 	<build>
 		<plugins>
