@@ -24,7 +24,7 @@ public class UserCreateDTO {
 
 
    public String getUsername() {
-      return name;
+      return username;
    }
 
 
