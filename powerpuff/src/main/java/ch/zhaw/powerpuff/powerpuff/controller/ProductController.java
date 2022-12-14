@@ -42,7 +42,7 @@ public class ProductController {
             @RequestBody ProductCreateDTO pDTO, 
             @AuthenticationPrincipal Jwt jwt) {
 
-                if (!UserValidator.userHasRole(jwt, "admin")) {
+                if (UserValidator.userHasRole(jwt, "buyer")) {
                     return new ResponseEntity<>(HttpStatus.FORBIDDEN);
                     } 
 
@@ -68,7 +68,9 @@ public class ProductController {
             @RequestParam(required = false) Integer pageSize,
             @RequestParam(required = false) Double min,
             @RequestParam(required = false) Double max,
-            @RequestParam(required = false) String type) {
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String state) {
         if (page == null) {
             page = 1;
         }
@@ -77,10 +79,19 @@ public class ProductController {
         }
 
         Page<Product> allProducts;
-        if (min != null && max != null && type != null) {
+        if (min != null && max != null && type != null && user != null) {
+            allProducts = productRepository
+                    .findByProductTypeAndPriceBetweenAndUserId(type, min, max, user, PageRequest.of(page - 1, pageSize));
+        } else if (min != null && max != null && type == null && user != null) {
+            allProducts = productRepository
+                    .findByUserIdAndPriceBetween(user, min, max, PageRequest.of(page - 1, pageSize));
+        } else if (min == null && max == null && type != null && user != null) {
+            allProducts = productRepository
+                    .findByUserIdAndProductType(user, type, PageRequest.of(page - 1, pageSize));
+        } else if (min != null && max != null && type != null && user == null) {
             allProducts = productRepository
                     .findByProductTypeAndPriceBetween(type, min, max, PageRequest.of(page - 1, pageSize));
-        } else if (min != null && max != null) {
+        } else if (min != null && max != null && type == null && user == null) {
             allProducts = productRepository
                     .findByPriceBetween(min, max, PageRequest.of(page - 1, pageSize));
         } else if (min != null) {
@@ -89,7 +100,13 @@ public class ProductController {
         } else if (type != null) {
             allProducts = productRepository
                     .findByProductType(type, PageRequest.of(page - 1, pageSize));
-        } else {
+        } else if (user != null) {
+            allProducts = productRepository
+                    .findByUserId(user, PageRequest.of(page - 1, pageSize));
+        } else if (state != null) {
+            allProducts = productRepository
+                    .findByProductState(state, PageRequest.of(page - 1, pageSize));
+        }else {
             allProducts = productRepository
                     .findAll(PageRequest.of(page - 1, pageSize));
         }

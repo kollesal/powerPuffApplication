@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.zhaw.powerpuff.powerpuff.model.User;
 import ch.zhaw.powerpuff.powerpuff.model.status.UserCreateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.UserRepository;
+import ch.zhaw.powerpuff.powerpuff.security.UserValidator;
 
 @RestController
 @RequestMapping("/api/users")
@@ -27,10 +30,15 @@ public class UserController {
     UserRepository userRepository;
 
     @PostMapping("")
-    public ResponseEntity<User> createUtility(
-            @RequestBody UserCreateDTO uDTO) {
+    public ResponseEntity<User> createUser(
+            @RequestBody UserCreateDTO uDTO,
+            @AuthenticationPrincipal Jwt jwt) {
+
+                if (!UserValidator.userHasRole(jwt, "admin")) {
+                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                    } 
                 
-        User uDAO = new User(uDTO.getName(), uDTO.getUsername(), uDTO.getEmail());
+        User uDAO = new User( uDTO.getEmail(), uDTO.getUsername(), uDTO.getName());
         User u = userRepository.save(uDAO);
         return new ResponseEntity<>(u, HttpStatus.CREATED);
     }
@@ -43,7 +51,7 @@ public class UserController {
             page = 1;
         }
         if (pageSize == null) {
-            pageSize = 2;
+            pageSize = 6;
         }
 
         Page<User> allUsers;

@@ -362,6 +362,13 @@ var app = (function () {
     function get_spread_object(spread_props) {
         return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
     }
+    function each(items, fn) {
+        let str = '';
+        for (let i = 0; i < items.length; i += 1) {
+            str += fn(items[i], i);
+        }
+        return str;
+    }
     function create_component(block) {
         block && block.c();
     }
@@ -4922,18 +4929,18 @@ var app = (function () {
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[15] = list[i];
-    	child_ctx[17] = i;
+    	child_ctx[14] = list[i];
+    	child_ctx[16] = i;
     	return child_ctx;
     }
 
-    function get_each_context_1$2(ctx, list, i) {
+    function get_each_context_1$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
     	child_ctx[5] = list[i];
     	return child_ctx;
     }
 
-    // (158:0) {#if mailChecked === null}
+    // (152:0) {#if mailChecked === null}
     function create_if_block_3$4(ctx) {
     	let button;
     	let mounted;
@@ -4945,7 +4952,7 @@ var app = (function () {
     			button.textContent = "Check Email";
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$7, 158, 4, 4474);
+    			add_location(button, file$7, 152, 4, 4253);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -4979,14 +4986,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3$4.name,
     		type: "if",
-    		source: "(158:0) {#if mailChecked === null}",
+    		source: "(152:0) {#if mailChecked === null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (161:0) {#if mailChecked !== null}
+    // (155:0) {#if mailChecked !== null}
     function create_if_block$6(ctx) {
     	let h3;
     	let t1;
@@ -5026,7 +5033,7 @@ var app = (function () {
     	let t15;
     	let if_block1_anchor;
     	let if_block0 = /*emailCheck*/ ctx[4].status === "success" && create_if_block_2$4(ctx);
-    	let if_block1 = /*emailCheck*/ ctx[4].status === "failure" && create_if_block_1$5(ctx);
+    	let if_block1 = /*emailCheck*/ ctx[4].status === "failure" && create_if_block_1$6(ctx);
 
     	const block = {
     		c: function create() {
@@ -5070,66 +5077,66 @@ var app = (function () {
     			t15 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			add_location(h3, file$7, 161, 4, 4612);
+    			add_location(h3, file$7, 155, 4, 4391);
     			attr_dev(label0, "for", "staticEmail");
     			attr_dev(label0, "class", "col-sm-2 col-form-label");
-    			add_location(label0, file$7, 166, 16, 4734);
+    			add_location(label0, file$7, 160, 16, 4513);
     			attr_dev(div0, "class", "col-sm-3");
-    			add_location(div0, file$7, 165, 12, 4694);
-    			attr_dev(label1, "for", "staticEmail");
+    			add_location(div0, file$7, 159, 12, 4473);
+    			attr_dev(label1, "for", "staticStatus");
     			attr_dev(label1, "class", "col-sm-2 col-form-label");
-    			add_location(label1, file$7, 171, 16, 4918);
+    			add_location(label1, file$7, 165, 16, 4697);
     			attr_dev(div1, "class", "col-sm-3");
-    			add_location(div1, file$7, 170, 12, 4878);
-    			attr_dev(label2, "for", "staticEmail");
+    			add_location(div1, file$7, 164, 12, 4657);
+    			attr_dev(label2, "for", "staticDomain");
     			attr_dev(label2, "class", "col-sm-2 col-form-label");
-    			add_location(label2, file$7, 176, 16, 5103);
+    			add_location(label2, file$7, 170, 16, 4883);
     			attr_dev(div2, "class", "col-sm-3");
-    			add_location(div2, file$7, 175, 12, 5063);
-    			attr_dev(label3, "for", "staticEmail");
+    			add_location(div2, file$7, 169, 12, 4843);
+    			attr_dev(label3, "for", "staticDeliverable");
     			attr_dev(label3, "class", "col-sm-2 col-form-label");
-    			add_location(label3, file$7, 181, 16, 5288);
+    			add_location(label3, file$7, 175, 16, 5069);
     			attr_dev(div3, "class", "col-sm-3");
-    			add_location(div3, file$7, 180, 12, 5248);
+    			add_location(div3, file$7, 174, 12, 5029);
     			attr_dev(div4, "class", "row");
-    			add_location(div4, file$7, 164, 8, 4663);
+    			add_location(div4, file$7, 158, 8, 4442);
     			attr_dev(input0, "type", "text");
     			input0.readOnly = true;
     			attr_dev(input0, "class", "form-control-plaintext");
     			attr_dev(input0, "id", "staticEmail");
     			input0.value = input0_value_value = /*user*/ ctx[5].email;
-    			add_location(input0, file$7, 188, 16, 5521);
+    			add_location(input0, file$7, 182, 16, 5308);
     			attr_dev(div5, "class", "col-sm-3");
-    			add_location(div5, file$7, 187, 12, 5481);
+    			add_location(div5, file$7, 181, 12, 5268);
     			attr_dev(input1, "type", "text");
     			input1.readOnly = true;
     			attr_dev(input1, "class", "form-control-plaintext");
-    			attr_dev(input1, "id", "staticEmailStatus");
+    			attr_dev(input1, "id", "staticStatus");
     			input1.value = input1_value_value = /*emailCheck*/ ctx[4].status;
-    			add_location(input1, file$7, 198, 16, 5816);
+    			add_location(input1, file$7, 192, 16, 5603);
     			attr_dev(div6, "class", "col-sm-3");
-    			add_location(div6, file$7, 197, 12, 5776);
+    			add_location(div6, file$7, 191, 12, 5563);
     			attr_dev(input2, "type", "text");
     			input2.readOnly = true;
     			attr_dev(input2, "class", "form-control-plaintext");
-    			attr_dev(input2, "id", "staticEmailStatus");
+    			attr_dev(input2, "id", "staticDomain");
     			input2.value = input2_value_value = /*emailCheck*/ ctx[4].domain;
-    			add_location(input2, file$7, 207, 16, 6122);
+    			add_location(input2, file$7, 201, 16, 5904);
     			attr_dev(div7, "class", "col-sm-3");
-    			add_location(div7, file$7, 206, 12, 6082);
+    			add_location(div7, file$7, 200, 12, 5864);
     			attr_dev(input3, "type", "text");
     			input3.readOnly = true;
     			attr_dev(input3, "class", "form-control-plaintext");
-    			attr_dev(input3, "id", "staticEmailStatus");
+    			attr_dev(input3, "id", "staticDeliverable");
     			input3.value = input3_value_value = /*emailCheck*/ ctx[4].deliverable;
-    			add_location(input3, file$7, 216, 16, 6428);
+    			add_location(input3, file$7, 210, 16, 6205);
     			attr_dev(div8, "class", "col-sm-3");
-    			add_location(div8, file$7, 215, 12, 6388);
+    			add_location(div8, file$7, 209, 12, 6165);
     			attr_dev(div9, "class", "row");
-    			add_location(div9, file$7, 186, 8, 5450);
-    			add_location(form, file$7, 163, 4, 4647);
+    			add_location(div9, file$7, 180, 8, 5237);
+    			add_location(form, file$7, 157, 4, 4426);
     			attr_dev(div10, "class", "row mb-3");
-    			add_location(div10, file$7, 226, 4, 6720);
+    			add_location(div10, file$7, 220, 4, 6497);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -5202,7 +5209,7 @@ var app = (function () {
     				if (if_block1) {
     					if_block1.p(ctx, dirty);
     				} else {
-    					if_block1 = create_if_block_1$5(ctx);
+    					if_block1 = create_if_block_1$6(ctx);
     					if_block1.c();
     					if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
     				}
@@ -5229,14 +5236,14 @@ var app = (function () {
     		block,
     		id: create_if_block$6.name,
     		type: "if",
-    		source: "(161:0) {#if mailChecked !== null}",
+    		source: "(155:0) {#if mailChecked !== null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (229:4) {#if emailCheck.status === "success"}
+    // (223:4) {#if emailCheck.status === "success"}
     function create_if_block_2$4(ctx) {
     	let button;
     	let mounted;
@@ -5248,7 +5255,7 @@ var app = (function () {
     			button.textContent = "Submit";
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$7, 229, 4, 6795);
+    			add_location(button, file$7, 223, 4, 6572);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -5270,15 +5277,15 @@ var app = (function () {
     		block,
     		id: create_if_block_2$4.name,
     		type: "if",
-    		source: "(229:4) {#if emailCheck.status === \\\"success\\\"}",
+    		source: "(223:4) {#if emailCheck.status === \\\"success\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (232:4) {#if emailCheck.status === "failure"}
-    function create_if_block_1$5(ctx) {
+    // (226:4) {#if emailCheck.status === "failure"}
+    function create_if_block_1$6(ctx) {
     	let button;
     	let mounted;
     	let dispose;
@@ -5289,7 +5296,7 @@ var app = (function () {
     			button.textContent = "Check Email";
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$7, 232, 4, 6932);
+    			add_location(button, file$7, 226, 4, 6709);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -5321,17 +5328,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$5.name,
+    		id: create_if_block_1$6.name,
     		type: "if",
-    		source: "(232:4) {#if emailCheck.status === \\\"failure\\\"}",
+    		source: "(226:4) {#if emailCheck.status === \\\"failure\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (252:8) {#each users as user}
-    function create_each_block_1$2(ctx) {
+    // (246:8) {#each users as user}
+    function create_each_block_1$3(ctx) {
     	let tr;
     	let td0;
     	let t0_value = /*user*/ ctx[5].username + "";
@@ -5373,14 +5380,14 @@ var app = (function () {
     			td4 = element("td");
     			t8 = text(t8_value);
     			t9 = space();
-    			add_location(td0, file$7, 256, 16, 7527);
-    			add_location(td1, file$7, 259, 16, 7609);
-    			add_location(td2, file$7, 262, 16, 7687);
-    			add_location(td3, file$7, 265, 16, 7766);
-    			add_location(td4, file$7, 268, 16, 7848);
+    			add_location(td0, file$7, 250, 16, 7317);
+    			add_location(td1, file$7, 253, 16, 7399);
+    			add_location(td2, file$7, 256, 16, 7477);
+    			add_location(td3, file$7, 259, 16, 7556);
+    			add_location(td4, file$7, 262, 16, 7638);
     			attr_dev(tr, "class", "row-tr");
     			attr_dev(tr, "onclick", tr_onclick_value = "document.location = '" + ('#/users/' + /*user*/ ctx[5].id) + "';");
-    			add_location(tr, file$7, 252, 12, 7386);
+    			add_location(tr, file$7, 246, 12, 7176);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tr, anchor);
@@ -5418,20 +5425,20 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_1$2.name,
+    		id: create_each_block_1$3.name,
     		type: "each",
-    		source: "(252:8) {#each users as user}",
+    		source: "(246:8) {#each users as user}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (279:8) {#each Array(nrOfPages) as _, i}
+    // (273:8) {#each Array(nrOfPages) as _, i}
     function create_each_block$3(ctx) {
     	let li;
     	let a;
-    	let t0_value = /*i*/ ctx[17] + 1 + "";
+    	let t0_value = /*i*/ ctx[16] + 1 + "";
     	let t0;
     	let t1;
 
@@ -5442,11 +5449,11 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = space();
     			attr_dev(a, "class", "page-link");
-    			attr_dev(a, "href", "#/users?page=" + (/*i*/ ctx[17] + 1));
-    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[17] + 1);
-    			add_location(a, file$7, 280, 16, 8108);
+    			attr_dev(a, "href", "#/users?page=" + (/*i*/ ctx[16] + 1));
+    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[16] + 1);
+    			add_location(a, file$7, 274, 16, 7898);
     			attr_dev(li, "class", "page-item");
-    			add_location(li, file$7, 279, 12, 8068);
+    			add_location(li, file$7, 273, 12, 7858);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -5456,7 +5463,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*currentPage*/ 1) {
-    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[17] + 1);
+    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[16] + 1);
     			}
     		},
     		d: function destroy(detaching) {
@@ -5468,7 +5475,7 @@ var app = (function () {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(279:8) {#each Array(nrOfPages) as _, i}",
+    		source: "(273:8) {#each Array(nrOfPages) as _, i}",
     		ctx
     	});
 
@@ -5527,7 +5534,7 @@ var app = (function () {
     	let each_blocks_1 = [];
 
     	for (let i = 0; i < each_value_1.length; i += 1) {
-    		each_blocks_1[i] = create_each_block_1$2(get_each_context_1$2(ctx, each_value_1, i));
+    		each_blocks_1[i] = create_each_block_1$3(get_each_context_1$3(ctx, each_value_1, i));
     	}
 
     	let each_value = Array(/*nrOfPages*/ ctx[1]);
@@ -5605,54 +5612,55 @@ var app = (function () {
     			}
 
     			attr_dev(h10, "class", "mt-3");
-    			add_location(h10, file$7, 123, 0, 3468);
+    			add_location(h10, file$7, 117, 0, 3263);
     			attr_dev(label0, "class", "form-label");
     			attr_dev(label0, "for", "username");
-    			add_location(label0, file$7, 127, 12, 3591);
+    			add_location(label0, file$7, 121, 12, 3386);
     			attr_dev(input0, "class", "form-control");
-    			attr_dev(input0, "id", "description");
+    			attr_dev(input0, "id", "username");
     			attr_dev(input0, "type", "text");
-    			add_location(input0, file$7, 128, 12, 3662);
+    			add_location(input0, file$7, 122, 12, 3457);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$7, 126, 8, 3560);
+    			add_location(div0, file$7, 120, 8, 3355);
     			attr_dev(label1, "class", "form-label");
     			attr_dev(label1, "for", "name");
-    			add_location(label1, file$7, 137, 12, 3888);
+    			add_location(label1, file$7, 131, 12, 3680);
     			attr_dev(input1, "class", "form-control");
-    			attr_dev(input1, "id", "description");
+    			attr_dev(input1, "id", "name");
     			attr_dev(input1, "type", "text");
-    			add_location(input1, file$7, 138, 12, 3951);
+    			add_location(input1, file$7, 132, 12, 3743);
     			attr_dev(div1, "class", "col");
-    			add_location(div1, file$7, 136, 8, 3857);
+    			add_location(div1, file$7, 130, 8, 3649);
     			attr_dev(label2, "class", "form-label");
     			attr_dev(label2, "for", "email");
-    			add_location(label2, file$7, 147, 12, 4173);
+    			add_location(label2, file$7, 141, 12, 3958);
     			attr_dev(input2, "class", "form-control");
-    			attr_dev(input2, "id", "description");
+    			attr_dev(input2, "id", "email");
     			attr_dev(input2, "type", "text");
-    			add_location(input2, file$7, 148, 12, 4239);
+    			add_location(input2, file$7, 142, 12, 4024);
     			attr_dev(div2, "class", "col");
-    			add_location(div2, file$7, 146, 8, 4142);
+    			add_location(div2, file$7, 140, 8, 3927);
     			attr_dev(div3, "class", "row mb-3");
-    			add_location(div3, file$7, 125, 4, 3528);
+    			add_location(div3, file$7, 119, 4, 3323);
     			attr_dev(form, "class", "mb-5");
-    			add_location(form, file$7, 124, 0, 3503);
+    			add_location(form, file$7, 118, 0, 3298);
     			attr_dev(div4, "class", "row mb-3");
-    			add_location(div4, file$7, 236, 0, 7047);
-    			add_location(h11, file$7, 238, 0, 7075);
-    			add_location(th0, file$7, 243, 12, 7171);
-    			add_location(th1, file$7, 244, 12, 7202);
-    			add_location(th2, file$7, 245, 12, 7229);
-    			add_location(th3, file$7, 246, 12, 7257);
-    			add_location(th4, file$7, 247, 12, 7284);
-    			add_location(tr, file$7, 242, 8, 7153);
-    			add_location(thead, file$7, 241, 4, 7136);
-    			add_location(tbody, file$7, 250, 4, 7334);
+    			add_location(div4, file$7, 230, 0, 6824);
+    			attr_dev(h11, "class", "mt-3");
+    			add_location(h11, file$7, 232, 0, 6852);
+    			add_location(th0, file$7, 237, 12, 6961);
+    			add_location(th1, file$7, 238, 12, 6992);
+    			add_location(th2, file$7, 239, 12, 7019);
+    			add_location(th3, file$7, 240, 12, 7047);
+    			add_location(th4, file$7, 241, 12, 7074);
+    			add_location(tr, file$7, 236, 8, 6943);
+    			add_location(thead, file$7, 235, 4, 6926);
+    			add_location(tbody, file$7, 244, 4, 7124);
     			attr_dev(table, "class", "table table-hover");
-    			add_location(table, file$7, 240, 0, 7097);
+    			add_location(table, file$7, 234, 0, 6887);
     			attr_dev(ul, "class", "pagination");
-    			add_location(ul, file$7, 277, 4, 7989);
-    			add_location(nav, file$7, 276, 0, 7978);
+    			add_location(ul, file$7, 271, 4, 7779);
+    			add_location(nav, file$7, 270, 0, 7768);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5770,12 +5778,12 @@ var app = (function () {
     				let i;
 
     				for (i = 0; i < each_value_1.length; i += 1) {
-    					const child_ctx = get_each_context_1$2(ctx, each_value_1, i);
+    					const child_ctx = get_each_context_1$3(ctx, each_value_1, i);
 
     					if (each_blocks_1[i]) {
     						each_blocks_1[i].p(child_ctx, dirty);
     					} else {
-    						each_blocks_1[i] = create_each_block_1$2(child_ctx);
+    						each_blocks_1[i] = create_each_block_1$3(child_ctx);
     						each_blocks_1[i].c();
     						each_blocks_1[i].m(tbody, null);
     					}
@@ -5872,21 +5880,22 @@ var app = (function () {
     		deliverable: null
     	};
 
-    	function getUser() {
-    		var config = {
-    			method: "get",
-    			url: api_root$5 + "/api/products/" + user_id,
-    			headers: {}
-    		};
+    	/*     function getUser() {
+            var config = {
+                method: "get",
+                url: api_root + "/api/products/" + user_id,
+                headers: {},
+            };
 
-    		axios(config).then(function (response) {
-    			$$invalidate(5, user = response.data);
-    		}).catch(function (error) {
-    			alert("Could not get user");
-    			console.log(error);
-    		});
-    	}
-
+            axios(config)
+                .then(function (response) {
+                    user = response.data;
+                })
+                .catch(function (error) {
+                    alert("Could not get user");
+                    console.log(error);
+                });
+        } */
     	function getUsers() {
     		let query = "pageSize=6&page=" + currentPage;
 
@@ -5937,7 +5946,6 @@ var app = (function () {
     			let emailVariables = response.data;
     			$$invalidate(4, emailCheck = emailVariables[0]);
     			$$invalidate(2, mailChecked = true);
-    			alert("User Mail " + emailCheck + " checked: \nStatus: " + emailCheck.status);
     			console.log(emailCheck);
     			console.log(mailChecked);
     		}).catch(function (error) {
@@ -5978,7 +5986,6 @@ var app = (function () {
     		users,
     		user,
     		emailCheck,
-    		getUser,
     		getUsers,
     		createUser,
     		checkMail,
@@ -6050,8 +6057,8 @@ var app = (function () {
     const { console: console_1$4 } = globals;
     const file$6 = "src\\pages\\UserDetails.svelte";
 
-    // (136:47) 
-    function create_if_block_8$1(ctx) {
+    // (137:47) 
+    function create_if_block_8$2(ctx) {
     	let option0;
     	let option1;
 
@@ -6063,10 +6070,10 @@ var app = (function () {
     			option1.textContent = "Supplier";
     			option0.__value = "BUYER";
     			option0.value = option0.__value;
-    			add_location(option0, file$6, 136, 12, 4027);
+    			add_location(option0, file$6, 137, 12, 4029);
     			option1.__value = "SUPPLIER";
     			option1.value = option1.__value;
-    			add_location(option1, file$6, 137, 12, 4077);
+    			add_location(option1, file$6, 138, 12, 4079);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option0, anchor);
@@ -6080,16 +6087,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_8$1.name,
+    		id: create_if_block_8$2.name,
     		type: "if",
-    		source: "(136:47) ",
+    		source: "(137:47) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (133:50) 
+    // (134:50) 
     function create_if_block_7$2(ctx) {
     	let option0;
     	let option1;
@@ -6102,10 +6109,10 @@ var app = (function () {
     			option1.textContent = "Admin";
     			option0.__value = "BUYER";
     			option0.value = option0.__value;
-    			add_location(option0, file$6, 133, 12, 3878);
+    			add_location(option0, file$6, 134, 12, 3880);
     			option1.__value = "ADMIN";
     			option1.value = option1.__value;
-    			add_location(option1, file$6, 134, 12, 3928);
+    			add_location(option1, file$6, 135, 12, 3930);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option0, anchor);
@@ -6121,14 +6128,14 @@ var app = (function () {
     		block,
     		id: create_if_block_7$2.name,
     		type: "if",
-    		source: "(133:50) ",
+    		source: "(134:50) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (130:8) {#if userper.userType === "BUYER"}
+    // (131:8) {#if userper.userType === "BUYER"}
     function create_if_block_6$2(ctx) {
     	let option0;
     	let option1;
@@ -6141,10 +6148,10 @@ var app = (function () {
     			option1.textContent = "Admin";
     			option0.__value = "SUPPLIER";
     			option0.value = option0.__value;
-    			add_location(option0, file$6, 130, 12, 3720);
+    			add_location(option0, file$6, 131, 12, 3722);
     			option1.__value = "ADMIN";
     			option1.value = option1.__value;
-    			add_location(option1, file$6, 131, 12, 3776);
+    			add_location(option1, file$6, 132, 12, 3778);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option0, anchor);
@@ -6160,14 +6167,14 @@ var app = (function () {
     		block,
     		id: create_if_block_6$2.name,
     		type: "if",
-    		source: "(130:8) {#if userper.userType === \\\"BUYER\\\"}",
+    		source: "(131:8) {#if userper.userType === \\\"BUYER\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (145:0) {#if userper.userStatus === "ACTIVE"}
+    // (146:0) {#if userper.userStatus === "ACTIVE"}
     function create_if_block_5$2(ctx) {
     	let form;
     	let div3;
@@ -6196,20 +6203,20 @@ var app = (function () {
     			t3 = space();
     			div2 = element("div");
     			attr_dev(label, "for", "comment");
-    			add_location(label, file$6, 148, 16, 4319);
+    			add_location(label, file$6, 149, 16, 4321);
     			attr_dev(textarea, "class", "form-control");
     			attr_dev(textarea, "id", "comment");
     			attr_dev(textarea, "rows", "3");
-    			add_location(textarea, file$6, 149, 16, 4398);
+    			add_location(textarea, file$6, 150, 16, 4400);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$6, 147, 12, 4284);
+    			add_location(div0, file$6, 148, 12, 4286);
     			attr_dev(div1, "class", "row mb-3");
-    			add_location(div1, file$6, 156, 12, 4617);
+    			add_location(div1, file$6, 157, 12, 4619);
     			attr_dev(div2, "class", "row mb-3");
-    			add_location(div2, file$6, 157, 12, 4655);
+    			add_location(div2, file$6, 158, 12, 4657);
     			attr_dev(div3, "class", "row mb-3");
-    			add_location(div3, file$6, 146, 8, 4248);
-    			add_location(form, file$6, 145, 4, 4232);
+    			add_location(div3, file$6, 147, 8, 4250);
+    			add_location(form, file$6, 146, 4, 4234);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, form, anchor);
@@ -6245,14 +6252,14 @@ var app = (function () {
     		block,
     		id: create_if_block_5$2.name,
     		type: "if",
-    		source: "(145:0) {#if userper.userStatus === \\\"ACTIVE\\\"}",
+    		source: "(146:0) {#if userper.userStatus === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (163:0) {#if userper.userStatus === "INACTIVE"}
+    // (164:0) {#if userper.userStatus === "INACTIVE"}
     function create_if_block_4$2(ctx) {
     	let div;
     	let ul;
@@ -6273,13 +6280,13 @@ var app = (function () {
     			t2 = text(t2_value);
     			attr_dev(li0, "class", "list-group-item-top active");
     			attr_dev(li0, "aria-current", "true");
-    			add_location(li0, file$6, 165, 12, 4833);
+    			add_location(li0, file$6, 166, 12, 4835);
     			attr_dev(li1, "class", "list-group-item");
-    			add_location(li1, file$6, 168, 12, 4967);
+    			add_location(li1, file$6, 169, 12, 4969);
     			attr_dev(ul, "class", "list-group");
-    			add_location(ul, file$6, 164, 8, 4796);
+    			add_location(ul, file$6, 165, 8, 4798);
     			attr_dev(div, "class", "col-md-4");
-    			add_location(div, file$6, 163, 4, 4764);
+    			add_location(div, file$6, 164, 4, 4766);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -6301,15 +6308,15 @@ var app = (function () {
     		block,
     		id: create_if_block_4$2.name,
     		type: "if",
-    		source: "(163:0) {#if userper.userStatus === \\\"INACTIVE\\\"}",
+    		source: "(164:0) {#if userper.userStatus === \\\"INACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (178:0) {#if $user.user_roles && $user.user_roles.length > 0}
-    function create_if_block_1$4(ctx) {
+    // (179:0) {#if $user.user_roles && $user.user_roles.length > 0}
+    function create_if_block_1$5(ctx) {
     	let a;
     	let t1;
     	let if_block_anchor;
@@ -6333,7 +6340,7 @@ var app = (function () {
     			if_block_anchor = empty();
     			attr_dev(a, "href", "#/users");
     			attr_dev(a, "class", "delete-button");
-    			add_location(a, file$6, 178, 4, 5174);
+    			add_location(a, file$6, 179, 4, 5176);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -6375,16 +6382,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$4.name,
+    		id: create_if_block_1$5.name,
     		type: "if",
-    		source: "(178:0) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(179:0) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (186:48) 
+    // (187:48) 
     function create_if_block_3$3(ctx) {
     	let a;
     	let mounted;
@@ -6396,7 +6403,7 @@ var app = (function () {
     			a.textContent = "Activate User";
     			attr_dev(a, "href", "#/users");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$6, 186, 8, 5477);
+    			add_location(a, file$6, 187, 8, 5479);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -6418,14 +6425,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3$3.name,
     		type: "if",
-    		source: "(186:48) ",
+    		source: "(187:48) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (182:4) {#if userper.userStatus === "ACTIVE"}
+    // (183:4) {#if userper.userStatus === "ACTIVE"}
     function create_if_block_2$3(ctx) {
     	let a;
     	let mounted;
@@ -6437,7 +6444,7 @@ var app = (function () {
     			a.textContent = "Inactivate User";
     			attr_dev(a, "href", "#/users");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$6, 182, 8, 5312);
+    			add_location(a, file$6, 183, 8, 5314);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -6459,14 +6466,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2$3.name,
     		type: "if",
-    		source: "(182:4) {#if userper.userStatus === \\\"ACTIVE\\\"}",
+    		source: "(183:4) {#if userper.userStatus === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (193:0) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (194:0) {#if $user.user_roles && $user.user_roles.length > 0}
     function create_if_block$5(ctx) {
     	let a;
     	let mounted;
@@ -6478,7 +6485,7 @@ var app = (function () {
     			a.textContent = "Change User Type";
     			attr_dev(a, "href", "#/users");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$6, 194, 4, 5663);
+    			add_location(a, file$6, 195, 4, 5665);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -6500,7 +6507,7 @@ var app = (function () {
     		block,
     		id: create_if_block$5.name,
     		type: "if",
-    		source: "(193:0) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(194:0) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
@@ -6552,14 +6559,14 @@ var app = (function () {
     	function select_block_type(ctx, dirty) {
     		if (/*userper*/ ctx[0].userType === "BUYER") return create_if_block_6$2;
     		if (/*userper*/ ctx[0].userType === "SUPPLIER") return create_if_block_7$2;
-    		if (/*userper*/ ctx[0].userType === "ADMIN") return create_if_block_8$1;
+    		if (/*userper*/ ctx[0].userType === "ADMIN") return create_if_block_8$2;
     	}
 
     	let current_block_type = select_block_type(ctx);
     	let if_block0 = current_block_type && current_block_type(ctx);
     	let if_block1 = /*userper*/ ctx[0].userStatus === "ACTIVE" && create_if_block_5$2(ctx);
     	let if_block2 = /*userper*/ ctx[0].userStatus === "INACTIVE" && create_if_block_4$2(ctx);
-    	let if_block3 = /*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0 && create_if_block_1$4(ctx);
+    	let if_block3 = /*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0 && create_if_block_1$5(ctx);
     	let if_block4 = /*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0 && create_if_block$5(ctx);
 
     	const block = {
@@ -6617,20 +6624,20 @@ var app = (function () {
     			attr_dev(select, "class", "form-select");
     			attr_dev(select, "id", "user");
     			if (/*userper*/ ctx[0].userType === void 0) add_render_callback(() => /*select_change_handler*/ ctx[7].call(select));
-    			add_location(select, file$6, 128, 4, 3594);
+    			add_location(select, file$6, 129, 4, 3596);
     			attr_dev(div1, "class", "col-md-4");
-    			add_location(div1, file$6, 127, 0, 3566);
+    			add_location(div1, file$6, 128, 0, 3568);
     			attr_dev(div2, "class", "col-md-8");
-    			add_location(div2, file$6, 142, 0, 4161);
+    			add_location(div2, file$6, 143, 0, 4163);
     			attr_dev(div3, "class", "col-md-8");
-    			add_location(div3, file$6, 175, 0, 5087);
+    			add_location(div3, file$6, 176, 0, 5089);
     			attr_dev(a, "class", "back-button");
-    			attr_dev(a, "href", "#/products");
+    			attr_dev(a, "href", "#/users");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$6, 199, 0, 5772);
+    			add_location(a, file$6, 200, 0, 5774);
     			attr_dev(div4, "class", "md-12");
-    			add_location(div4, file$6, 202, 0, 5865);
+    			add_location(div4, file$6, 203, 0, 5864);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6732,7 +6739,7 @@ var app = (function () {
     				if (if_block3) {
     					if_block3.p(ctx, dirty);
     				} else {
-    					if_block3 = create_if_block_1$4(ctx);
+    					if_block3 = create_if_block_1$5(ctx);
     					if_block3.c();
     					if_block3.m(t20.parentNode, t20);
     				}
@@ -7008,7 +7015,7 @@ var app = (function () {
     /* src\pages\Account.svelte generated by Svelte v3.53.1 */
     const file$5 = "src\\pages\\Account.svelte";
 
-    // (89:4) {:else}
+    // (82:4) {:else}
     function create_else_block$4(ctx) {
     	let div;
     	let h3;
@@ -7020,11 +7027,11 @@ var app = (function () {
     			h3 = element("h3");
     			b = element("b");
     			b.textContent = "Not logged in";
-    			add_location(b, file$5, 91, 10, 3186);
-    			add_location(h3, file$5, 91, 6, 3182);
+    			add_location(b, file$5, 84, 10, 2819);
+    			add_location(h3, file$5, 84, 6, 2815);
     			attr_dev(div, "class", "alert");
     			attr_dev(div, "role", "alert");
-    			add_location(div, file$5, 90, 4, 3142);
+    			add_location(div, file$5, 83, 4, 2775);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -7041,7 +7048,7 @@ var app = (function () {
     		block,
     		id: create_else_block$4.name,
     		type: "else",
-    		source: "(89:4) {:else}",
+    		source: "(82:4) {:else}",
     		ctx
     	});
 
@@ -7050,9 +7057,9 @@ var app = (function () {
 
     // (5:0) {#if $isAuthenticated}
     function create_if_block$4(ctx) {
-    	let div21;
-    	let div20;
     	let div19;
+    	let div18;
+    	let div17;
     	let div4;
     	let div3;
     	let div2;
@@ -7066,61 +7073,53 @@ var app = (function () {
     	let t1;
     	let t2;
     	let p0;
-    	let t3_value = /*$user*/ ctx[1].userType + "";
+    	let t3_value = /*$user*/ ctx[1].user_roles + "";
     	let t3;
     	let t4;
-    	let button0;
-    	let t6;
-    	let button1;
-    	let t8;
-    	let div18;
-    	let div17;
     	let div16;
+    	let div15;
+    	let div14;
     	let div7;
     	let div5;
     	let h60;
-    	let t10;
+    	let t6;
     	let div6;
     	let p1;
-    	let t11_value = /*$user*/ ctx[1].nickname + "";
-    	let t11;
-    	let t12;
+    	let t7_value = /*$user*/ ctx[1].nickname + "";
+    	let t7;
+    	let t8;
     	let hr0;
-    	let t13;
+    	let t9;
     	let div10;
     	let div8;
     	let h61;
-    	let t15;
+    	let t11;
     	let div9;
-    	let t16_value = /*$user*/ ctx[1].email + "";
-    	let t16;
-    	let t17;
+    	let t12_value = /*$user*/ ctx[1].email + "";
+    	let t12;
+    	let t13;
     	let hr1;
-    	let t18;
+    	let t14;
     	let div13;
     	let div11;
     	let h62;
-    	let t20;
+    	let t16;
     	let div12;
     	let p2;
-    	let t21_value = /*$user*/ ctx[1].userStatus + "";
-    	let t21;
-    	let t22;
+    	let t17_value = /*$user*/ ctx[1].userStatus + "";
+    	let t17;
+    	let t18;
     	let hr2;
-    	let t23;
-    	let t24;
+    	let t19;
+    	let t20;
     	let hr3;
-    	let t25;
-    	let div15;
-    	let div14;
-    	let button2;
-    	let if_block = /*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0 && create_if_block_1$3(ctx);
+    	let if_block = /*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0 && create_if_block_1$4(ctx);
 
     	const block = {
     		c: function create() {
-    			div21 = element("div");
-    			div20 = element("div");
     			div19 = element("div");
+    			div18 = element("div");
+    			div17 = element("div");
     			div4 = element("div");
     			div3 = element("div");
     			div2 = element("div");
@@ -7134,55 +7133,44 @@ var app = (function () {
     			p0 = element("p");
     			t3 = text(t3_value);
     			t4 = space();
-    			button0 = element("button");
-    			button0.textContent = "Change Status";
-    			t6 = space();
-    			button1 = element("button");
-    			button1.textContent = "Change User Type";
-    			t8 = space();
-    			div18 = element("div");
-    			div17 = element("div");
     			div16 = element("div");
+    			div15 = element("div");
+    			div14 = element("div");
     			div7 = element("div");
     			div5 = element("div");
     			h60 = element("h6");
     			h60.textContent = "Username";
-    			t10 = space();
+    			t6 = space();
     			div6 = element("div");
     			p1 = element("p");
-    			t11 = text(t11_value);
-    			t12 = space();
+    			t7 = text(t7_value);
+    			t8 = space();
     			hr0 = element("hr");
-    			t13 = space();
+    			t9 = space();
     			div10 = element("div");
     			div8 = element("div");
     			h61 = element("h6");
     			h61.textContent = "Email";
-    			t15 = space();
+    			t11 = space();
     			div9 = element("div");
-    			t16 = text(t16_value);
-    			t17 = space();
+    			t12 = text(t12_value);
+    			t13 = space();
     			hr1 = element("hr");
-    			t18 = space();
+    			t14 = space();
     			div13 = element("div");
     			div11 = element("div");
     			h62 = element("h6");
     			h62.textContent = "User Status";
-    			t20 = space();
+    			t16 = space();
     			div12 = element("div");
     			p2 = element("p");
-    			t21 = text(t21_value);
-    			t22 = space();
+    			t17 = text(t17_value);
+    			t18 = space();
     			hr2 = element("hr");
-    			t23 = space();
+    			t19 = space();
     			if (if_block) if_block.c();
-    			t24 = space();
+    			t20 = space();
     			hr3 = element("hr");
-    			t25 = space();
-    			div15 = element("div");
-    			div14 = element("div");
-    			button2 = element("button");
-    			button2.textContent = "Delete";
     			attr_dev(img, "class", "rounded-circle");
     			if (!src_url_equal(img.src, img_src_value = "/images/profilep.jpg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "Admin");
@@ -7191,10 +7179,6 @@ var app = (function () {
     			add_location(h4, file$5, 22, 22, 756);
     			attr_dev(p0, "class", "text-secondary mb-1");
     			add_location(p0, file$5, 23, 22, 801);
-    			attr_dev(button0, "class", "my-button");
-    			add_location(button0, file$5, 24, 22, 876);
-    			attr_dev(button1, "class", "my-button");
-    			add_location(button1, file$5, 25, 22, 948);
     			attr_dev(div0, "class", "mt-3");
     			add_location(div0, file$5, 21, 20, 714);
     			attr_dev(div1, "class", "d-flex flex-column align-items-center text-center");
@@ -7206,60 +7190,53 @@ var app = (function () {
     			attr_dev(div4, "class", "col-md-4 mb-3");
     			add_location(div4, file$5, 9, 12, 212);
     			attr_dev(h60, "class", "mb-0");
-    			add_location(h60, file$5, 37, 22, 1342);
+    			add_location(h60, file$5, 35, 22, 1197);
     			attr_dev(div5, "class", "col-sm-3");
-    			add_location(div5, file$5, 36, 20, 1296);
-    			add_location(p1, file$5, 40, 23, 1484);
+    			add_location(div5, file$5, 34, 20, 1151);
+    			add_location(p1, file$5, 38, 23, 1339);
     			attr_dev(div6, "class", "col-sm-9 text-secondary");
-    			add_location(div6, file$5, 39, 20, 1422);
+    			add_location(div6, file$5, 37, 20, 1277);
     			attr_dev(div7, "class", "row");
-    			add_location(div7, file$5, 35, 18, 1257);
-    			add_location(hr0, file$5, 43, 18, 1582);
+    			add_location(div7, file$5, 33, 18, 1112);
+    			add_location(hr0, file$5, 41, 18, 1437);
     			attr_dev(h61, "class", "mb-0");
-    			add_location(h61, file$5, 46, 22, 1691);
+    			add_location(h61, file$5, 44, 22, 1546);
     			attr_dev(div8, "class", "col-sm-3");
-    			add_location(div8, file$5, 45, 20, 1645);
+    			add_location(div8, file$5, 43, 20, 1500);
     			attr_dev(div9, "class", "col-sm-9 text-secondary");
-    			add_location(div9, file$5, 48, 20, 1768);
+    			add_location(div9, file$5, 46, 20, 1623);
     			attr_dev(div10, "class", "row");
-    			add_location(div10, file$5, 44, 18, 1606);
-    			add_location(hr1, file$5, 52, 18, 1918);
+    			add_location(div10, file$5, 42, 18, 1461);
+    			add_location(hr1, file$5, 50, 18, 1773);
     			attr_dev(h62, "class", "mb-0");
-    			add_location(h62, file$5, 55, 22, 2027);
+    			add_location(h62, file$5, 53, 22, 1882);
     			attr_dev(div11, "class", "col-sm-3");
-    			add_location(div11, file$5, 54, 20, 1981);
-    			add_location(p2, file$5, 58, 22, 2171);
+    			add_location(div11, file$5, 52, 20, 1836);
+    			add_location(p2, file$5, 56, 22, 2026);
     			attr_dev(div12, "class", "col-sm-9 text-secondary");
-    			add_location(div12, file$5, 57, 20, 2110);
+    			add_location(div12, file$5, 55, 20, 1965);
     			attr_dev(div13, "class", "row");
-    			add_location(div13, file$5, 53, 18, 1942);
-    			add_location(hr2, file$5, 61, 18, 2272);
-    			add_location(hr3, file$5, 73, 18, 2777);
-    			attr_dev(button2, "class", "delete-button");
-    			attr_dev(button2, "target", "__blank");
-    			add_location(button2, file$5, 76, 22, 2887);
-    			attr_dev(div14, "class", "col-sm-12");
-    			add_location(div14, file$5, 75, 20, 2840);
-    			attr_dev(div15, "class", "row");
-    			add_location(div15, file$5, 74, 18, 2801);
-    			attr_dev(div16, "class", "card-body");
-    			add_location(div16, file$5, 34, 16, 1214);
-    			attr_dev(div17, "class", "card mb-3");
-    			add_location(div17, file$5, 33, 14, 1173);
-    			attr_dev(div18, "class", "col-md-8");
-    			add_location(div18, file$5, 32, 12, 1135);
-    			attr_dev(div19, "class", "row gutters-sm");
-    			add_location(div19, file$5, 8, 10, 170);
-    			attr_dev(div20, "class", "main-body");
-    			add_location(div20, file$5, 6, 4, 129);
-    			attr_dev(div21, "class", "container");
-    			add_location(div21, file$5, 5, 0, 100);
+    			add_location(div13, file$5, 51, 18, 1797);
+    			add_location(hr2, file$5, 59, 18, 2127);
+    			add_location(hr3, file$5, 71, 18, 2632);
+    			attr_dev(div14, "class", "card-body");
+    			add_location(div14, file$5, 32, 16, 1069);
+    			attr_dev(div15, "class", "card mb-3");
+    			add_location(div15, file$5, 31, 14, 1028);
+    			attr_dev(div16, "class", "col-md-8");
+    			add_location(div16, file$5, 30, 12, 990);
+    			attr_dev(div17, "class", "row gutters-sm");
+    			add_location(div17, file$5, 8, 10, 170);
+    			attr_dev(div18, "class", "main-body");
+    			add_location(div18, file$5, 6, 4, 129);
+    			attr_dev(div19, "class", "container");
+    			add_location(div19, file$5, 5, 0, 100);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div21, anchor);
-    			append_dev(div21, div20);
-    			append_dev(div20, div19);
-    			append_dev(div19, div4);
+    			insert_dev(target, div19, anchor);
+    			append_dev(div19, div18);
+    			append_dev(div18, div17);
+    			append_dev(div17, div4);
     			append_dev(div4, div3);
     			append_dev(div3, div2);
     			append_dev(div2, div1);
@@ -7271,65 +7248,57 @@ var app = (function () {
     			append_dev(div0, t2);
     			append_dev(div0, p0);
     			append_dev(p0, t3);
-    			append_dev(div0, t4);
-    			append_dev(div0, button0);
-    			append_dev(div0, t6);
-    			append_dev(div0, button1);
-    			append_dev(div19, t8);
-    			append_dev(div19, div18);
-    			append_dev(div18, div17);
+    			append_dev(div17, t4);
     			append_dev(div17, div16);
-    			append_dev(div16, div7);
-    			append_dev(div7, div5);
-    			append_dev(div5, h60);
-    			append_dev(div7, t10);
-    			append_dev(div7, div6);
-    			append_dev(div6, p1);
-    			append_dev(p1, t11);
-    			append_dev(div16, t12);
-    			append_dev(div16, hr0);
-    			append_dev(div16, t13);
-    			append_dev(div16, div10);
-    			append_dev(div10, div8);
-    			append_dev(div8, h61);
-    			append_dev(div10, t15);
-    			append_dev(div10, div9);
-    			append_dev(div9, t16);
-    			append_dev(div16, t17);
-    			append_dev(div16, hr1);
-    			append_dev(div16, t18);
-    			append_dev(div16, div13);
-    			append_dev(div13, div11);
-    			append_dev(div11, h62);
-    			append_dev(div13, t20);
-    			append_dev(div13, div12);
-    			append_dev(div12, p2);
-    			append_dev(p2, t21);
-    			append_dev(div16, t22);
-    			append_dev(div16, hr2);
-    			append_dev(div16, t23);
-    			if (if_block) if_block.m(div16, null);
-    			append_dev(div16, t24);
-    			append_dev(div16, hr3);
-    			append_dev(div16, t25);
     			append_dev(div16, div15);
     			append_dev(div15, div14);
-    			append_dev(div14, button2);
+    			append_dev(div14, div7);
+    			append_dev(div7, div5);
+    			append_dev(div5, h60);
+    			append_dev(div7, t6);
+    			append_dev(div7, div6);
+    			append_dev(div6, p1);
+    			append_dev(p1, t7);
+    			append_dev(div14, t8);
+    			append_dev(div14, hr0);
+    			append_dev(div14, t9);
+    			append_dev(div14, div10);
+    			append_dev(div10, div8);
+    			append_dev(div8, h61);
+    			append_dev(div10, t11);
+    			append_dev(div10, div9);
+    			append_dev(div9, t12);
+    			append_dev(div14, t13);
+    			append_dev(div14, hr1);
+    			append_dev(div14, t14);
+    			append_dev(div14, div13);
+    			append_dev(div13, div11);
+    			append_dev(div11, h62);
+    			append_dev(div13, t16);
+    			append_dev(div13, div12);
+    			append_dev(div12, p2);
+    			append_dev(p2, t17);
+    			append_dev(div14, t18);
+    			append_dev(div14, hr2);
+    			append_dev(div14, t19);
+    			if (if_block) if_block.m(div14, null);
+    			append_dev(div14, t20);
+    			append_dev(div14, hr3);
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*$user*/ 2 && t1_value !== (t1_value = /*$user*/ ctx[1].name + "")) set_data_dev(t1, t1_value);
-    			if (dirty & /*$user*/ 2 && t3_value !== (t3_value = /*$user*/ ctx[1].userType + "")) set_data_dev(t3, t3_value);
-    			if (dirty & /*$user*/ 2 && t11_value !== (t11_value = /*$user*/ ctx[1].nickname + "")) set_data_dev(t11, t11_value);
-    			if (dirty & /*$user*/ 2 && t16_value !== (t16_value = /*$user*/ ctx[1].email + "")) set_data_dev(t16, t16_value);
-    			if (dirty & /*$user*/ 2 && t21_value !== (t21_value = /*$user*/ ctx[1].userStatus + "")) set_data_dev(t21, t21_value);
+    			if (dirty & /*$user*/ 2 && t3_value !== (t3_value = /*$user*/ ctx[1].user_roles + "")) set_data_dev(t3, t3_value);
+    			if (dirty & /*$user*/ 2 && t7_value !== (t7_value = /*$user*/ ctx[1].nickname + "")) set_data_dev(t7, t7_value);
+    			if (dirty & /*$user*/ 2 && t12_value !== (t12_value = /*$user*/ ctx[1].email + "")) set_data_dev(t12, t12_value);
+    			if (dirty & /*$user*/ 2 && t17_value !== (t17_value = /*$user*/ ctx[1].userStatus + "")) set_data_dev(t17, t17_value);
 
     			if (/*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
-    					if_block = create_if_block_1$3(ctx);
+    					if_block = create_if_block_1$4(ctx);
     					if_block.c();
-    					if_block.m(div16, t24);
+    					if_block.m(div14, t20);
     				}
     			} else if (if_block) {
     				if_block.d(1);
@@ -7337,7 +7306,7 @@ var app = (function () {
     			}
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div21);
+    			if (detaching) detach_dev(div19);
     			if (if_block) if_block.d();
     		}
     	};
@@ -7353,8 +7322,8 @@ var app = (function () {
     	return block;
     }
 
-    // (64:18) {#if $user.user_roles && $user.user_roles.length > 0}
-    function create_if_block_1$3(ctx) {
+    // (62:18) {#if $user.user_roles && $user.user_roles.length > 0}
+    function create_if_block_1$4(ctx) {
     	let div2;
     	let div0;
     	let h6;
@@ -7375,14 +7344,14 @@ var app = (function () {
     			p = element("p");
     			t2 = text(t2_value);
     			attr_dev(h6, "class", "mb-0");
-    			add_location(h6, file$5, 66, 22, 2512);
+    			add_location(h6, file$5, 64, 22, 2367);
     			attr_dev(div0, "class", "col-sm-3");
-    			add_location(div0, file$5, 65, 20, 2466);
-    			add_location(p, file$5, 69, 22, 2652);
+    			add_location(div0, file$5, 63, 20, 2321);
+    			add_location(p, file$5, 67, 22, 2507);
     			attr_dev(div1, "class", "col-sm-9 text-secondary");
-    			add_location(div1, file$5, 68, 20, 2591);
+    			add_location(div1, file$5, 66, 20, 2446);
     			attr_dev(div2, "class", "row");
-    			add_location(div2, file$5, 64, 18, 2427);
+    			add_location(div2, file$5, 62, 18, 2282);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -7403,9 +7372,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$3.name,
+    		id: create_if_block_1$4.name,
     		type: "if",
-    		source: "(64:18) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(62:18) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
@@ -7506,37 +7475,43 @@ var app = (function () {
     	}
     }
 
-    /* src\pages\utility\Utilities.svelte generated by Svelte v3.53.1 */
+    /* src\pages\Utilities.svelte generated by Svelte v3.53.1 */
 
     const { console: console_1$3 } = globals;
-    const file$4 = "src\\pages\\utility\\Utilities.svelte";
+    const file$4 = "src\\pages\\Utilities.svelte";
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[1] = list[i];
-    	child_ctx[8] = i;
+    	child_ctx[11] = list[i];
+    	child_ctx[13] = i;
     	return child_ctx;
     }
 
-    // (127:8) {#each utilities as utility, index}
-    function create_each_block$2(ctx) {
+    function get_each_context_1$2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[3] = list[i];
+    	child_ctx[15] = i;
+    	return child_ctx;
+    }
+
+    // (143:8) {#each utilities as utility, index}
+    function create_each_block_1$2(ctx) {
     	let tr;
     	let td0;
-    	let t0_value = /*index*/ ctx[8] + 1 + "";
+    	let t0_value = /*index*/ ctx[15] + 1 + "";
     	let t0;
     	let t1;
     	let td1;
-    	let t2_value = /*utility*/ ctx[1].utilityName + "";
+    	let t2_value = /*utility*/ ctx[3].utilityName + "";
     	let t2;
     	let t3;
     	let td2;
-    	let t4_value = /*utility*/ ctx[1].unit + "";
+    	let t4_value = /*utility*/ ctx[3].unit + "";
     	let t4;
     	let t5;
     	let td3;
-    	let t6_value = /*utility*/ ctx[1].utilityType + "";
+    	let t6_value = /*utility*/ ctx[3].utilityType + "";
     	let t6;
-    	let tr_onclick_value;
 
     	const block = {
     		c: function create() {
@@ -7552,13 +7527,12 @@ var app = (function () {
     			t5 = space();
     			td3 = element("td");
     			t6 = text(t6_value);
-    			add_location(td0, file$4, 131, 16, 3796);
-    			add_location(td1, file$4, 134, 16, 3874);
-    			add_location(td2, file$4, 137, 16, 3962);
-    			add_location(td3, file$4, 140, 16, 4043);
+    			add_location(td0, file$4, 146, 16, 4357);
+    			add_location(td1, file$4, 149, 16, 4435);
+    			add_location(td2, file$4, 152, 16, 4523);
+    			add_location(td3, file$4, 155, 16, 4604);
     			attr_dev(tr, "class", "row-tr");
-    			attr_dev(tr, "onclick", tr_onclick_value = "document.location = '" + ('#/utilities/' + /*utility*/ ctx[1].id) + "';");
-    			add_location(tr, file$4, 127, 12, 3648);
+    			add_location(tr, file$4, 143, 12, 4289);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tr, anchor);
@@ -7575,13 +7549,9 @@ var app = (function () {
     			append_dev(td3, t6);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*utilities*/ 1 && t2_value !== (t2_value = /*utility*/ ctx[1].utilityName + "")) set_data_dev(t2, t2_value);
-    			if (dirty & /*utilities*/ 1 && t4_value !== (t4_value = /*utility*/ ctx[1].unit + "")) set_data_dev(t4, t4_value);
-    			if (dirty & /*utilities*/ 1 && t6_value !== (t6_value = /*utility*/ ctx[1].utilityType + "")) set_data_dev(t6, t6_value);
-
-    			if (dirty & /*utilities*/ 1 && tr_onclick_value !== (tr_onclick_value = "document.location = '" + ('#/utilities/' + /*utility*/ ctx[1].id) + "';")) {
-    				attr_dev(tr, "onclick", tr_onclick_value);
-    			}
+    			if (dirty & /*utilities*/ 4 && t2_value !== (t2_value = /*utility*/ ctx[3].utilityName + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*utilities*/ 4 && t4_value !== (t4_value = /*utility*/ ctx[3].unit + "")) set_data_dev(t4, t4_value);
+    			if (dirty & /*utilities*/ 4 && t6_value !== (t6_value = /*utility*/ ctx[3].utilityType + "")) set_data_dev(t6, t6_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(tr);
@@ -7590,9 +7560,57 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
+    		id: create_each_block_1$2.name,
+    		type: "each",
+    		source: "(143:8) {#each utilities as utility, index}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (171:8) {#each Array(nrOfPages) as _, i}
+    function create_each_block$2(ctx) {
+    	let li;
+    	let a;
+    	let t0_value = /*i*/ ctx[13] + 1 + "";
+    	let t0;
+    	let t1;
+
+    	const block = {
+    		c: function create() {
+    			li = element("li");
+    			a = element("a");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			attr_dev(a, "class", "page-link");
+    			attr_dev(a, "href", "#/utilities?page=" + (/*i*/ ctx[13] + 1));
+    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[13] + 1);
+    			add_location(a, file$4, 172, 16, 4995);
+    			attr_dev(li, "class", "page-item");
+    			add_location(li, file$4, 171, 12, 4955);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, li, anchor);
+    			append_dev(li, a);
+    			append_dev(a, t0);
+    			append_dev(li, t1);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*currentPage*/ 1) {
+    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[13] + 1);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(li);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(127:8) {#each utilities as utility, index}",
+    		source: "(171:8) {#each Array(nrOfPages) as _, i}",
     		ctx
     	});
 
@@ -7654,11 +7672,22 @@ var app = (function () {
     	let tr1;
     	let dt;
     	let t38;
-    	let t39_value = /*utilities*/ ctx[0].length + "";
+    	let t39_value = /*utilities*/ ctx[2].length + "";
     	let t39;
+    	let t40;
+    	let nav;
+    	let ul;
     	let mounted;
     	let dispose;
-    	let each_value = /*utilities*/ ctx[0];
+    	let each_value_1 = /*utilities*/ ctx[2];
+    	validate_each_argument(each_value_1);
+    	let each_blocks_1 = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks_1[i] = create_each_block_1$2(get_each_context_1$2(ctx, each_value_1, i));
+    	}
+
+    	let each_value = Array(/*nrOfPages*/ ctx[1]);
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -7675,13 +7704,13 @@ var app = (function () {
     			div3 = element("div");
     			div0 = element("div");
     			label0 = element("label");
-    			label0.textContent = "Username";
+    			label0.textContent = "Name";
     			t3 = space();
     			input0 = element("input");
     			t4 = space();
     			div1 = element("div");
     			label1 = element("label");
-    			label1.textContent = "Price";
+    			label1.textContent = "Unit";
     			t6 = space();
     			input1 = element("input");
     			t7 = space();
@@ -7691,31 +7720,31 @@ var app = (function () {
     			t9 = space();
     			select = element("select");
     			option0 = element("option");
-    			option0.textContent = "WRITING";
+    			option0.textContent = "Writing";
     			option1 = element("option");
-    			option1.textContent = "MARKING";
+    			option1.textContent = "Marking";
     			option2 = element("option");
-    			option2.textContent = "CUTTING";
+    			option2.textContent = "Cutting";
     			option3 = element("option");
-    			option3.textContent = "SEWING";
+    			option3.textContent = "Sewing";
     			option4 = element("option");
-    			option4.textContent = "MASCHINE";
+    			option4.textContent = "Maschine";
     			option5 = element("option");
-    			option5.textContent = "FOOT";
+    			option5.textContent = "Foot";
     			option6 = element("option");
-    			option6.textContent = "NEEDLE";
+    			option6.textContent = "Needle";
     			option7 = element("option");
-    			option7.textContent = "ATTACHMENT";
+    			option7.textContent = "Attachment";
     			option8 = element("option");
-    			option8.textContent = "MEASURING";
+    			option8.textContent = "Measuring";
     			option9 = element("option");
-    			option9.textContent = "SECURITY";
+    			option9.textContent = "Security";
     			option10 = element("option");
-    			option10.textContent = "HELP";
+    			option10.textContent = "Help";
     			option11 = element("option");
-    			option11.textContent = "THREAD";
+    			option11.textContent = "Thread";
     			option12 = element("option");
-    			option12.textContent = "PATTERN";
+    			option12.textContent = "Pattern";
     			t23 = space();
     			button = element("button");
     			button.textContent = "Submit";
@@ -7742,105 +7771,116 @@ var app = (function () {
     			t36 = space();
     			tbody = element("tbody");
 
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].c();
     			}
 
     			t37 = space();
     			tr1 = element("tr");
     			dt = element("dt");
-    			t38 = text("Number of Products: ");
+    			t38 = text("Number of Utilities: ");
     			t39 = text(t39_value);
+    			t40 = space();
+    			nav = element("nav");
+    			ul = element("ul");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
     			attr_dev(h10, "class", "mt-3");
-    			add_location(h10, file$4, 55, 0, 1401);
+    			add_location(h10, file$4, 73, 0, 2026);
     			attr_dev(label0, "class", "form-label");
-    			attr_dev(label0, "for", "productname");
-    			add_location(label0, file$4, 59, 12, 1527);
+    			attr_dev(label0, "for", "utilityName");
+    			add_location(label0, file$4, 77, 12, 2152);
     			attr_dev(input0, "class", "form-control");
     			attr_dev(input0, "id", "description");
     			attr_dev(input0, "type", "text");
-    			add_location(input0, file$4, 60, 12, 1601);
+    			add_location(input0, file$4, 78, 12, 2222);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$4, 58, 8, 1496);
+    			add_location(div0, file$4, 76, 8, 2121);
     			attr_dev(label1, "class", "form-label");
-    			attr_dev(label1, "for", "earnings");
-    			add_location(label1, file$4, 69, 16, 1837);
+    			attr_dev(label1, "for", "unit");
+    			add_location(label1, file$4, 87, 16, 2458);
     			attr_dev(input1, "class", "form-control");
     			attr_dev(input1, "id", "earnings");
     			attr_dev(input1, "type", "number");
-    			add_location(input1, file$4, 70, 16, 1909);
+    			add_location(input1, file$4, 88, 16, 2525);
     			attr_dev(div1, "class", "col");
-    			add_location(div1, file$4, 68, 8, 1802);
+    			add_location(div1, file$4, 86, 8, 2423);
     			attr_dev(label2, "class", "form-label");
-    			attr_dev(label2, "for", "difficultyType");
-    			add_location(label2, file$4, 79, 12, 2157);
-    			option0.__value = "OTHER";
+    			attr_dev(label2, "for", "utilityType");
+    			add_location(label2, file$4, 97, 12, 2773);
+    			option0.__value = "WRITING";
     			option0.value = option0.__value;
-    			add_location(option0, file$4, 88, 16, 2453);
-    			option1.__value = "TEST";
+    			add_location(option0, file$4, 106, 16, 3066);
+    			option1.__value = "MARKING";
     			option1.value = option1.__value;
-    			add_location(option1, file$4, 89, 16, 2509);
-    			option2.__value = "TEST";
+    			add_location(option1, file$4, 107, 16, 3124);
+    			option2.__value = "CUTTING";
     			option2.value = option2.__value;
-    			add_location(option2, file$4, 90, 16, 2564);
-    			option3.__value = "TEST";
+    			add_location(option2, file$4, 108, 16, 3182);
+    			option3.__value = "SEWING";
     			option3.value = option3.__value;
-    			add_location(option3, file$4, 91, 16, 2619);
-    			option4.__value = "TEST";
+    			add_location(option3, file$4, 109, 16, 3240);
+    			option4.__value = "MASCHINE";
     			option4.value = option4.__value;
-    			add_location(option4, file$4, 92, 16, 2673);
-    			option5.__value = "TEST";
+    			add_location(option4, file$4, 110, 16, 3296);
+    			option5.__value = "FOOT";
     			option5.value = option5.__value;
-    			add_location(option5, file$4, 93, 16, 2729);
-    			option6.__value = "TEST";
+    			add_location(option5, file$4, 111, 16, 3356);
+    			option6.__value = "NEEDLE";
     			option6.value = option6.__value;
-    			add_location(option6, file$4, 94, 16, 2781);
-    			option7.__value = "TEST";
+    			add_location(option6, file$4, 112, 16, 3408);
+    			option7.__value = "ATTACHMENT";
     			option7.value = option7.__value;
-    			add_location(option7, file$4, 95, 16, 2835);
-    			option8.__value = "TEST";
+    			add_location(option7, file$4, 113, 16, 3464);
+    			option8.__value = "MEASURING";
     			option8.value = option8.__value;
-    			add_location(option8, file$4, 96, 16, 2893);
-    			option9.__value = "TEST";
+    			add_location(option8, file$4, 114, 16, 3528);
+    			option9.__value = "SECURITY";
     			option9.value = option9.__value;
-    			add_location(option9, file$4, 97, 16, 2950);
-    			option10.__value = "TEST";
+    			add_location(option9, file$4, 115, 16, 3590);
+    			option10.__value = "HELP";
     			option10.value = option10.__value;
-    			add_location(option10, file$4, 98, 16, 3006);
-    			option11.__value = "TEST";
+    			add_location(option10, file$4, 116, 16, 3650);
+    			option11.__value = "THREAD";
     			option11.value = option11.__value;
-    			add_location(option11, file$4, 99, 16, 3058);
-    			option12.__value = "TEST";
+    			add_location(option11, file$4, 117, 16, 3702);
+    			option12.__value = "PATTERN";
     			option12.value = option12.__value;
-    			add_location(option12, file$4, 100, 16, 3112);
+    			add_location(option12, file$4, 118, 16, 3758);
     			attr_dev(select, "class", "form-select");
     			attr_dev(select, "id", "type");
     			attr_dev(select, "type", "text");
-    			if (/*utility*/ ctx[1].utilityType === void 0) add_render_callback(() => /*select_change_handler*/ ctx[5].call(select));
-    			add_location(select, file$4, 82, 12, 2270);
+    			if (/*utility*/ ctx[3].utilityType === void 0) add_render_callback(() => /*select_change_handler*/ ctx[8].call(select));
+    			add_location(select, file$4, 100, 12, 2883);
     			attr_dev(div2, "class", "col");
-    			add_location(div2, file$4, 78, 8, 2126);
+    			add_location(div2, file$4, 96, 8, 2742);
     			attr_dev(div3, "class", "row mb-3");
-    			add_location(div3, file$4, 57, 4, 1464);
+    			add_location(div3, file$4, 75, 4, 2089);
     			attr_dev(form, "class", "mb-5");
-    			add_location(form, file$4, 56, 0, 1439);
+    			add_location(form, file$4, 74, 0, 2064);
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$4, 107, 0, 3215);
+    			add_location(button, file$4, 125, 0, 3864);
     			attr_dev(div4, "class", "row mb-3");
-    			add_location(div4, file$4, 111, 0, 3307);
-    			add_location(h11, file$4, 114, 0, 3341);
-    			add_location(th0, file$4, 119, 12, 3441);
-    			add_location(th1, file$4, 120, 12, 3470);
-    			add_location(th2, file$4, 121, 12, 3497);
-    			add_location(th3, file$4, 122, 12, 3525);
-    			add_location(tr0, file$4, 118, 8, 3423);
-    			add_location(thead, file$4, 117, 4, 3406);
-    			add_location(dt, file$4, 146, 12, 4181);
-    			add_location(tr1, file$4, 145, 8, 4163);
-    			add_location(tbody, file$4, 125, 4, 3582);
+    			add_location(div4, file$4, 127, 0, 3948);
+    			add_location(h11, file$4, 130, 0, 3982);
+    			add_location(th0, file$4, 135, 12, 4082);
+    			add_location(th1, file$4, 136, 12, 4111);
+    			add_location(th2, file$4, 137, 12, 4138);
+    			add_location(th3, file$4, 138, 12, 4166);
+    			add_location(tr0, file$4, 134, 8, 4064);
+    			add_location(thead, file$4, 133, 4, 4047);
+    			add_location(dt, file$4, 161, 12, 4742);
+    			add_location(tr1, file$4, 160, 8, 4724);
+    			add_location(tbody, file$4, 141, 4, 4223);
     			attr_dev(table, "class", "table table-hover");
-    			add_location(table, file$4, 116, 0, 3367);
+    			add_location(table, file$4, 132, 0, 4008);
+    			attr_dev(ul, "class", "pagination");
+    			add_location(ul, file$4, 169, 4, 4876);
+    			add_location(nav, file$4, 168, 0, 4865);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7854,13 +7894,13 @@ var app = (function () {
     			append_dev(div0, label0);
     			append_dev(div0, t3);
     			append_dev(div0, input0);
-    			set_input_value(input0, /*utility*/ ctx[1].utilityname);
+    			set_input_value(input0, /*utility*/ ctx[3].utilityName);
     			append_dev(div3, t4);
     			append_dev(div3, div1);
     			append_dev(div1, label1);
     			append_dev(div1, t6);
     			append_dev(div1, input1);
-    			set_input_value(input1, /*utility*/ ctx[1].unit);
+    			set_input_value(input1, /*utility*/ ctx[3].unit);
     			append_dev(div3, t7);
     			append_dev(div3, div2);
     			append_dev(div2, label2);
@@ -7879,7 +7919,7 @@ var app = (function () {
     			append_dev(select, option10);
     			append_dev(select, option11);
     			append_dev(select, option12);
-    			select_option(select, /*utility*/ ctx[1].utilityType);
+    			select_option(select, /*utility*/ ctx[3].utilityType);
     			insert_dev(target, t23, anchor);
     			insert_dev(target, button, anchor);
     			insert_dev(target, t25, anchor);
@@ -7900,8 +7940,8 @@ var app = (function () {
     			append_dev(table, t36);
     			append_dev(table, tbody);
 
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(tbody, null);
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(tbody, null);
     			}
 
     			append_dev(tbody, t37);
@@ -7909,33 +7949,66 @@ var app = (function () {
     			append_dev(tr1, dt);
     			append_dev(dt, t38);
     			append_dev(dt, t39);
+    			insert_dev(target, t40, anchor);
+    			insert_dev(target, nav, anchor);
+    			append_dev(nav, ul);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(ul, null);
+    			}
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[3]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[4]),
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[5]),
-    					listen_dev(button, "click", /*createUtility*/ ctx[2], false, false, false)
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[6]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[7]),
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[8]),
+    					listen_dev(button, "click", /*createUtility*/ ctx[4], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*utility*/ 2 && input0.value !== /*utility*/ ctx[1].utilityname) {
-    				set_input_value(input0, /*utility*/ ctx[1].utilityname);
+    			if (dirty & /*utility*/ 8 && input0.value !== /*utility*/ ctx[3].utilityName) {
+    				set_input_value(input0, /*utility*/ ctx[3].utilityName);
     			}
 
-    			if (dirty & /*utility*/ 2 && to_number(input1.value) !== /*utility*/ ctx[1].unit) {
-    				set_input_value(input1, /*utility*/ ctx[1].unit);
+    			if (dirty & /*utility*/ 8 && to_number(input1.value) !== /*utility*/ ctx[3].unit) {
+    				set_input_value(input1, /*utility*/ ctx[3].unit);
     			}
 
-    			if (dirty & /*utility*/ 2) {
-    				select_option(select, /*utility*/ ctx[1].utilityType);
+    			if (dirty & /*utility*/ 8) {
+    				select_option(select, /*utility*/ ctx[3].utilityType);
     			}
 
-    			if (dirty & /*utilities*/ 1) {
-    				each_value = /*utilities*/ ctx[0];
+    			if (dirty & /*utilities*/ 4) {
+    				each_value_1 = /*utilities*/ ctx[2];
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1$2(ctx, each_value_1, i);
+
+    					if (each_blocks_1[i]) {
+    						each_blocks_1[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_1[i] = create_each_block_1$2(child_ctx);
+    						each_blocks_1[i].c();
+    						each_blocks_1[i].m(tbody, t37);
+    					}
+    				}
+
+    				for (; i < each_blocks_1.length; i += 1) {
+    					each_blocks_1[i].d(1);
+    				}
+
+    				each_blocks_1.length = each_value_1.length;
+    			}
+
+    			if (dirty & /*utilities*/ 4 && t39_value !== (t39_value = /*utilities*/ ctx[2].length + "")) set_data_dev(t39, t39_value);
+
+    			if (dirty & /*currentPage, nrOfPages*/ 3) {
+    				each_value = Array(/*nrOfPages*/ ctx[1]);
     				validate_each_argument(each_value);
     				let i;
 
@@ -7947,7 +8020,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block$2(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(tbody, t37);
+    						each_blocks[i].m(ul, null);
     					}
     				}
 
@@ -7957,8 +8030,6 @@ var app = (function () {
 
     				each_blocks.length = each_value.length;
     			}
-
-    			if (dirty & /*utilities*/ 1 && t39_value !== (t39_value = /*utilities*/ ctx[0].length + "")) set_data_dev(t39, t39_value);
     		},
     		i: noop$1,
     		o: noop$1,
@@ -7974,6 +8045,9 @@ var app = (function () {
     			if (detaching) detach_dev(h11);
     			if (detaching) detach_dev(t28);
     			if (detaching) detach_dev(table);
+    			destroy_each(each_blocks_1, detaching);
+    			if (detaching) detach_dev(t40);
+    			if (detaching) detach_dev(nav);
     			destroy_each(each_blocks, detaching);
     			mounted = false;
     			run_all(dispose);
@@ -7991,11 +8065,19 @@ var app = (function () {
     	return block;
     }
 
-    const api_root$3 = "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
+    const api_root$3 = "http://localhost:8080";
 
     function instance$4($$self, $$props, $$invalidate) {
+    	let $jwt_token;
+    	let $querystring;
+    	validate_store(jwt_token, 'jwt_token');
+    	component_subscribe($$self, jwt_token, $$value => $$invalidate(9, $jwt_token = $$value));
+    	validate_store(querystring, 'querystring');
+    	component_subscribe($$self, querystring, $$value => $$invalidate(5, $querystring = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Utilities', slots, []);
+    	var currentPage;
+    	let nrOfPages = 0;
     	let utilities = [];
 
     	let utility = {
@@ -8005,14 +8087,17 @@ var app = (function () {
     	};
 
     	function getUtilities() {
+    		let query = "pageSize=6&page=" + currentPage;
+
     		var config = {
     			method: "get",
-    			url: api_root$3 + "/api/utilities",
-    			headers: {}
+    			url: api_root$3 + "/api/utilities?" + query,
+    			headers: { Authorization: "Bearer " + $jwt_token }
     		};
 
     		axios(config).then(function (response) {
-    			$$invalidate(0, utilities = response.data);
+    			$$invalidate(2, utilities = response.data.content);
+    			$$invalidate(1, nrOfPages = response.data.totalPages);
     		}).catch(function (error) {
     			alert("Could not get utilities");
     			console.log(error);
@@ -8023,7 +8108,10 @@ var app = (function () {
     		var config = {
     			method: "post",
     			url: api_root$3 + "/api/utilities",
-    			headers: { "Content-Type": "application/json" },
+    			headers: {
+    				"Content-Type": "application/json",
+    				Authorization: "Bearer " + $jwt_token
+    			},
     			data: utility
     		};
 
@@ -8036,7 +8124,6 @@ var app = (function () {
     		});
     	}
 
-    	getUtilities();
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -8044,42 +8131,71 @@ var app = (function () {
     	});
 
     	function input0_input_handler() {
-    		utility.utilityname = this.value;
-    		$$invalidate(1, utility);
+    		utility.utilityName = this.value;
+    		$$invalidate(3, utility);
     	}
 
     	function input1_input_handler() {
     		utility.unit = to_number(this.value);
-    		$$invalidate(1, utility);
+    		$$invalidate(3, utility);
     	}
 
     	function select_change_handler() {
     		utility.utilityType = select_value(this);
-    		$$invalidate(1, utility);
+    		$$invalidate(3, utility);
     	}
 
     	$$self.$capture_state = () => ({
     		axios,
+    		jwt_token,
+    		querystring,
+    		isAuthenticated,
+    		user,
     		api_root: api_root$3,
+    		currentPage,
+    		nrOfPages,
     		utilities,
     		utility,
     		getUtilities,
-    		createUtility
+    		createUtility,
+    		$jwt_token,
+    		$querystring
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('utilities' in $$props) $$invalidate(0, utilities = $$props.utilities);
-    		if ('utility' in $$props) $$invalidate(1, utility = $$props.utility);
+    		if ('currentPage' in $$props) $$invalidate(0, currentPage = $$props.currentPage);
+    		if ('nrOfPages' in $$props) $$invalidate(1, nrOfPages = $$props.nrOfPages);
+    		if ('utilities' in $$props) $$invalidate(2, utilities = $$props.utilities);
+    		if ('utility' in $$props) $$invalidate(3, utility = $$props.utility);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*$querystring*/ 32) {
+    			{
+    				let searchParams = new URLSearchParams($querystring);
+
+    				if (searchParams.has("page")) {
+    					$$invalidate(0, currentPage = searchParams.get("page"));
+    				} else {
+    					$$invalidate(0, currentPage = "1");
+    				}
+
+    				getUtilities();
+    			}
+    		}
+    	};
+
     	return [
+    		currentPage,
+    		nrOfPages,
     		utilities,
     		utility,
     		createUtility,
+    		$querystring,
     		input0_input_handler,
     		input1_input_handler,
     		select_change_handler
@@ -8107,20 +8223,32 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[17] = list[i];
-    	child_ctx[19] = i;
+    	child_ctx[23] = list[i];
+    	child_ctx[25] = i;
     	return child_ctx;
     }
 
     function get_each_context_1$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
-    	child_ctx[22] = i;
+    	child_ctx[26] = list[i];
+    	child_ctx[28] = i;
     	return child_ctx;
     }
 
-    // (75:0) {#if $user.user_roles && $user.user_roles.length > 0}
-    function create_if_block_7$1(ctx) {
+    function get_each_context_2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[29] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_3(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[29] = list[i];
+    	return child_ctx;
+    }
+
+    // (102:0) {#if !$user.user_roles.includes("buyer")}
+    function create_if_block_11$1(ctx) {
     	let a;
 
     	const block = {
@@ -8131,7 +8259,7 @@ var app = (function () {
     			attr_dev(a, "href", "#/create-product");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$3, 75, 4, 2110);
+    			add_location(a, file$3, 102, 4, 2925);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -8143,139 +8271,174 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_7$1.name,
+    		id: create_if_block_11$1.name,
     		type: "if",
-    		source: "(75:0) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(102:0) {#if !$user.user_roles.includes(\\\"buyer\\\")}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (204:74) 
-    function create_if_block_6$1(ctx) {
-    	let p;
-    	let span;
-    	let t_value = /*product*/ ctx[20].productState + "";
-    	let t;
+    // (132:4) {#if $user.user_roles && $user.user_roles.length > 0}
+    function create_if_block_9$1(ctx) {
+    	let div0;
+    	let label;
+    	let t1;
+    	let div1;
+    	let select;
+    	let mounted;
+    	let dispose;
+    	let each_value_3 = /*allUsers*/ ctx[8];
+    	validate_each_argument(each_value_3);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_3.length; i += 1) {
+    		each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
+    	}
 
     	const block = {
     		c: function create() {
-    			p = element("p");
-    			span = element("span");
-    			t = text(t_value);
-    			attr_dev(span, "class", "badge bg-secondary");
-    			add_location(span, file$3, 205, 36, 6580);
-    			add_location(p, file$3, 204, 32, 6539);
+    			div0 = element("div");
+    			label = element("label");
+    			label.textContent = "Creator:";
+    			t1 = space();
+    			div1 = element("div");
+    			select = element("select");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			attr_dev(label, "for", "");
+    			attr_dev(label, "class", "col-form-label");
+    			add_location(label, file$3, 133, 12, 3764);
+    			attr_dev(div0, "class", "col-auto");
+    			add_location(div0, file$3, 132, 8, 3728);
+    			attr_dev(select, "placeholder", "Creator");
+    			attr_dev(select, "class", "form-select");
+    			attr_dev(select, "id", "id");
+    			attr_dev(select, "type", "text");
+    			if (/*user_id*/ ctx[5] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[15].call(select));
+    			add_location(select, file$3, 136, 12, 3877);
+    			attr_dev(div1, "class", "col-3");
+    			add_location(div1, file$3, 135, 8, 3844);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
-    			append_dev(p, span);
-    			append_dev(span, t);
+    			insert_dev(target, div0, anchor);
+    			append_dev(div0, label);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, select);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(select, null);
+    			}
+
+    			select_option(select, /*user_id*/ ctx[5]);
+
+    			if (!mounted) {
+    				dispose = listen_dev(select, "change", /*select_change_handler*/ ctx[15]);
+    				mounted = true;
+    			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*products*/ 32 && t_value !== (t_value = /*product*/ ctx[20].productState + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*allUsers*/ 256) {
+    				each_value_3 = /*allUsers*/ ctx[8];
+    				validate_each_argument(each_value_3);
+    				let i;
+
+    				for (i = 0; i < each_value_3.length; i += 1) {
+    					const child_ctx = get_each_context_3(ctx, each_value_3, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_3(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(select, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_3.length;
+    			}
+
+    			if (dirty[0] & /*user_id, allUsers*/ 288) {
+    				select_option(select, /*user_id*/ ctx[5]);
+    			}
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(div0);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(div1);
+    			destroy_each(each_blocks, detaching);
+    			mounted = false;
+    			dispose();
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_6$1.name,
+    		id: create_if_block_9$1.name,
     		type: "if",
-    		source: "(204:74) ",
+    		source: "(132:4) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (198:106) 
-    function create_if_block_5$1(ctx) {
-    	let p;
-    	let span;
-    	let t_value = /*product*/ ctx[20].productState + "";
+    // (145:20) {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
+    function create_if_block_10$1(ctx) {
+    	let option;
+    	let t_value = /*user*/ ctx[29].username + "";
     	let t;
+    	let option_value_value;
 
     	const block = {
     		c: function create() {
-    			p = element("p");
-    			span = element("span");
+    			option = element("option");
     			t = text(t_value);
-    			attr_dev(span, "class", "badge bg-warning");
-    			add_location(span, file$3, 199, 36, 6251);
-    			add_location(p, file$3, 198, 32, 6210);
+    			option.__value = option_value_value = /*user*/ ctx[29].id;
+    			option.value = option.__value;
+    			add_location(option, file$3, 145, 24, 4220);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
-    			append_dev(p, span);
-    			append_dev(span, t);
+    			insert_dev(target, option, anchor);
+    			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*products*/ 32 && t_value !== (t_value = /*product*/ ctx[20].productState + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*allUsers*/ 256 && t_value !== (t_value = /*user*/ ctx[29].username + "")) set_data_dev(t, t_value);
+
+    			if (dirty[0] & /*allUsers*/ 256 && option_value_value !== (option_value_value = /*user*/ ctx[29].id)) {
+    				prop_dev(option, "__value", option_value_value);
+    				option.value = option.__value;
+    			}
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(option);
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_5$1.name,
+    		id: create_if_block_10$1.name,
     		type: "if",
-    		source: "(198:106) ",
+    		source: "(145:20) {#if user.userType !== \\\"BUYER\\\" && user.userStatus === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (192:28) {#if product.productState === "ACTIVE"}
-    function create_if_block_4$1(ctx) {
-    	let p;
-    	let span;
-    	let t_value = /*product*/ ctx[20].productState + "";
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			p = element("p");
-    			span = element("span");
-    			t = text(t_value);
-    			attr_dev(span, "class", "badge bg-success");
-    			add_location(span, file$3, 193, 36, 5890);
-    			add_location(p, file$3, 192, 32, 5849);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
-    			append_dev(p, span);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*products*/ 32 && t_value !== (t_value = /*product*/ ctx[20].productState + "")) set_data_dev(t, t_value);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_4$1.name,
-    		type: "if",
-    		source: "(192:28) {#if product.productState === \\\"ACTIVE\\\"}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (211:28) {#if $user.user_roles && $user.user_roles.length > 0}
-    function create_if_block_2$2(ctx) {
+    // (144:16) {#each allUsers as user}
+    function create_each_block_3(ctx) {
     	let if_block_anchor;
-    	let if_block = /*product*/ ctx[20].userId === null && create_if_block_3$2(ctx);
+    	let if_block = /*user*/ ctx[29].userType !== "BUYER" && /*user*/ ctx[29].userStatus === "ACTIVE" && create_if_block_10$1(ctx);
 
     	const block = {
     		c: function create() {
@@ -8287,11 +8450,11 @@ var app = (function () {
     			insert_dev(target, if_block_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (/*product*/ ctx[20].userId === null) {
+    			if (/*user*/ ctx[29].userType !== "BUYER" && /*user*/ ctx[29].userStatus === "ACTIVE") {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
-    					if_block = create_if_block_3$2(ctx);
+    					if_block = create_if_block_10$1(ctx);
     					if_block.c();
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
     				}
@@ -8308,24 +8471,287 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_2$2.name,
-    		type: "if",
-    		source: "(211:28) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		id: create_each_block_3.name,
+    		type: "each",
+    		source: "(144:16) {#each allUsers as user}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (212:28) {#if product.userId === null}
+    // (190:4) {#if $user.user_roles.includes("admin")}
+    function create_if_block_8$1(ctx) {
+    	let div0;
+    	let label;
+    	let t1;
+    	let div1;
+    	let select;
+    	let option0;
+    	let option1;
+    	let option2;
+    	let option3;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			div0 = element("div");
+    			label = element("label");
+    			label.textContent = "Product State:";
+    			t1 = space();
+    			div1 = element("div");
+    			select = element("select");
+    			option0 = element("option");
+    			option0.textContent = "Active";
+    			option1 = element("option");
+    			option1.textContent = "Inactive";
+    			option2 = element("option");
+    			option2.textContent = "New";
+    			option3 = element("option");
+    			option3.textContent = "Review";
+    			attr_dev(label, "for", "");
+    			attr_dev(label, "class", "col-form-label");
+    			add_location(label, file$3, 191, 12, 5573);
+    			attr_dev(div0, "class", "col-auto");
+    			add_location(div0, file$3, 190, 8, 5537);
+    			option0.__value = "ACTIVE";
+    			option0.value = option0.__value;
+    			add_location(option0, file$3, 203, 24, 5911);
+    			option1.__value = "INACTIVE";
+    			option1.value = option1.__value;
+    			add_location(option1, file$3, 204, 24, 5975);
+    			option2.__value = "NEW";
+    			option2.value = option2.__value;
+    			add_location(option2, file$3, 205, 24, 6043);
+    			option3.__value = "REVIEW";
+    			option3.value = option3.__value;
+    			add_location(option3, file$3, 206, 24, 6101);
+    			attr_dev(select, "placeholder", "State");
+    			attr_dev(select, "class", "form-select");
+    			attr_dev(select, "id", "state");
+    			attr_dev(select, "type", "text");
+    			if (/*state*/ ctx[6] === void 0) add_render_callback(() => /*select_change_handler_1*/ ctx[19].call(select));
+    			add_location(select, file$3, 195, 12, 5694);
+    			attr_dev(div1, "class", "col-3");
+    			add_location(div1, file$3, 194, 8, 5661);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div0, anchor);
+    			append_dev(div0, label);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, select);
+    			append_dev(select, option0);
+    			append_dev(select, option1);
+    			append_dev(select, option2);
+    			append_dev(select, option3);
+    			select_option(select, /*state*/ ctx[6]);
+
+    			if (!mounted) {
+    				dispose = listen_dev(select, "change", /*select_change_handler_1*/ ctx[19]);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*state*/ 64) {
+    				select_option(select, /*state*/ ctx[6]);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div0);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(div1);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_8$1.name,
+    		type: "if",
+    		source: "(190:4) {#if $user.user_roles.includes(\\\"admin\\\")}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (272:74) 
+    function create_if_block_7$1(ctx) {
+    	let p;
+    	let span;
+    	let t_value = /*product*/ ctx[26].productState + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			span = element("span");
+    			t = text(t_value);
+    			attr_dev(span, "class", "badge bg-secondary");
+    			add_location(span, file$3, 273, 36, 8874);
+    			add_location(p, file$3, 272, 32, 8833);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, span);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*products*/ 128 && t_value !== (t_value = /*product*/ ctx[26].productState + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_7$1.name,
+    		type: "if",
+    		source: "(272:74) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (266:106) 
+    function create_if_block_6$1(ctx) {
+    	let p;
+    	let span;
+    	let t_value = /*product*/ ctx[26].productState + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			span = element("span");
+    			t = text(t_value);
+    			attr_dev(span, "class", "badge bg-warning");
+    			add_location(span, file$3, 267, 36, 8545);
+    			add_location(p, file$3, 266, 32, 8504);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, span);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*products*/ 128 && t_value !== (t_value = /*product*/ ctx[26].productState + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_6$1.name,
+    		type: "if",
+    		source: "(266:106) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (260:28) {#if product.productState === "ACTIVE"}
+    function create_if_block_5$1(ctx) {
+    	let p;
+    	let span;
+    	let t_value = /*product*/ ctx[26].productState + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			span = element("span");
+    			t = text(t_value);
+    			attr_dev(span, "class", "badge bg-success");
+    			add_location(span, file$3, 261, 36, 8184);
+    			add_location(p, file$3, 260, 32, 8143);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, span);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*products*/ 128 && t_value !== (t_value = /*product*/ ctx[26].productState + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_5$1.name,
+    		type: "if",
+    		source: "(260:28) {#if product.productState === \\\"ACTIVE\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (279:28) {#if $user.user_roles && $user.user_roles.length > 0}
     function create_if_block_3$2(ctx) {
+    	let if_block_anchor;
+    	let if_block = /*product*/ ctx[26].userId === null && create_if_block_4$1(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*product*/ ctx[26].userId === null) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_4$1(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3$2.name,
+    		type: "if",
+    		source: "(279:28) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (280:32) {#if product.userId === null}
+    function create_if_block_4$1(ctx) {
     	let p;
     	let button;
     	let mounted;
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[15](/*product*/ ctx[20]);
+    		return /*click_handler*/ ctx[20](/*product*/ ctx[26]);
     	}
 
     	const block = {
@@ -8335,8 +8761,8 @@ var app = (function () {
     			button.textContent = "Assign to me";
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "btn btn-primary btn-sm");
-    			add_location(button, file$3, 213, 36, 7012);
-    			add_location(p, file$3, 212, 32, 6971);
+    			add_location(button, file$3, 281, 40, 9318);
+    			add_location(p, file$3, 280, 36, 9273);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -8359,16 +8785,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_3$2.name,
+    		id: create_if_block_4$1.name,
     		type: "if",
-    		source: "(212:28) {#if product.userId === null}",
+    		source: "(280:32) {#if product.userId === null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (232:28) {:else}
+    // (304:28) {:else}
     function create_else_block$3(ctx) {
     	let p;
     	let small;
@@ -8379,9 +8805,9 @@ var app = (function () {
     			small = element("small");
     			small.textContent = "Creator: No Creator defined";
     			attr_dev(small, "class", "text-muted");
-    			add_location(small, file$3, 233, 36, 8025);
+    			add_location(small, file$3, 305, 36, 10622);
     			attr_dev(p, "class", "card-text");
-    			add_location(p, file$3, 232, 32, 7966);
+    			add_location(p, file$3, 304, 32, 10563);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -8397,58 +8823,169 @@ var app = (function () {
     		block,
     		id: create_else_block$3.name,
     		type: "else",
-    		source: "(232:28) {:else}",
+    		source: "(304:28) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (226:28) {#if product.userId !== null}
-    function create_if_block_1$2(ctx) {
+    // (294:28) {#if product.userId !== null}
+    function create_if_block_1$3(ctx) {
     	let p;
-    	let small;
-    	let t0;
-    	let t1_value = /*product*/ ctx[20].userId + "";
-    	let t1;
+    	let each_value_2 = /*allUsers*/ ctx[8];
+    	validate_each_argument(each_value_2);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    	}
 
     	const block = {
     		c: function create() {
     			p = element("p");
-    			small = element("small");
-    			t0 = text("Creator: ");
-    			t1 = text(t1_value);
-    			attr_dev(small, "class", "text-muted");
-    			add_location(small, file$3, 227, 36, 7718);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
     			attr_dev(p, "class", "card-text");
-    			add_location(p, file$3, 226, 32, 7659);
+    			add_location(p, file$3, 294, 32, 10005);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
-    			append_dev(p, small);
-    			append_dev(small, t0);
-    			append_dev(small, t1);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(p, null);
+    			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*products*/ 32 && t1_value !== (t1_value = /*product*/ ctx[20].userId + "")) set_data_dev(t1, t1_value);
+    			if (dirty[0] & /*allUsers, products*/ 384) {
+    				each_value_2 = /*allUsers*/ ctx[8];
+    				validate_each_argument(each_value_2);
+    				let i;
+
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_2(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(p, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_2.length;
+    			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(p);
+    			destroy_each(each_blocks, detaching);
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$2.name,
+    		id: create_if_block_1$3.name,
     		type: "if",
-    		source: "(226:28) {#if product.userId !== null}",
+    		source: "(294:28) {#if product.userId !== null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (150:4) {#each products as product, index}
+    // (297:40) {#if product.userId === user.id}
+    function create_if_block_2$2(ctx) {
+    	let small;
+    	let t0;
+    	let t1_value = /*user*/ ctx[29].username + "";
+    	let t1;
+
+    	const block = {
+    		c: function create() {
+    			small = element("small");
+    			t0 = text("Creator: ");
+    			t1 = text(t1_value);
+    			attr_dev(small, "class", "text-muted");
+    			add_location(small, file$3, 297, 44, 10208);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, small, anchor);
+    			append_dev(small, t0);
+    			append_dev(small, t1);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*allUsers*/ 256 && t1_value !== (t1_value = /*user*/ ctx[29].username + "")) set_data_dev(t1, t1_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(small);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2$2.name,
+    		type: "if",
+    		source: "(297:40) {#if product.userId === user.id}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (296:36) {#each allUsers as user}
+    function create_each_block_2(ctx) {
+    	let if_block_anchor;
+    	let if_block = /*product*/ ctx[26].userId === /*user*/ ctx[29].id && create_if_block_2$2(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*product*/ ctx[26].userId === /*user*/ ctx[29].id) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_2$2(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_2.name,
+    		type: "each",
+    		source: "(296:36) {#each allUsers as user}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (218:4) {#each products as product, index}
     function create_each_block_1$1(ctx) {
     	let div4;
     	let div3;
@@ -8459,34 +8996,34 @@ var app = (function () {
     	let t0;
     	let div0;
     	let h5;
-    	let t1_value = /*product*/ ctx[20].productname + "";
+    	let t1_value = /*product*/ ctx[26].productname + "";
     	let t1;
     	let t2;
     	let p0;
     	let span;
-    	let t3_value = /*product*/ ctx[20].difficultyType + "";
+    	let t3_value = /*product*/ ctx[26].difficultyType + "";
     	let t3;
     	let t4;
     	let p1;
     	let t5;
     	let p2;
     	let t6;
-    	let t7_value = /*product*/ ctx[20].productType + "";
+    	let t7_value = /*product*/ ctx[26].productType + "";
     	let t7;
     	let t8;
     	let p3;
     	let t9;
-    	let t10_value = /*product*/ ctx[20].clothingType + "";
+    	let t10_value = /*product*/ ctx[26].clothingType + "";
     	let t10;
     	let t11;
     	let p4;
     	let t12;
-    	let t13_value = /*product*/ ctx[20].price + "";
+    	let t13_value = /*product*/ ctx[26].price + "";
     	let t13;
     	let t14;
     	let p5;
     	let t15;
-    	let t16_value = /*product*/ ctx[20].size + "";
+    	let t16_value = /*product*/ ctx[26].size + "";
     	let t16;
     	let t17;
     	let t18;
@@ -8495,17 +9032,17 @@ var app = (function () {
     	let t20;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*product*/ ctx[20].productState === "ACTIVE") return create_if_block_4$1;
-    		if (/*product*/ ctx[20].productState === "REVIEW" || /*product*/ ctx[20].productState === "NEW") return create_if_block_5$1;
-    		if (/*product*/ ctx[20].productState === "INACTIVE") return create_if_block_6$1;
+    		if (/*product*/ ctx[26].productState === "ACTIVE") return create_if_block_5$1;
+    		if (/*product*/ ctx[26].productState === "REVIEW" || /*product*/ ctx[26].productState === "NEW") return create_if_block_6$1;
+    		if (/*product*/ ctx[26].productState === "INACTIVE") return create_if_block_7$1;
     	}
 
     	let current_block_type = select_block_type(ctx);
     	let if_block0 = current_block_type && current_block_type(ctx);
-    	let if_block1 = /*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0 && create_if_block_2$2(ctx);
+    	let if_block1 = /*$user*/ ctx[9].user_roles && /*$user*/ ctx[9].user_roles.length > 0 && create_if_block_3$2(ctx);
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*product*/ ctx[20].userId !== null) return create_if_block_1$2;
+    		if (/*product*/ ctx[26].userId !== null) return create_if_block_1$3;
     		return create_else_block$3;
     	}
 
@@ -8555,30 +9092,30 @@ var app = (function () {
     			attr_dev(img, "class", "card-img-top");
     			if (!src_url_equal(img.src, img_src_value = "/images/default.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "Card image cap");
-    			add_location(img, file$3, 159, 24, 4516);
+    			add_location(img, file$3, 227, 24, 6810);
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$3, 165, 28, 4782);
+    			add_location(h5, file$3, 233, 28, 7076);
     			attr_dev(span, "class", "badge bg-primary");
-    			add_location(span, file$3, 170, 32, 4983);
+    			add_location(span, file$3, 238, 32, 7277);
     			attr_dev(p0, "class", "card-title");
-    			add_location(p0, file$3, 169, 28, 4927);
+    			add_location(p0, file$3, 237, 28, 7221);
     			attr_dev(p1, "class", "card-text");
-    			add_location(p1, file$3, 175, 28, 5183);
-    			add_location(p2, file$3, 176, 28, 5236);
-    			add_location(p3, file$3, 179, 28, 5372);
-    			add_location(p4, file$3, 183, 28, 5512);
-    			add_location(p5, file$3, 187, 28, 5645);
+    			add_location(p1, file$3, 243, 28, 7477);
+    			add_location(p2, file$3, 244, 28, 7530);
+    			add_location(p3, file$3, 247, 28, 7666);
+    			add_location(p4, file$3, 251, 28, 7806);
+    			add_location(p5, file$3, 255, 28, 7939);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$3, 164, 24, 4729);
+    			add_location(div0, file$3, 232, 24, 7023);
     			attr_dev(div1, "class", "card");
-    			attr_dev(div1, "onclick", div1_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[20].id) + "';");
-    			add_location(div1, file$3, 153, 20, 4238);
+    			attr_dev(div1, "onclick", div1_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[26].id) + "';");
+    			add_location(div1, file$3, 221, 20, 6532);
     			attr_dev(div2, "class", "card mb-2");
-    			add_location(div2, file$3, 152, 16, 4193);
+    			add_location(div2, file$3, 220, 16, 6487);
     			attr_dev(div3, "class", "col-10");
-    			add_location(div3, file$3, 151, 12, 4155);
+    			add_location(div3, file$3, 219, 12, 6449);
     			attr_dev(div4, "class", "container");
-    			add_location(div4, file$3, 150, 8, 4118);
+    			add_location(div4, file$3, 218, 8, 6412);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div4, anchor);
@@ -8621,12 +9158,12 @@ var app = (function () {
     			append_dev(div4, t20);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*products*/ 32 && t1_value !== (t1_value = /*product*/ ctx[20].productname + "")) set_data_dev(t1, t1_value);
-    			if (dirty & /*products*/ 32 && t3_value !== (t3_value = /*product*/ ctx[20].difficultyType + "")) set_data_dev(t3, t3_value);
-    			if (dirty & /*products*/ 32 && t7_value !== (t7_value = /*product*/ ctx[20].productType + "")) set_data_dev(t7, t7_value);
-    			if (dirty & /*products*/ 32 && t10_value !== (t10_value = /*product*/ ctx[20].clothingType + "")) set_data_dev(t10, t10_value);
-    			if (dirty & /*products*/ 32 && t13_value !== (t13_value = /*product*/ ctx[20].price + "")) set_data_dev(t13, t13_value);
-    			if (dirty & /*products*/ 32 && t16_value !== (t16_value = /*product*/ ctx[20].size + "")) set_data_dev(t16, t16_value);
+    			if (dirty[0] & /*products*/ 128 && t1_value !== (t1_value = /*product*/ ctx[26].productname + "")) set_data_dev(t1, t1_value);
+    			if (dirty[0] & /*products*/ 128 && t3_value !== (t3_value = /*product*/ ctx[26].difficultyType + "")) set_data_dev(t3, t3_value);
+    			if (dirty[0] & /*products*/ 128 && t7_value !== (t7_value = /*product*/ ctx[26].productType + "")) set_data_dev(t7, t7_value);
+    			if (dirty[0] & /*products*/ 128 && t10_value !== (t10_value = /*product*/ ctx[26].clothingType + "")) set_data_dev(t10, t10_value);
+    			if (dirty[0] & /*products*/ 128 && t13_value !== (t13_value = /*product*/ ctx[26].price + "")) set_data_dev(t13, t13_value);
+    			if (dirty[0] & /*products*/ 128 && t16_value !== (t16_value = /*product*/ ctx[26].size + "")) set_data_dev(t16, t16_value);
 
     			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
     				if_block0.p(ctx, dirty);
@@ -8640,11 +9177,11 @@ var app = (function () {
     				}
     			}
 
-    			if (/*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0) {
+    			if (/*$user*/ ctx[9].user_roles && /*$user*/ ctx[9].user_roles.length > 0) {
     				if (if_block1) {
     					if_block1.p(ctx, dirty);
     				} else {
-    					if_block1 = create_if_block_2$2(ctx);
+    					if_block1 = create_if_block_3$2(ctx);
     					if_block1.c();
     					if_block1.m(div0, t19);
     				}
@@ -8665,7 +9202,7 @@ var app = (function () {
     				}
     			}
 
-    			if (dirty & /*products*/ 32 && div1_onclick_value !== (div1_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[20].id) + "';")) {
+    			if (dirty[0] & /*products*/ 128 && div1_onclick_value !== (div1_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[26].id) + "';")) {
     				attr_dev(div1, "onclick", div1_onclick_value);
     			}
     		},
@@ -8685,18 +9222,18 @@ var app = (function () {
     		block,
     		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(150:4) {#each products as product, index}",
+    		source: "(218:4) {#each products as product, index}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (254:8) {#each Array(nrOfPages) as _, i}
+    // (326:8) {#each Array(nrOfPages) as _, i}
     function create_each_block$1(ctx) {
     	let li;
     	let a;
-    	let t_value = /*i*/ ctx[19] + 1 + "";
+    	let t_value = /*i*/ ctx[25] + 1 + "";
     	let t;
 
     	const block = {
@@ -8705,11 +9242,11 @@ var app = (function () {
     			a = element("a");
     			t = text(t_value);
     			attr_dev(a, "class", "page-link");
-    			attr_dev(a, "href", "#/products?page=" + (/*i*/ ctx[19] + 1));
-    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[19] + 1);
-    			add_location(a, file$3, 255, 16, 8686);
+    			attr_dev(a, "href", "#/products?page=" + (/*i*/ ctx[25] + 1));
+    			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[25] + 1);
+    			add_location(a, file$3, 327, 16, 11283);
     			attr_dev(li, "class", "page-item");
-    			add_location(li, file$3, 254, 12, 8646);
+    			add_location(li, file$3, 326, 12, 11243);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -8717,8 +9254,8 @@ var app = (function () {
     			append_dev(a, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*currentPage*/ 1) {
-    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[19] + 1);
+    			if (dirty[0] & /*currentPage*/ 1) {
+    				toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[25] + 1);
     			}
     		},
     		d: function destroy(detaching) {
@@ -8730,14 +9267,14 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(254:8) {#each Array(nrOfPages) as _, i}",
+    		source: "(326:8) {#each Array(nrOfPages) as _, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (272:0) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (344:0) {#if !$user.user_roles.includes("buyer")}
     function create_if_block$3(ctx) {
     	let a;
 
@@ -8749,7 +9286,7 @@ var app = (function () {
     			attr_dev(a, "href", "#/create-product");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$3, 272, 4, 9177);
+    			add_location(a, file$3, 344, 4, 11764);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -8763,7 +9300,7 @@ var app = (function () {
     		block,
     		id: create_if_block$3.name,
     		type: "if",
-    		source: "(272:0) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(344:0) {#if !$user.user_roles.includes(\\\"buyer\\\")}",
     		ctx
     	});
 
@@ -8773,10 +9310,11 @@ var app = (function () {
     function create_fragment$3(ctx) {
     	let h1;
     	let t1;
+    	let show_if_2 = !/*$user*/ ctx[9].user_roles.includes("buyer");
     	let t2;
     	let a0;
     	let t4;
-    	let div4;
+    	let div3;
     	let div0;
     	let label0;
     	let t6;
@@ -8786,47 +9324,51 @@ var app = (function () {
     	let div2;
     	let input1;
     	let t8;
-    	let div3;
     	let t9;
-    	let div10;
-    	let div5;
+    	let div9;
+    	let div4;
     	let label1;
     	let t11;
-    	let div8;
-    	let div6;
+    	let div7;
+    	let div5;
     	let label2;
     	let input2;
     	let t12;
     	let t13;
-    	let div7;
+    	let div6;
     	let label3;
     	let input3;
     	let t14;
     	let t15;
-    	let div9;
+    	let show_if_1 = /*$user*/ ctx[9].user_roles.includes("admin");
+    	let t16;
+    	let div8;
     	let button;
-    	let t17;
-    	let div11;
     	let t18;
+    	let div10;
+    	let t19;
     	let nav;
     	let ul;
     	let li0;
     	let a1;
-    	let t19;
-    	let a1_href_value;
     	let t20;
+    	let a1_href_value;
     	let t21;
+    	let t22;
     	let li1;
     	let a2;
-    	let t22;
-    	let a2_href_value;
     	let t23;
+    	let a2_href_value;
     	let t24;
+    	let show_if = !/*$user*/ ctx[9].user_roles.includes("buyer");
+    	let t25;
     	let a3;
     	let mounted;
     	let dispose;
-    	let if_block0 = /*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0 && create_if_block_7$1(ctx);
-    	let each_value_1 = /*products*/ ctx[5];
+    	let if_block0 = show_if_2 && create_if_block_11$1(ctx);
+    	let if_block1 = /*$user*/ ctx[9].user_roles && /*$user*/ ctx[9].user_roles.length > 0 && create_if_block_9$1(ctx);
+    	let if_block2 = show_if_1 && create_if_block_8$1(ctx);
+    	let each_value_1 = /*products*/ ctx[7];
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
 
@@ -8842,7 +9384,7 @@ var app = (function () {
     		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
     	}
 
-    	let if_block1 = /*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0 && create_if_block$3(ctx);
+    	let if_block3 = show_if && create_if_block$3(ctx);
 
     	const block = {
     		c: function create() {
@@ -8854,7 +9396,7 @@ var app = (function () {
     			a0 = element("a");
     			a0.textContent = "Back";
     			t4 = space();
-    			div4 = element("div");
+    			div3 = element("div");
     			div0 = element("div");
     			label0 = element("label");
     			label0.textContent = "Price:";
@@ -8865,136 +9407,137 @@ var app = (function () {
     			div2 = element("div");
     			input1 = element("input");
     			t8 = space();
-    			div3 = element("div");
+    			if (if_block1) if_block1.c();
     			t9 = space();
-    			div10 = element("div");
-    			div5 = element("div");
+    			div9 = element("div");
+    			div4 = element("div");
     			label1 = element("label");
     			label1.textContent = "Product Type:";
     			t11 = space();
-    			div8 = element("div");
-    			div6 = element("div");
+    			div7 = element("div");
+    			div5 = element("div");
     			label2 = element("label");
     			input2 = element("input");
     			t12 = text("\r\n                Schnittmuster");
     			t13 = space();
-    			div7 = element("div");
+    			div6 = element("div");
     			label3 = element("label");
     			input3 = element("input");
     			t14 = text("\r\n                Manual");
     			t15 = space();
-    			div9 = element("div");
+    			if (if_block2) if_block2.c();
+    			t16 = space();
+    			div8 = element("div");
     			button = element("button");
     			button.textContent = "Apply";
-    			t17 = space();
-    			div11 = element("div");
+    			t18 = space();
+    			div10 = element("div");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			t18 = space();
+    			t19 = space();
     			nav = element("nav");
     			ul = element("ul");
     			li0 = element("li");
     			a1 = element("a");
-    			t19 = text("Previous");
-    			t20 = space();
+    			t20 = text("Previous");
+    			t21 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t21 = space();
+    			t22 = space();
     			li1 = element("li");
     			a2 = element("a");
-    			t22 = text("Next");
-    			t23 = space();
-    			if (if_block1) if_block1.c();
+    			t23 = text("Next");
     			t24 = space();
+    			if (if_block3) if_block3.c();
+    			t25 = space();
     			a3 = element("a");
     			a3.textContent = "Back";
-    			add_location(h1, file$3, 73, 0, 2028);
+    			attr_dev(h1, "class", "mt-3");
+    			add_location(h1, file$3, 100, 0, 2842);
     			attr_dev(a0, "class", "back-button");
     			attr_dev(a0, "href", "#/");
     			attr_dev(a0, "role", "button");
     			attr_dev(a0, "aria-pressed", "true");
-    			add_location(a0, file$3, 82, 0, 2255);
+    			add_location(a0, file$3, 109, 0, 3070);
     			attr_dev(label0, "for", "");
     			attr_dev(label0, "class", "col-form-label");
-    			add_location(label0, file$3, 86, 8, 2394);
+    			add_location(label0, file$3, 113, 8, 3209);
     			attr_dev(div0, "class", "col-auto");
-    			add_location(div0, file$3, 85, 4, 2362);
+    			add_location(div0, file$3, 112, 4, 3177);
     			attr_dev(input0, "class", "form-control");
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "from");
-    			add_location(input0, file$3, 89, 8, 2493);
+    			add_location(input0, file$3, 116, 8, 3308);
     			attr_dev(div1, "class", "col-3");
-    			add_location(div1, file$3, 88, 4, 2464);
+    			add_location(div1, file$3, 115, 4, 3279);
     			attr_dev(input1, "class", "form-control");
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "to");
-    			add_location(input1, file$3, 97, 8, 2687);
+    			add_location(input1, file$3, 124, 8, 3502);
     			attr_dev(div2, "class", "col-3");
-    			add_location(div2, file$3, 96, 4, 2658);
-    			attr_dev(div3, "class", "col-3");
-    			add_location(div3, file$3, 104, 4, 2850);
-    			attr_dev(div4, "class", "row my-3");
-    			add_location(div4, file$3, 84, 0, 2334);
+    			add_location(div2, file$3, 123, 4, 3473);
+    			attr_dev(div3, "class", "row my-3");
+    			add_location(div3, file$3, 111, 0, 3149);
     			attr_dev(label1, "for", "");
     			attr_dev(label1, "class", "col-form-label");
-    			add_location(label1, file$3, 109, 8, 2943);
-    			attr_dev(div5, "class", "col-auto");
-    			add_location(div5, file$3, 108, 4, 2911);
+    			add_location(label1, file$3, 157, 8, 4528);
+    			attr_dev(div4, "class", "col-auto");
+    			add_location(div4, file$3, 156, 4, 4496);
     			attr_dev(input2, "class", "form-check-input");
     			attr_dev(input2, "type", "radio");
     			attr_dev(input2, "name", "schittmuster");
     			input2.__value = "SCHNITTMUSTER";
     			input2.value = input2.__value;
-    			/*$$binding_groups*/ ctx[13][0].push(input2);
-    			add_location(input2, file$3, 114, 16, 3112);
-    			add_location(label2, file$3, 113, 12, 3087);
-    			attr_dev(div6, "class", "form-check");
-    			add_location(div6, file$3, 112, 8, 3049);
+    			/*$$binding_groups*/ ctx[17][0].push(input2);
+    			add_location(input2, file$3, 162, 16, 4697);
+    			add_location(label2, file$3, 161, 12, 4672);
+    			attr_dev(div5, "class", "form-check");
+    			add_location(div5, file$3, 160, 8, 4634);
     			attr_dev(input3, "class", "form-check-input");
     			attr_dev(input3, "type", "radio");
     			attr_dev(input3, "name", "manual");
     			attr_dev(input3, "id", "manual");
     			input3.__value = "MANUAL";
     			input3.value = input3.__value;
-    			/*$$binding_groups*/ ctx[13][0].push(input3);
-    			add_location(input3, file$3, 127, 16, 3527);
-    			add_location(label3, file$3, 126, 12, 3502);
-    			attr_dev(div7, "class", "form-check");
-    			add_location(div7, file$3, 125, 8, 3464);
-    			attr_dev(div8, "class", "col-3");
-    			add_location(div8, file$3, 111, 4, 3020);
+    			/*$$binding_groups*/ ctx[17][0].push(input3);
+    			add_location(input3, file$3, 175, 16, 5112);
+    			add_location(label3, file$3, 174, 12, 5087);
+    			attr_dev(div6, "class", "form-check");
+    			add_location(div6, file$3, 173, 8, 5049);
+    			attr_dev(div7, "class", "col-3");
+    			add_location(div7, file$3, 159, 4, 4605);
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$3, 142, 8, 3931);
-    			attr_dev(div9, "class", "col-3");
-    			add_location(div9, file$3, 141, 4, 3902);
-    			attr_dev(div10, "class", "row my-3");
-    			add_location(div10, file$3, 107, 0, 2883);
-    			attr_dev(div11, "class", "row row-cols-1 row-cols-md-3 g-4");
-    			add_location(div11, file$3, 148, 0, 4022);
+    			add_location(button, file$3, 212, 8, 6229);
+    			attr_dev(div8, "class", "col-auto");
+    			add_location(div8, file$3, 211, 4, 6197);
+    			attr_dev(div9, "class", "row my-3");
+    			add_location(div9, file$3, 155, 0, 4468);
+    			attr_dev(div10, "class", "row row-cols-1 row-cols-md-3 g-4");
+    			add_location(div10, file$3, 216, 0, 6316);
     			attr_dev(a1, "class", "page-link");
     			attr_dev(a1, "href", a1_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] - 1));
-    			add_location(a1, file$3, 249, 12, 8464);
+    			add_location(a1, file$3, 321, 12, 11061);
     			attr_dev(li0, "class", "page-item");
-    			add_location(li0, file$3, 248, 8, 8428);
+    			add_location(li0, file$3, 320, 8, 11025);
     			attr_dev(a2, "class", "page-link");
     			attr_dev(a2, "href", a2_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] + 1));
-    			add_location(a2, file$3, 264, 12, 8975);
+    			add_location(a2, file$3, 336, 12, 11572);
     			attr_dev(li1, "class", "page-item");
-    			add_location(li1, file$3, 263, 8, 8939);
+    			add_location(li1, file$3, 335, 8, 11536);
     			attr_dev(ul, "class", "pagination");
-    			add_location(ul, file$3, 247, 4, 8395);
-    			add_location(nav, file$3, 246, 0, 8384);
+    			add_location(ul, file$3, 319, 4, 10992);
+    			add_location(nav, file$3, 318, 0, 10981);
     			attr_dev(a3, "class", "back-button");
     			attr_dev(a3, "href", "#/");
     			attr_dev(a3, "role", "button");
     			attr_dev(a3, "aria-pressed", "true");
-    			add_location(a3, file$3, 279, 0, 9322);
+    			add_location(a3, file$3, 351, 0, 11909);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9006,85 +9549,89 @@ var app = (function () {
     			insert_dev(target, t2, anchor);
     			insert_dev(target, a0, anchor);
     			insert_dev(target, t4, anchor);
-    			insert_dev(target, div4, anchor);
-    			append_dev(div4, div0);
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div0);
     			append_dev(div0, label0);
-    			append_dev(div4, t6);
-    			append_dev(div4, div1);
+    			append_dev(div3, t6);
+    			append_dev(div3, div1);
     			append_dev(div1, input0);
     			set_input_value(input0, /*pricesMin*/ ctx[2]);
-    			append_dev(div4, t7);
-    			append_dev(div4, div2);
+    			append_dev(div3, t7);
+    			append_dev(div3, div2);
     			append_dev(div2, input1);
     			set_input_value(input1, /*pricesMax*/ ctx[3]);
-    			append_dev(div4, t8);
-    			append_dev(div4, div3);
+    			append_dev(div3, t8);
+    			if (if_block1) if_block1.m(div3, null);
     			insert_dev(target, t9, anchor);
-    			insert_dev(target, div10, anchor);
-    			append_dev(div10, div5);
-    			append_dev(div5, label1);
-    			append_dev(div10, t11);
-    			append_dev(div10, div8);
-    			append_dev(div8, div6);
-    			append_dev(div6, label2);
+    			insert_dev(target, div9, anchor);
+    			append_dev(div9, div4);
+    			append_dev(div4, label1);
+    			append_dev(div9, t11);
+    			append_dev(div9, div7);
+    			append_dev(div7, div5);
+    			append_dev(div5, label2);
     			append_dev(label2, input2);
     			input2.checked = input2.__value === /*type*/ ctx[4];
     			append_dev(label2, t12);
-    			append_dev(div8, t13);
-    			append_dev(div8, div7);
-    			append_dev(div7, label3);
+    			append_dev(div7, t13);
+    			append_dev(div7, div6);
+    			append_dev(div6, label3);
     			append_dev(label3, input3);
     			input3.checked = input3.__value === /*type*/ ctx[4];
     			append_dev(label3, t14);
-    			append_dev(div10, t15);
-    			append_dev(div10, div9);
-    			append_dev(div9, button);
-    			insert_dev(target, t17, anchor);
-    			insert_dev(target, div11, anchor);
+    			append_dev(div9, t15);
+    			if (if_block2) if_block2.m(div9, null);
+    			append_dev(div9, t16);
+    			append_dev(div9, div8);
+    			append_dev(div8, button);
+    			insert_dev(target, t18, anchor);
+    			insert_dev(target, div10, anchor);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].m(div11, null);
+    				each_blocks_1[i].m(div10, null);
     			}
 
-    			insert_dev(target, t18, anchor);
+    			insert_dev(target, t19, anchor);
     			insert_dev(target, nav, anchor);
     			append_dev(nav, ul);
     			append_dev(ul, li0);
     			append_dev(li0, a1);
-    			append_dev(a1, t19);
-    			append_dev(ul, t20);
+    			append_dev(a1, t20);
+    			append_dev(ul, t21);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(ul, null);
     			}
 
-    			append_dev(ul, t21);
+    			append_dev(ul, t22);
     			append_dev(ul, li1);
     			append_dev(li1, a2);
-    			append_dev(a2, t22);
-    			insert_dev(target, t23, anchor);
-    			if (if_block1) if_block1.m(target, anchor);
+    			append_dev(a2, t23);
     			insert_dev(target, t24, anchor);
+    			if (if_block3) if_block3.m(target, anchor);
+    			insert_dev(target, t25, anchor);
     			insert_dev(target, a3, anchor);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[10]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[11]),
-    					listen_dev(input2, "change", /*input2_change_handler*/ ctx[12]),
-    					listen_dev(input2, "click", /*getProducts*/ ctx[7], false, false, false),
-    					listen_dev(input3, "change", /*input3_change_handler*/ ctx[14]),
-    					listen_dev(input3, "click", /*getProducts*/ ctx[7], false, false, false),
-    					listen_dev(button, "click", /*getProducts*/ ctx[7], false, false, false)
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[13]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[14]),
+    					listen_dev(input2, "change", /*input2_change_handler*/ ctx[16]),
+    					listen_dev(input2, "click", /*getProducts*/ ctx[10], false, false, false),
+    					listen_dev(input3, "change", /*input3_change_handler*/ ctx[18]),
+    					listen_dev(input3, "click", /*getProducts*/ ctx[10], false, false, false),
+    					listen_dev(button, "click", /*getProducts*/ ctx[10], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
-    		p: function update(ctx, [dirty]) {
-    			if (/*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0) {
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*$user*/ 512) show_if_2 = !/*$user*/ ctx[9].user_roles.includes("buyer");
+
+    			if (show_if_2) {
     				if (if_block0) ; else {
-    					if_block0 = create_if_block_7$1(ctx);
+    					if_block0 = create_if_block_11$1(ctx);
     					if_block0.c();
     					if_block0.m(t2.parentNode, t2);
     				}
@@ -9093,24 +9640,52 @@ var app = (function () {
     				if_block0 = null;
     			}
 
-    			if (dirty & /*pricesMin*/ 4 && to_number(input0.value) !== /*pricesMin*/ ctx[2]) {
+    			if (dirty[0] & /*pricesMin*/ 4 && to_number(input0.value) !== /*pricesMin*/ ctx[2]) {
     				set_input_value(input0, /*pricesMin*/ ctx[2]);
     			}
 
-    			if (dirty & /*pricesMax*/ 8 && to_number(input1.value) !== /*pricesMax*/ ctx[3]) {
+    			if (dirty[0] & /*pricesMax*/ 8 && to_number(input1.value) !== /*pricesMax*/ ctx[3]) {
     				set_input_value(input1, /*pricesMax*/ ctx[3]);
     			}
 
-    			if (dirty & /*type*/ 16) {
+    			if (/*$user*/ ctx[9].user_roles && /*$user*/ ctx[9].user_roles.length > 0) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_9$1(ctx);
+    					if_block1.c();
+    					if_block1.m(div3, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+
+    			if (dirty[0] & /*type*/ 16) {
     				input2.checked = input2.__value === /*type*/ ctx[4];
     			}
 
-    			if (dirty & /*type*/ 16) {
+    			if (dirty[0] & /*type*/ 16) {
     				input3.checked = input3.__value === /*type*/ ctx[4];
     			}
 
-    			if (dirty & /*products, assignToMe, $user*/ 352) {
-    				each_value_1 = /*products*/ ctx[5];
+    			if (dirty[0] & /*$user*/ 512) show_if_1 = /*$user*/ ctx[9].user_roles.includes("admin");
+
+    			if (show_if_1) {
+    				if (if_block2) {
+    					if_block2.p(ctx, dirty);
+    				} else {
+    					if_block2 = create_if_block_8$1(ctx);
+    					if_block2.c();
+    					if_block2.m(div9, t16);
+    				}
+    			} else if (if_block2) {
+    				if_block2.d(1);
+    				if_block2 = null;
+    			}
+
+    			if (dirty[0] & /*products, allUsers, assignToMe, $user*/ 2944) {
+    				each_value_1 = /*products*/ ctx[7];
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -9122,7 +9697,7 @@ var app = (function () {
     					} else {
     						each_blocks_1[i] = create_each_block_1$1(child_ctx);
     						each_blocks_1[i].c();
-    						each_blocks_1[i].m(div11, null);
+    						each_blocks_1[i].m(div10, null);
     					}
     				}
 
@@ -9133,11 +9708,11 @@ var app = (function () {
     				each_blocks_1.length = each_value_1.length;
     			}
 
-    			if (dirty & /*currentPage*/ 1 && a1_href_value !== (a1_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] - 1))) {
+    			if (dirty[0] & /*currentPage*/ 1 && a1_href_value !== (a1_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] - 1))) {
     				attr_dev(a1, "href", a1_href_value);
     			}
 
-    			if (dirty & /*currentPage, nrOfPages*/ 3) {
+    			if (dirty[0] & /*currentPage, nrOfPages*/ 3) {
     				each_value = Array(/*nrOfPages*/ ctx[1]);
     				validate_each_argument(each_value);
     				let i;
@@ -9150,7 +9725,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block$1(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(ul, t21);
+    						each_blocks[i].m(ul, t22);
     					}
     				}
 
@@ -9161,19 +9736,21 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (dirty & /*currentPage*/ 1 && a2_href_value !== (a2_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] + 1))) {
+    			if (dirty[0] & /*currentPage*/ 1 && a2_href_value !== (a2_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] + 1))) {
     				attr_dev(a2, "href", a2_href_value);
     			}
 
-    			if (/*$user*/ ctx[6].user_roles && /*$user*/ ctx[6].user_roles.length > 0) {
-    				if (if_block1) ; else {
-    					if_block1 = create_if_block$3(ctx);
-    					if_block1.c();
-    					if_block1.m(t24.parentNode, t24);
+    			if (dirty[0] & /*$user*/ 512) show_if = !/*$user*/ ctx[9].user_roles.includes("buyer");
+
+    			if (show_if) {
+    				if (if_block3) ; else {
+    					if_block3 = create_if_block$3(ctx);
+    					if_block3.c();
+    					if_block3.m(t25.parentNode, t25);
     				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
+    			} else if (if_block3) {
+    				if_block3.d(1);
+    				if_block3 = null;
     			}
     		},
     		i: noop$1,
@@ -9185,20 +9762,22 @@ var app = (function () {
     			if (detaching) detach_dev(t2);
     			if (detaching) detach_dev(a0);
     			if (detaching) detach_dev(t4);
-    			if (detaching) detach_dev(div4);
+    			if (detaching) detach_dev(div3);
+    			if (if_block1) if_block1.d();
     			if (detaching) detach_dev(t9);
-    			if (detaching) detach_dev(div10);
-    			/*$$binding_groups*/ ctx[13][0].splice(/*$$binding_groups*/ ctx[13][0].indexOf(input2), 1);
-    			/*$$binding_groups*/ ctx[13][0].splice(/*$$binding_groups*/ ctx[13][0].indexOf(input3), 1);
-    			if (detaching) detach_dev(t17);
-    			if (detaching) detach_dev(div11);
-    			destroy_each(each_blocks_1, detaching);
+    			if (detaching) detach_dev(div9);
+    			/*$$binding_groups*/ ctx[17][0].splice(/*$$binding_groups*/ ctx[17][0].indexOf(input2), 1);
+    			/*$$binding_groups*/ ctx[17][0].splice(/*$$binding_groups*/ ctx[17][0].indexOf(input3), 1);
+    			if (if_block2) if_block2.d();
     			if (detaching) detach_dev(t18);
+    			if (detaching) detach_dev(div10);
+    			destroy_each(each_blocks_1, detaching);
+    			if (detaching) detach_dev(t19);
     			if (detaching) detach_dev(nav);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t23);
-    			if (if_block1) if_block1.d(detaching);
     			if (detaching) detach_dev(t24);
+    			if (if_block3) if_block3.d(detaching);
+    			if (detaching) detach_dev(t25);
     			if (detaching) detach_dev(a3);
     			mounted = false;
     			run_all(dispose);
@@ -9223,17 +9802,19 @@ var app = (function () {
     	let $querystring;
     	let $user;
     	validate_store(jwt_token, 'jwt_token');
-    	component_subscribe($$self, jwt_token, $$value => $$invalidate(16, $jwt_token = $$value));
+    	component_subscribe($$self, jwt_token, $$value => $$invalidate(21, $jwt_token = $$value));
     	validate_store(querystring, 'querystring');
-    	component_subscribe($$self, querystring, $$value => $$invalidate(9, $querystring = $$value));
+    	component_subscribe($$self, querystring, $$value => $$invalidate(12, $querystring = $$value));
     	validate_store(user, 'user');
-    	component_subscribe($$self, user, $$value => $$invalidate(6, $user = $$value));
+    	component_subscribe($$self, user, $$value => $$invalidate(9, $user = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Products', slots, []);
     	var currentPage;
     	let nrOfPages = 0;
-    	let pricesMin, pricesMax, type;
+    	let pricesMin, pricesMax, type, user_id;
+    	let state = "ACTIVE";
     	let products = [];
+    	let allUsers = [];
 
     	function getProducts() {
     		let query = "pageSize=6&page=" + currentPage;
@@ -9250,6 +9831,14 @@ var app = (function () {
     			query += "&type=" + type;
     		}
 
+    		if (user_id) {
+    			query += "&user=" + user_id;
+    		}
+
+    		if (state) {
+    			query += "&state=" + state;
+    		}
+
     		var config = {
     			method: "get",
     			url: api_root$2 + "/api/products?" + query,
@@ -9257,10 +9846,26 @@ var app = (function () {
     		};
 
     		axios(config).then(function (response) {
-    			$$invalidate(5, products = response.data.content);
+    			$$invalidate(7, products = response.data.content);
     			$$invalidate(1, nrOfPages = response.data.totalPages);
     		}).catch(function (error) {
     			alert("Could not get products");
+    			console.log(error);
+    		});
+    	}
+
+    	function getUsers() {
+    		var config = {
+    			method: "get",
+    			url: api_root$2 + "/api/users?pagesize=30",
+    			headers: { Authorization: "Bearer " + $jwt_token }
+    		};
+
+    		axios(config).then(function (response) {
+    			$$invalidate(8, allUsers = response.data.content);
+    			console.log(allUsers);
+    		}).catch(function (error) {
+    			// alert("Could not get users");
     			console.log(error);
     		});
     	}
@@ -9298,6 +9903,12 @@ var app = (function () {
     		$$invalidate(3, pricesMax);
     	}
 
+    	function select_change_handler() {
+    		user_id = select_value(this);
+    		$$invalidate(5, user_id);
+    		$$invalidate(8, allUsers);
+    	}
+
     	function input2_change_handler() {
     		type = this.__value;
     		$$invalidate(4, type);
@@ -9308,6 +9919,11 @@ var app = (function () {
     		$$invalidate(4, type);
     	}
 
+    	function select_change_handler_1() {
+    		state = select_value(this);
+    		$$invalidate(6, state);
+    	}
+
     	const click_handler = product => {
     		assignToMe(product.id);
     	};
@@ -9315,6 +9931,7 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		axios,
     		querystring,
+    		each,
     		jwt_token,
     		isAuthenticated,
     		user,
@@ -9324,8 +9941,12 @@ var app = (function () {
     		pricesMin,
     		pricesMax,
     		type,
+    		user_id,
+    		state,
     		products,
+    		allUsers,
     		getProducts,
+    		getUsers,
     		assignToMe,
     		$jwt_token,
     		$querystring,
@@ -9338,7 +9959,10 @@ var app = (function () {
     		if ('pricesMin' in $$props) $$invalidate(2, pricesMin = $$props.pricesMin);
     		if ('pricesMax' in $$props) $$invalidate(3, pricesMax = $$props.pricesMax);
     		if ('type' in $$props) $$invalidate(4, type = $$props.type);
-    		if ('products' in $$props) $$invalidate(5, products = $$props.products);
+    		if ('user_id' in $$props) $$invalidate(5, user_id = $$props.user_id);
+    		if ('state' in $$props) $$invalidate(6, state = $$props.state);
+    		if ('products' in $$props) $$invalidate(7, products = $$props.products);
+    		if ('allUsers' in $$props) $$invalidate(8, allUsers = $$props.allUsers);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -9346,7 +9970,7 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*$querystring*/ 512) {
+    		if ($$self.$$.dirty[0] & /*$querystring*/ 4096) {
     			{
     				let searchParams = new URLSearchParams($querystring);
 
@@ -9357,6 +9981,7 @@ var app = (function () {
     				}
 
     				getProducts();
+    				getUsers();
     			}
     		}
     	};
@@ -9367,16 +9992,21 @@ var app = (function () {
     		pricesMin,
     		pricesMax,
     		type,
+    		user_id,
+    		state,
     		products,
+    		allUsers,
     		$user,
     		getProducts,
     		assignToMe,
     		$querystring,
     		input0_input_handler,
     		input1_input_handler,
+    		select_change_handler,
     		input2_change_handler,
     		$$binding_groups,
     		input3_change_handler,
+    		select_change_handler_1,
     		click_handler
     	];
     }
@@ -9384,7 +10014,7 @@ var app = (function () {
     class Products extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$3, safe_not_equal, {});
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, {}, null, [-1, -1]);
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -9400,8 +10030,8 @@ var app = (function () {
     const { console: console_1$1 } = globals;
     const file$2 = "src\\pages\\CreateProduct.svelte";
 
-    // (146:4) {:else}
-    function create_else_block$2(ctx) {
+    // (158:0) {:else}
+    function create_else_block_1(ctx) {
     	let div;
     	let h3;
     	let b;
@@ -9412,11 +10042,11 @@ var app = (function () {
     			h3 = element("h3");
     			b = element("b");
     			b.textContent = "Not correct Role";
-    			add_location(b, file$2, 148, 10, 4668);
-    			add_location(h3, file$2, 148, 6, 4664);
+    			add_location(b, file$2, 159, 12, 5641);
+    			add_location(h3, file$2, 159, 8, 5637);
     			attr_dev(div, "class", "alert");
     			attr_dev(div, "role", "alert");
-    			add_location(div, file$2, 147, 4, 4624);
+    			add_location(div, file$2, 158, 4, 5595);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -9431,16 +10061,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$2.name,
+    		id: create_else_block_1.name,
     		type: "else",
-    		source: "(146:4) {:else}",
+    		source: "(158:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (43:0) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (43:0) {#if !$user.user_roles.includes("buyer")}
     function create_if_block$2(ctx) {
     	let h1;
     	let t1;
@@ -9466,7 +10096,7 @@ var app = (function () {
     	let option3;
     	let option4;
     	let t15;
-    	let div7;
+    	let div6;
     	let div4;
     	let label3;
     	let t17;
@@ -9488,20 +10118,26 @@ var app = (function () {
     	let t31;
     	let input1;
     	let t32;
-    	let div6;
-    	let label5;
-    	let t34;
-    	let input2;
-    	let t35;
-    	let div9;
+    	let t33;
     	let div8;
-    	let label6;
-    	let t37;
+    	let div7;
+    	let label5;
+    	let t35;
     	let textarea;
+    	let t36;
+    	let a0;
     	let t38;
-    	let a;
+    	let a1;
     	let mounted;
     	let dispose;
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (/*product*/ ctx[0].productType !== "MANUAL") return create_if_block_1$2;
+    		return create_else_block$2;
+    	}
+
+    	let current_block_type = select_block_type_1(ctx);
+    	let if_block = current_block_type(ctx);
 
     	const block = {
     		c: function create() {
@@ -9534,11 +10170,11 @@ var app = (function () {
     			option2 = element("option");
     			option2.textContent = "Easy";
     			option3 = element("option");
-    			option3.textContent = "Middle";
+    			option3.textContent = "Medium";
     			option4 = element("option");
     			option4.textContent = "Difficult";
     			t15 = space();
-    			div7 = element("div");
+    			div6 = element("div");
     			div4 = element("div");
     			label3 = element("label");
     			label3.textContent = "Clothing Type";
@@ -9573,148 +10209,143 @@ var app = (function () {
     			t31 = space();
     			input1 = element("input");
     			t32 = space();
-    			div6 = element("div");
-    			label5 = element("label");
-    			label5.textContent = "Size";
-    			t34 = space();
-    			input2 = element("input");
-    			t35 = space();
-    			div9 = element("div");
+    			if_block.c();
+    			t33 = space();
     			div8 = element("div");
-    			label6 = element("label");
-    			label6.textContent = "Description";
-    			t37 = space();
+    			div7 = element("div");
+    			label5 = element("label");
+    			label5.textContent = "Description";
+    			t35 = space();
     			textarea = element("textarea");
+    			t36 = space();
+    			a0 = element("a");
+    			a0.textContent = "Submit";
     			t38 = space();
-    			a = element("a");
-    			a.textContent = "Submit";
+    			a1 = element("a");
+    			a1.textContent = "Back";
     			attr_dev(h1, "class", "mt-3");
-    			add_location(h1, file$2, 44, 0, 1202);
+    			add_location(h1, file$2, 43, 4, 1192);
     			attr_dev(label0, "class", "form-label");
     			attr_dev(label0, "for", "productname");
-    			add_location(label0, file$2, 48, 12, 1328);
+    			add_location(label0, file$2, 47, 16, 1334);
     			attr_dev(input0, "class", "form-control");
     			attr_dev(input0, "id", "description");
     			attr_dev(input0, "type", "text");
-    			add_location(input0, file$2, 49, 12, 1406);
+    			add_location(input0, file$2, 48, 16, 1416);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$2, 47, 8, 1297);
+    			add_location(div0, file$2, 46, 12, 1299);
     			attr_dev(label1, "class", "form-label");
     			attr_dev(label1, "for", "productType");
-    			add_location(label1, file$2, 58, 12, 1638);
+    			add_location(label1, file$2, 57, 16, 1680);
     			option0.__value = "SCHNITTMUSTER";
     			option0.value = option0.__value;
-    			add_location(option0, file$2, 65, 16, 1899);
+    			add_location(option0, file$2, 64, 20, 1969);
     			option1.__value = "MANUAL";
     			option1.value = option1.__value;
-    			add_location(option1, file$2, 66, 16, 1969);
+    			add_location(option1, file$2, 65, 20, 2043);
     			attr_dev(select0, "class", "form-select");
     			attr_dev(select0, "id", "type");
     			attr_dev(select0, "type", "text");
     			if (/*product*/ ctx[0].productType === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[4].call(select0));
-    			add_location(select0, file$2, 59, 12, 1716);
+    			add_location(select0, file$2, 58, 16, 1762);
     			attr_dev(div1, "class", "col");
-    			add_location(div1, file$2, 57, 8, 1607);
+    			add_location(div1, file$2, 56, 12, 1645);
     			attr_dev(label2, "class", "form-label");
     			attr_dev(label2, "for", "difficultyType");
-    			add_location(label2, file$2, 71, 12, 2089);
+    			add_location(label2, file$2, 70, 16, 2179);
     			option2.__value = "EASY";
     			option2.value = option2.__value;
-    			add_location(option2, file$2, 80, 16, 2391);
-    			option3.__value = "MIDDLE";
+    			add_location(option2, file$2, 79, 20, 2517);
+    			option3.__value = "MEDIUM";
     			option3.value = option3.__value;
-    			add_location(option3, file$2, 81, 16, 2443);
+    			add_location(option3, file$2, 80, 20, 2573);
     			option4.__value = "DIFFICULT";
     			option4.value = option4.__value;
-    			add_location(option4, file$2, 82, 16, 2499);
+    			add_location(option4, file$2, 81, 20, 2633);
     			attr_dev(select1, "class", "form-select");
     			attr_dev(select1, "id", "type");
     			attr_dev(select1, "type", "text");
     			if (/*product*/ ctx[0].difficultyType === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[5].call(select1));
-    			add_location(select1, file$2, 74, 12, 2205);
+    			add_location(select1, file$2, 73, 16, 2307);
     			attr_dev(div2, "class", "col");
-    			add_location(div2, file$2, 70, 8, 2058);
+    			add_location(div2, file$2, 69, 12, 2144);
     			attr_dev(div3, "class", "row mb-3");
-    			add_location(div3, file$2, 46, 4, 1265);
+    			add_location(div3, file$2, 45, 8, 1263);
     			attr_dev(label3, "class", "form-label");
     			attr_dev(label3, "for", "clothingType");
-    			add_location(label3, file$2, 89, 12, 2665);
+    			add_location(label3, file$2, 88, 16, 2823);
     			option5.__value = "SHIRT";
     			option5.value = option5.__value;
-    			add_location(option5, file$2, 96, 16, 2929);
+    			add_location(option5, file$2, 97, 20, 3155);
     			option6.__value = "TSHIRT";
     			option6.value = option6.__value;
-    			add_location(option6, file$2, 97, 16, 2983);
+    			add_location(option6, file$2, 98, 20, 3213);
     			option7.__value = "PULLOVER";
     			option7.value = option7.__value;
-    			add_location(option7, file$2, 98, 16, 3040);
+    			add_location(option7, file$2, 99, 20, 3274);
     			option8.__value = "BLOUSE";
     			option8.value = option8.__value;
-    			add_location(option8, file$2, 99, 16, 3100);
+    			add_location(option8, file$2, 100, 20, 3338);
     			option9.__value = "JACKET";
     			option9.value = option9.__value;
-    			add_location(option9, file$2, 100, 16, 3156);
+    			add_location(option9, file$2, 101, 20, 3398);
     			option10.__value = "TROUSERS";
     			option10.value = option10.__value;
-    			add_location(option10, file$2, 101, 16, 3212);
+    			add_location(option10, file$2, 102, 20, 3458);
     			option11.__value = "SKIRT";
     			option11.value = option11.__value;
-    			add_location(option11, file$2, 102, 16, 3272);
+    			add_location(option11, file$2, 103, 20, 3522);
     			option12.__value = "DRESS";
     			option12.value = option12.__value;
-    			add_location(option12, file$2, 103, 16, 3326);
+    			add_location(option12, file$2, 104, 20, 3580);
     			option13.__value = "SOCKS";
     			option13.value = option13.__value;
-    			add_location(option13, file$2, 104, 16, 3380);
+    			add_location(option13, file$2, 105, 20, 3638);
     			option14.__value = "ACCESSOIRES";
     			option14.value = option14.__value;
-    			add_location(option14, file$2, 105, 16, 3434);
+    			add_location(option14, file$2, 106, 20, 3696);
     			option15.selected = true;
     			option15.__value = "UNDEFINED";
     			option15.value = option15.__value;
-    			add_location(option15, file$2, 106, 16, 3500);
+    			add_location(option15, file$2, 107, 20, 3766);
     			attr_dev(select2, "class", "form-select");
     			attr_dev(select2, "id", "type");
     			attr_dev(select2, "type", "text");
     			if (/*product*/ ctx[0].clothingType === void 0) add_render_callback(() => /*select2_change_handler*/ ctx[6].call(select2));
-    			add_location(select2, file$2, 90, 12, 2745);
+    			add_location(select2, file$2, 91, 16, 2947);
     			attr_dev(div4, "class", "col");
-    			add_location(div4, file$2, 88, 8, 2634);
+    			add_location(div4, file$2, 87, 12, 2788);
     			attr_dev(label4, "class", "form-label");
     			attr_dev(label4, "for", "price");
-    			add_location(label4, file$2, 110, 12, 3633);
+    			add_location(label4, file$2, 111, 16, 3915);
     			attr_dev(input1, "class", "form-control");
     			attr_dev(input1, "id", "earnings");
     			attr_dev(input1, "type", "number");
-    			add_location(input1, file$2, 111, 12, 3698);
+    			add_location(input1, file$2, 112, 16, 3984);
     			attr_dev(div5, "class", "col");
-    			add_location(div5, file$2, 109, 8, 3602);
-    			attr_dev(label5, "class", "form-label");
-    			attr_dev(label5, "for", "size");
-    			add_location(label5, file$2, 120, 12, 3923);
-    			attr_dev(input2, "class", "form-control");
-    			attr_dev(input2, "id", "description");
-    			attr_dev(input2, "type", "text");
-    			add_location(input2, file$2, 121, 12, 3986);
-    			attr_dev(div6, "class", "col");
-    			add_location(div6, file$2, 119, 8, 3892);
-    			attr_dev(div7, "class", "row mb-3");
-    			add_location(div7, file$2, 87, 4, 2602);
-    			attr_dev(label6, "for", "description");
-    			add_location(label6, file$2, 132, 12, 4251);
+    			add_location(div5, file$2, 110, 12, 3880);
+    			attr_dev(div6, "class", "row mb-3");
+    			add_location(div6, file$2, 86, 8, 2752);
+    			attr_dev(label5, "for", "description");
+    			add_location(label5, file$2, 145, 16, 5107);
     			attr_dev(textarea, "class", "form-control");
     			attr_dev(textarea, "id", "description");
     			attr_dev(textarea, "rows", "3");
-    			add_location(textarea, file$2, 133, 12, 4309);
-    			attr_dev(div8, "class", "col");
-    			add_location(div8, file$2, 131, 8, 4220);
-    			attr_dev(div9, "class", "row mb-3");
-    			add_location(div9, file$2, 130, 4, 4188);
+    			add_location(textarea, file$2, 146, 16, 5169);
+    			attr_dev(div7, "class", "col");
+    			add_location(div7, file$2, 144, 12, 5072);
+    			attr_dev(div8, "class", "row mb-3");
+    			add_location(div8, file$2, 143, 8, 5036);
     			attr_dev(form, "class", "mb-5");
-    			add_location(form, file$2, 45, 0, 1240);
-    			attr_dev(a, "class", "my-button");
-    			attr_dev(a, "href", "#/products");
-    			add_location(a, file$2, 142, 0, 4521);
+    			add_location(form, file$2, 44, 4, 1234);
+    			attr_dev(a0, "class", "my-button");
+    			attr_dev(a0, "href", "#/products");
+    			add_location(a0, file$2, 155, 4, 5417);
+    			attr_dev(a1, "class", "back-button");
+    			attr_dev(a1, "href", "#/products");
+    			attr_dev(a1, "role", "button");
+    			attr_dev(a1, "aria-pressed", "true");
+    			add_location(a1, file$2, 156, 4, 5497);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h1, anchor);
@@ -9744,8 +10375,8 @@ var app = (function () {
     			append_dev(select1, option4);
     			select_option(select1, /*product*/ ctx[0].difficultyType);
     			append_dev(form, t15);
-    			append_dev(form, div7);
-    			append_dev(div7, div4);
+    			append_dev(form, div6);
+    			append_dev(div6, div4);
     			append_dev(div4, label3);
     			append_dev(div4, t17);
     			append_dev(div4, select2);
@@ -9761,27 +10392,25 @@ var app = (function () {
     			append_dev(select2, option14);
     			append_dev(select2, option15);
     			select_option(select2, /*product*/ ctx[0].clothingType);
-    			append_dev(div7, t29);
-    			append_dev(div7, div5);
+    			append_dev(div6, t29);
+    			append_dev(div6, div5);
     			append_dev(div5, label4);
     			append_dev(div5, t31);
     			append_dev(div5, input1);
     			set_input_value(input1, /*product*/ ctx[0].price);
-    			append_dev(div7, t32);
-    			append_dev(div7, div6);
-    			append_dev(div6, label5);
-    			append_dev(div6, t34);
-    			append_dev(div6, input2);
-    			set_input_value(input2, /*product*/ ctx[0].size);
-    			append_dev(form, t35);
-    			append_dev(form, div9);
-    			append_dev(div9, div8);
-    			append_dev(div8, label6);
-    			append_dev(div8, t37);
-    			append_dev(div8, textarea);
+    			append_dev(div6, t32);
+    			if_block.m(div6, null);
+    			append_dev(form, t33);
+    			append_dev(form, div8);
+    			append_dev(div8, div7);
+    			append_dev(div7, label5);
+    			append_dev(div7, t35);
+    			append_dev(div7, textarea);
     			set_input_value(textarea, /*product*/ ctx[0].description);
+    			insert_dev(target, t36, anchor);
+    			insert_dev(target, a0, anchor);
     			insert_dev(target, t38, anchor);
-    			insert_dev(target, a, anchor);
+    			insert_dev(target, a1, anchor);
 
     			if (!mounted) {
     				dispose = [
@@ -9790,9 +10419,8 @@ var app = (function () {
     					listen_dev(select1, "change", /*select1_change_handler*/ ctx[5]),
     					listen_dev(select2, "change", /*select2_change_handler*/ ctx[6]),
     					listen_dev(input1, "input", /*input1_input_handler*/ ctx[7]),
-    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[8]),
-    					listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[9]),
-    					listen_dev(a, "click", /*createProduct*/ ctx[2], false, false, false)
+    					listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[10]),
+    					listen_dev(a0, "click", /*createProduct*/ ctx[2], false, false, false)
     				];
 
     				mounted = true;
@@ -9819,8 +10447,16 @@ var app = (function () {
     				set_input_value(input1, /*product*/ ctx[0].price);
     			}
 
-    			if (dirty & /*product*/ 1 && input2.value !== /*product*/ ctx[0].size) {
-    				set_input_value(input2, /*product*/ ctx[0].size);
+    			if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block) {
+    				if_block.p(ctx, dirty);
+    			} else {
+    				if_block.d(1);
+    				if_block = current_block_type(ctx);
+
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(div6, null);
+    				}
     			}
 
     			if (dirty & /*product*/ 1) {
@@ -9831,8 +10467,11 @@ var app = (function () {
     			if (detaching) detach_dev(h1);
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(form);
+    			if_block.d();
+    			if (detaching) detach_dev(t36);
+    			if (detaching) detach_dev(a0);
     			if (detaching) detach_dev(t38);
-    			if (detaching) detach_dev(a);
+    			if (detaching) detach_dev(a1);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -9842,7 +10481,129 @@ var app = (function () {
     		block,
     		id: create_if_block$2.name,
     		type: "if",
-    		source: "(43:0) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(43:0) {#if !$user.user_roles.includes(\\\"buyer\\\")}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (131:12) {:else}
+    function create_else_block$2(ctx) {
+    	let div;
+    	let label;
+    	let t1;
+    	let input;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			label = element("label");
+    			label.textContent = "Patchart";
+    			t1 = space();
+    			input = element("input");
+    			attr_dev(label, "class", "form-label");
+    			attr_dev(label, "for", "size");
+    			add_location(label, file$2, 132, 20, 4680);
+    			attr_dev(input, "class", "form-control");
+    			attr_dev(input, "id", "description");
+    			attr_dev(input, "type", "text");
+    			add_location(input, file$2, 133, 20, 4755);
+    			attr_dev(div, "class", "col");
+    			add_location(div, file$2, 131, 16, 4641);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, label);
+    			append_dev(div, t1);
+    			append_dev(div, input);
+    			set_input_value(input, /*product*/ ctx[0].patchart);
+
+    			if (!mounted) {
+    				dispose = listen_dev(input, "input", /*input_input_handler_1*/ ctx[9]);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*product*/ 1 && input.value !== /*product*/ ctx[0].patchart) {
+    				set_input_value(input, /*product*/ ctx[0].patchart);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block$2.name,
+    		type: "else",
+    		source: "(131:12) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (121:12) {#if product.productType !== "MANUAL"}
+    function create_if_block_1$2(ctx) {
+    	let div;
+    	let label;
+    	let t1;
+    	let input;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			label = element("label");
+    			label.textContent = "Size";
+    			t1 = space();
+    			input = element("input");
+    			attr_dev(label, "class", "form-label");
+    			attr_dev(label, "for", "size");
+    			add_location(label, file$2, 122, 20, 4301);
+    			attr_dev(input, "class", "form-control");
+    			attr_dev(input, "id", "description");
+    			attr_dev(input, "type", "text");
+    			add_location(input, file$2, 123, 20, 4372);
+    			attr_dev(div, "class", "col");
+    			add_location(div, file$2, 121, 16, 4262);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, label);
+    			append_dev(div, t1);
+    			append_dev(div, input);
+    			set_input_value(input, /*product*/ ctx[0].size);
+
+    			if (!mounted) {
+    				dispose = listen_dev(input, "input", /*input_input_handler*/ ctx[8]);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*product*/ 1 && input.value !== /*product*/ ctx[0].size) {
+    				set_input_value(input, /*product*/ ctx[0].size);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$2.name,
+    		type: "if",
+    		source: "(121:12) {#if product.productType !== \\\"MANUAL\\\"}",
     		ctx
     	});
 
@@ -9850,14 +10611,17 @@ var app = (function () {
     }
 
     function create_fragment$2(ctx) {
+    	let show_if;
     	let if_block_anchor;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*$user*/ ctx[1].user_roles && /*$user*/ ctx[1].user_roles.length > 0) return create_if_block$2;
-    		return create_else_block$2;
+    		if (dirty & /*$user*/ 2) show_if = null;
+    		if (show_if == null) show_if = !!!/*$user*/ ctx[1].user_roles.includes("buyer");
+    		if (show_if) return create_if_block$2;
+    		return create_else_block_1;
     	}
 
-    	let current_block_type = select_block_type(ctx);
+    	let current_block_type = select_block_type(ctx, -1);
     	let if_block = current_block_type(ctx);
 
     	const block = {
@@ -9873,7 +10637,7 @@ var app = (function () {
     			insert_dev(target, if_block_anchor, anchor);
     		},
     		p: function update(ctx, [dirty]) {
-    			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+    			if (current_block_type === (current_block_type = select_block_type(ctx, dirty)) && if_block) {
     				if_block.p(ctx, dirty);
     			} else {
     				if_block.d(1);
@@ -9910,7 +10674,7 @@ var app = (function () {
     	let $jwt_token;
     	let $user;
     	validate_store(jwt_token, 'jwt_token');
-    	component_subscribe($$self, jwt_token, $$value => $$invalidate(10, $jwt_token = $$value));
+    	component_subscribe($$self, jwt_token, $$value => $$invalidate(11, $jwt_token = $$value));
     	validate_store(user, 'user');
     	component_subscribe($$self, user, $$value => $$invalidate(1, $user = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
@@ -9978,8 +10742,13 @@ var app = (function () {
     		$$invalidate(0, product);
     	}
 
-    	function input2_input_handler() {
+    	function input_input_handler() {
     		product.size = this.value;
+    		$$invalidate(0, product);
+    	}
+
+    	function input_input_handler_1() {
+    		product.patchart = this.value;
     		$$invalidate(0, product);
     	}
 
@@ -10019,7 +10788,8 @@ var app = (function () {
     		select1_change_handler,
     		select2_change_handler,
     		input1_input_handler,
-    		input2_input_handler,
+    		input_input_handler,
+    		input_input_handler_1,
     		textarea_input_handler
     	];
     }
@@ -10055,7 +10825,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (206:4) {:else}
+    // (203:4) {:else}
     function create_else_block$1(ctx) {
     	let div;
     	let each_value_1 = /*allUsers*/ ctx[1];
@@ -10075,7 +10845,7 @@ var app = (function () {
     			}
 
     			attr_dev(div, "class", "row");
-    			add_location(div, file$1, 207, 4, 5874);
+    			add_location(div, file$1, 203, 8, 5818);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -10119,7 +10889,7 @@ var app = (function () {
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(206:4) {:else}",
+    		source: "(203:4) {:else}",
     		ctx
     	});
 
@@ -10127,7 +10897,7 @@ var app = (function () {
     }
 
     // (192:4) {#if product.userId === null}
-    function create_if_block_8(ctx) {
+    function create_if_block_11(ctx) {
     	let div3;
     	let div2;
     	let div1;
@@ -10147,17 +10917,17 @@ var app = (function () {
     			t1 = space();
     			p = element("p");
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$1, 196, 28, 5565);
+    			add_location(h5, file$1, 196, 24, 5611);
     			attr_dev(p, "class", "card-text");
-    			add_location(p, file$1, 199, 28, 5706);
+    			add_location(p, file$1, 197, 24, 5684);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$1, 195, 24, 5512);
+    			add_location(div0, file$1, 195, 20, 5562);
     			attr_dev(div1, "class", "card");
-    			add_location(div1, file$1, 194, 20, 5468);
+    			add_location(div1, file$1, 194, 16, 5522);
     			attr_dev(div2, "class", "col-sm-4");
-    			add_location(div2, file$1, 193, 16, 5424);
+    			add_location(div2, file$1, 193, 12, 5482);
     			attr_dev(div3, "class", "row");
-    			add_location(div3, file$1, 192, 4, 5389);
+    			add_location(div3, file$1, 192, 8, 5451);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -10176,7 +10946,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_8.name,
+    		id: create_if_block_11.name,
     		type: "if",
     		source: "(192:4) {#if product.userId === null}",
     		ctx
@@ -10185,8 +10955,8 @@ var app = (function () {
     	return block;
     }
 
-    // (210:16) {#if product.userId == user.id}
-    function create_if_block_9(ctx) {
+    // (206:16) {#if product.userId == user.id}
+    function create_if_block_12(ctx) {
     	let div2;
     	let div1;
     	let div0;
@@ -10222,16 +10992,16 @@ var app = (function () {
     			t6 = text(t6_value);
     			t7 = space();
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$1, 213, 32, 6153);
+    			add_location(h5, file$1, 209, 32, 6097);
     			attr_dev(p0, "class", "card-text");
-    			add_location(p0, file$1, 216, 32, 6302);
-    			add_location(p1, file$1, 219, 32, 6450);
+    			add_location(p0, file$1, 212, 32, 6246);
+    			add_location(p1, file$1, 215, 32, 6394);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$1, 212, 28, 6096);
+    			add_location(div0, file$1, 208, 28, 6040);
     			attr_dev(div1, "class", "card");
-    			add_location(div1, file$1, 211, 24, 6048);
+    			add_location(div1, file$1, 207, 24, 5992);
     			attr_dev(div2, "class", "col-sm-4");
-    			add_location(div2, file$1, 210, 20, 6000);
+    			add_location(div2, file$1, 206, 20, 5944);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -10261,19 +11031,19 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_9.name,
+    		id: create_if_block_12.name,
     		type: "if",
-    		source: "(210:16) {#if product.userId == user.id}",
+    		source: "(206:16) {#if product.userId == user.id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (209:12) {#each allUsers as user}
+    // (205:12) {#each allUsers as user}
     function create_each_block_1(ctx) {
     	let if_block_anchor;
-    	let if_block = /*product*/ ctx[2].userId == /*user*/ ctx[17].id && create_if_block_9(ctx);
+    	let if_block = /*product*/ ctx[2].userId == /*user*/ ctx[17].id && create_if_block_12(ctx);
 
     	const block = {
     		c: function create() {
@@ -10286,6 +11056,51 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			if (/*product*/ ctx[2].userId == /*user*/ ctx[17].id) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_12(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_1.name,
+    		type: "each",
+    		source: "(205:12) {#each allUsers as user}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (228:4) {#if $user.user_roles.includes("admin")}
+    function create_if_block_8(ctx) {
+    	let if_block_anchor;
+    	let if_block = /*product*/ ctx[2].userId === null && create_if_block_9(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*product*/ ctx[2].userId === null) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -10306,17 +11121,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_1.name,
-    		type: "each",
-    		source: "(209:12) {#each allUsers as user}",
+    		id: create_if_block_8.name,
+    		type: "if",
+    		source: "(228:4) {#if $user.user_roles.includes(\\\"admin\\\")}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (233:4) {#if product.userId === null}
-    function create_if_block_7(ctx) {
+    // (229:4) {#if product.userId === null}
+    function create_if_block_9(ctx) {
     	let h3;
     	let t1;
     	let label;
@@ -10357,19 +11172,19 @@ var app = (function () {
     			t5 = space();
     			button = element("button");
     			button.textContent = "Assign";
-    			add_location(h3, file$1, 233, 4, 6785);
+    			add_location(h3, file$1, 229, 8, 6782);
     			attr_dev(label, "for", "member");
-    			add_location(label, file$1, 234, 4, 6811);
+    			add_location(label, file$1, 230, 8, 6812);
     			attr_dev(select, "class", "form-select");
     			attr_dev(select, "id", "user");
     			if (/*user_id*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[10].call(select));
-    			add_location(select, file$1, 236, 8, 6903);
+    			add_location(select, file$1, 232, 12, 6912);
     			attr_dev(div0, "class", "col-md-4");
-    			add_location(div0, file$1, 235, 4, 6871);
-    			attr_dev(div1, "class", "col-md-6");
-    			add_location(div1, file$1, 244, 4, 7176);
+    			add_location(div0, file$1, 231, 8, 6876);
+    			attr_dev(div1, "class", "col-md-8");
+    			add_location(div1, file$1, 240, 8, 7273);
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$1, 245, 4, 7206);
+    			add_location(button, file$1, 241, 8, 7307);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -10445,17 +11260,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_7.name,
+    		id: create_if_block_9.name,
     		type: "if",
-    		source: "(233:4) {#if product.userId === null}",
+    		source: "(229:4) {#if product.userId === null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (238:12) {#each allUsers as user}
-    function create_each_block(ctx) {
+    // (235:20) {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
+    function create_if_block_10(ctx) {
     	let option;
     	let t_value = /*user*/ ctx[17].username + "";
     	let t;
@@ -10467,7 +11282,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = option_value_value = /*user*/ ctx[17].id;
     			option.value = option.__value;
-    			add_location(option, file$1, 238, 20, 7022);
+    			add_location(option, file$1, 235, 24, 7124);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -10488,17 +11303,107 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block.name,
-    		type: "each",
-    		source: "(238:12) {#each allUsers as user}",
+    		id: create_if_block_10.name,
+    		type: "if",
+    		source: "(235:20) {#if user.userType !== \\\"BUYER\\\" && user.userStatus === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (254:4) {#if product.productState === "ACTIVE"}
+    // (234:16) {#each allUsers as user}
+    function create_each_block(ctx) {
+    	let if_block_anchor;
+    	let if_block = /*user*/ ctx[17].userType !== "BUYER" && /*user*/ ctx[17].userStatus === "ACTIVE" && create_if_block_10(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*user*/ ctx[17].userType !== "BUYER" && /*user*/ ctx[17].userStatus === "ACTIVE") {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_10(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block.name,
+    		type: "each",
+    		source: "(234:16) {#each allUsers as user}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (250:4) {#if $user.user_roles.includes("admin")}
     function create_if_block_6(ctx) {
+    	let if_block_anchor;
+    	let if_block = /*product*/ ctx[2].productState === "ACTIVE" && create_if_block_7(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*product*/ ctx[2].productState === "ACTIVE") {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_7(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_6.name,
+    		type: "if",
+    		source: "(250:4) {#if $user.user_roles.includes(\\\"admin\\\")}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (251:4) {#if product.productState === "ACTIVE"}
+    function create_if_block_7(ctx) {
     	let form;
     	let div1;
     	let div0;
@@ -10518,16 +11423,16 @@ var app = (function () {
     			t1 = space();
     			textarea = element("textarea");
     			attr_dev(label, "for", "comment");
-    			add_location(label, file$1, 257, 20, 7512);
+    			add_location(label, file$1, 254, 20, 7680);
     			attr_dev(textarea, "class", "form-control");
     			attr_dev(textarea, "id", "comment");
     			attr_dev(textarea, "rows", "3");
-    			add_location(textarea, file$1, 260, 20, 7646);
+    			add_location(textarea, file$1, 257, 20, 7814);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$1, 256, 16, 7473);
+    			add_location(div0, file$1, 253, 16, 7641);
     			attr_dev(div1, "class", "row mb-3");
-    			add_location(div1, file$1, 255, 12, 7433);
-    			add_location(form, file$1, 254, 8, 7413);
+    			add_location(div1, file$1, 252, 12, 7601);
+    			add_location(form, file$1, 251, 8, 7581);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, form, anchor);
@@ -10557,16 +11462,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_6.name,
+    		id: create_if_block_7.name,
     		type: "if",
-    		source: "(254:4) {#if product.productState === \\\"ACTIVE\\\"}",
+    		source: "(251:4) {#if product.productState === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (272:4) {#if product.productState === "INACTIVE"}
+    // (269:4) {#if product.productState === "INACTIVE"}
     function create_if_block_5(ctx) {
     	let div;
     	let ul;
@@ -10587,13 +11492,13 @@ var app = (function () {
     			t2 = text(t2_value);
     			attr_dev(li0, "class", "list-group-item-top active");
     			attr_dev(li0, "aria-current", "true");
-    			add_location(li0, file$1, 274, 12, 8047);
+    			add_location(li0, file$1, 271, 16, 8232);
     			attr_dev(li1, "class", "list-group-item");
-    			add_location(li1, file$1, 277, 12, 8181);
+    			add_location(li1, file$1, 274, 16, 8378);
     			attr_dev(ul, "class", "list-group");
-    			add_location(ul, file$1, 273, 8, 8010);
+    			add_location(ul, file$1, 270, 12, 8191);
     			attr_dev(div, "class", "col-md-4");
-    			add_location(div, file$1, 272, 4, 7978);
+    			add_location(div, file$1, 269, 8, 8155);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -10615,14 +11520,14 @@ var app = (function () {
     		block,
     		id: create_if_block_5.name,
     		type: "if",
-    		source: "(272:4) {#if product.productState === \\\"INACTIVE\\\"}",
+    		source: "(269:4) {#if product.productState === \\\"INACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (289:4) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (284:4) {#if $user.user_roles.includes("admin")}
     function create_if_block$1(ctx) {
     	let a;
     	let t1;
@@ -10649,7 +11554,7 @@ var app = (function () {
     			if_block_anchor = empty();
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "delete-button");
-    			add_location(a, file$1, 289, 8, 8408);
+    			add_location(a, file$1, 284, 8, 8604);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -10693,14 +11598,14 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(289:4) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(284:4) {#if $user.user_roles.includes(\\\"admin\\\")}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (305:54) 
+    // (300:54) 
     function create_if_block_4(ctx) {
     	let a;
     	let mounted;
@@ -10712,7 +11617,7 @@ var app = (function () {
     			a.textContent = "Activate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 305, 12, 9140);
+    			add_location(a, file$1, 300, 12, 9336);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -10734,14 +11639,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(305:54) ",
+    		source: "(300:54) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (301:52) 
+    // (296:52) 
     function create_if_block_3$1(ctx) {
     	let a;
     	let mounted;
@@ -10753,7 +11658,7 @@ var app = (function () {
     			a.textContent = "Inactivate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 301, 12, 8948);
+    			add_location(a, file$1, 296, 12, 9144);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -10775,14 +11680,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3$1.name,
     		type: "if",
-    		source: "(301:52) ",
+    		source: "(296:52) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (297:52) 
+    // (292:52) 
     function create_if_block_2$1(ctx) {
     	let a;
     	let mounted;
@@ -10794,7 +11699,7 @@ var app = (function () {
     			a.textContent = "Activate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 297, 12, 8760);
+    			add_location(a, file$1, 292, 12, 8956);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -10816,14 +11721,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2$1.name,
     		type: "if",
-    		source: "(297:52) ",
+    		source: "(292:52) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (293:8) {#if product.productState === "NEW"}
+    // (288:8) {#if product.productState === "NEW"}
     function create_if_block_1$1(ctx) {
     	let a;
     	let mounted;
@@ -10835,7 +11740,7 @@ var app = (function () {
     			a.textContent = "Review Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 293, 12, 8578);
+    			add_location(a, file$1, 288, 12, 8774);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -10857,7 +11762,7 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(293:8) {#if product.productState === \\\"NEW\\\"}",
+    		source: "(288:8) {#if product.productState === \\\"NEW\\\"}",
     		ctx
     	});
 
@@ -10880,50 +11785,55 @@ var app = (function () {
     	let t7_value = /*product*/ ctx[2].productType + "";
     	let t7;
     	let t8;
-    	let div6;
     	let div0;
+    	let t9;
+    	let div7;
+    	let div1;
     	let ul;
     	let li0;
-    	let t10;
-    	let li1;
-    	let t11_value = /*product*/ ctx[2].description + "";
     	let t11;
+    	let li1;
+    	let t12_value = /*product*/ ctx[2].description + "";
     	let t12;
-    	let div1;
     	let t13;
-    	let h31;
-    	let t15;
-    	let t16;
     	let div2;
+    	let t14;
+    	let h31;
+    	let t16;
     	let t17;
-    	let t18;
     	let div3;
+    	let t18;
+    	let show_if_2 = /*$user*/ ctx[3].user_roles.includes("admin");
     	let t19;
-    	let h32;
+    	let div4;
     	let t20;
-    	let t21_value = /*product*/ ctx[2].productState + "";
+    	let h32;
     	let t21;
+    	let t22_value = /*product*/ ctx[2].productState + "";
     	let t22;
     	let t23;
+    	let show_if_1 = /*$user*/ ctx[3].user_roles.includes("admin");
     	let t24;
-    	let div4;
     	let t25;
-    	let t26;
-    	let a;
-    	let t28;
     	let div5;
+    	let t26;
+    	let show_if = /*$user*/ ctx[3].user_roles.includes("admin");
+    	let t27;
+    	let a;
+    	let t29;
+    	let div6;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*product*/ ctx[2].userId === null) return create_if_block_8;
+    		if (/*product*/ ctx[2].userId === null) return create_if_block_11;
     		return create_else_block$1;
     	}
 
     	let current_block_type = select_block_type(ctx);
     	let if_block0 = current_block_type(ctx);
-    	let if_block1 = /*product*/ ctx[2].userId === null && create_if_block_7(ctx);
-    	let if_block2 = /*product*/ ctx[2].productState === "ACTIVE" && create_if_block_6(ctx);
+    	let if_block1 = show_if_2 && create_if_block_8(ctx);
+    	let if_block2 = show_if_1 && create_if_block_6(ctx);
     	let if_block3 = /*product*/ ctx[2].productState === "INACTIVE" && create_if_block_5(ctx);
-    	let if_block4 = /*$user*/ ctx[3].user_roles && /*$user*/ ctx[3].user_roles.length > 0 && create_if_block$1(ctx);
+    	let if_block4 = show_if && create_if_block$1(ctx);
 
     	const block = {
     		c: function create() {
@@ -10939,76 +11849,80 @@ var app = (function () {
     			t6 = text("Product Type: ");
     			t7 = text(t7_value);
     			t8 = space();
-    			div6 = element("div");
     			div0 = element("div");
+    			t9 = space();
+    			div7 = element("div");
+    			div1 = element("div");
     			ul = element("ul");
     			li0 = element("li");
     			li0.textContent = "Description:";
-    			t10 = space();
+    			t11 = space();
     			li1 = element("li");
-    			t11 = text(t11_value);
-    			t12 = space();
-    			div1 = element("div");
+    			t12 = text(t12_value);
     			t13 = space();
+    			div2 = element("div");
+    			t14 = space();
     			h31 = element("h3");
     			h31.textContent = "Creator:";
-    			t15 = space();
-    			if_block0.c();
     			t16 = space();
-    			div2 = element("div");
+    			if_block0.c();
     			t17 = space();
-    			if (if_block1) if_block1.c();
-    			t18 = space();
     			div3 = element("div");
+    			t18 = space();
+    			if (if_block1) if_block1.c();
     			t19 = space();
-    			h32 = element("h3");
-    			t20 = text("Status: ");
-    			t21 = text(t21_value);
-    			t22 = space();
-    			if (if_block2) if_block2.c();
-    			t23 = space();
-    			if (if_block3) if_block3.c();
-    			t24 = space();
     			div4 = element("div");
+    			t20 = space();
+    			h32 = element("h3");
+    			t21 = text("Status: ");
+    			t22 = text(t22_value);
+    			t23 = space();
+    			if (if_block2) if_block2.c();
+    			t24 = space();
+    			if (if_block3) if_block3.c();
     			t25 = space();
-    			if (if_block4) if_block4.c();
+    			div5 = element("div");
     			t26 = space();
+    			if (if_block4) if_block4.c();
+    			t27 = space();
     			a = element("a");
     			a.textContent = "Back";
-    			t28 = space();
-    			div5 = element("div");
+    			t29 = space();
+    			div6 = element("div");
     			attr_dev(h1, "class", "md-3");
-    			add_location(h1, file$1, 171, 0, 4831);
-    			add_location(p, file$1, 172, 0, 4884);
-    			add_location(h30, file$1, 173, 0, 4909);
+    			add_location(h1, file$1, 171, 0, 4868);
+    			add_location(p, file$1, 172, 0, 4921);
+    			add_location(h30, file$1, 173, 0, 4946);
+    			attr_dev(div0, "class", "col-md-8");
+    			add_location(div0, file$1, 174, 0, 4992);
     			attr_dev(li0, "class", "list-group-item-top active");
     			attr_dev(li0, "aria-current", "true");
-    			add_location(li0, file$1, 178, 12, 5051);
+    			add_location(li0, file$1, 178, 12, 5112);
     			attr_dev(li1, "class", "list-group-item");
-    			add_location(li1, file$1, 181, 12, 5173);
+    			add_location(li1, file$1, 181, 12, 5234);
     			attr_dev(ul, "class", "list-group");
-    			add_location(ul, file$1, 177, 8, 5014);
-    			attr_dev(div0, "class", "col-md-4");
-    			add_location(div0, file$1, 176, 4, 4982);
-    			attr_dev(div1, "class", "col-md-8");
-    			add_location(div1, file$1, 187, 4, 5297);
-    			add_location(h31, file$1, 189, 4, 5329);
+    			add_location(ul, file$1, 177, 8, 5075);
+    			attr_dev(div1, "class", "col-md-4");
+    			add_location(div1, file$1, 176, 4, 5043);
     			attr_dev(div2, "class", "col-md-8");
-    			add_location(div2, file$1, 230, 4, 6718);
+    			add_location(div2, file$1, 187, 4, 5355);
+    			add_location(h31, file$1, 189, 4, 5387);
     			attr_dev(div3, "class", "col-md-8");
-    			add_location(div3, file$1, 249, 0, 7289);
-    			add_location(h32, file$1, 251, 0, 7317);
+    			add_location(div3, file$1, 226, 4, 6667);
     			attr_dev(div4, "class", "col-md-8");
-    			add_location(div4, file$1, 285, 4, 8311);
+    			add_location(div4, file$1, 245, 4, 7407);
+    			add_location(h32, file$1, 247, 4, 7439);
+    			attr_dev(div5, "class", "col-md-8");
+    			add_location(div5, file$1, 281, 4, 8522);
     			attr_dev(a, "class", "back-button");
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$1, 310, 4, 9292);
-    			attr_dev(div5, "class", "md-12");
-    			add_location(div5, file$1, 313, 4, 9397);
+    			add_location(a, file$1, 305, 4, 9488);
     			attr_dev(div6, "class", "md-12");
-    			add_location(div6, file$1, 175, 0, 4957);
+    			add_location(div6, file$1, 308, 4, 9593);
+    			attr_dev(div7, "class", "md-12");
+    			add_location(div7, file$1, 175, 0, 5018);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -11026,47 +11940,49 @@ var app = (function () {
     			append_dev(h30, t6);
     			append_dev(h30, t7);
     			insert_dev(target, t8, anchor);
-    			insert_dev(target, div6, anchor);
-    			append_dev(div6, div0);
-    			append_dev(div0, ul);
+    			insert_dev(target, div0, anchor);
+    			insert_dev(target, t9, anchor);
+    			insert_dev(target, div7, anchor);
+    			append_dev(div7, div1);
+    			append_dev(div1, ul);
     			append_dev(ul, li0);
-    			append_dev(ul, t10);
+    			append_dev(ul, t11);
     			append_dev(ul, li1);
-    			append_dev(li1, t11);
-    			append_dev(div6, t12);
-    			append_dev(div6, div1);
-    			append_dev(div6, t13);
-    			append_dev(div6, h31);
-    			append_dev(div6, t15);
-    			if_block0.m(div6, null);
-    			append_dev(div6, t16);
-    			append_dev(div6, div2);
-    			append_dev(div6, t17);
-    			if (if_block1) if_block1.m(div6, null);
-    			append_dev(div6, t18);
-    			append_dev(div6, div3);
-    			append_dev(div6, t19);
-    			append_dev(div6, h32);
-    			append_dev(h32, t20);
+    			append_dev(li1, t12);
+    			append_dev(div7, t13);
+    			append_dev(div7, div2);
+    			append_dev(div7, t14);
+    			append_dev(div7, h31);
+    			append_dev(div7, t16);
+    			if_block0.m(div7, null);
+    			append_dev(div7, t17);
+    			append_dev(div7, div3);
+    			append_dev(div7, t18);
+    			if (if_block1) if_block1.m(div7, null);
+    			append_dev(div7, t19);
+    			append_dev(div7, div4);
+    			append_dev(div7, t20);
+    			append_dev(div7, h32);
     			append_dev(h32, t21);
-    			append_dev(div6, t22);
-    			if (if_block2) if_block2.m(div6, null);
-    			append_dev(div6, t23);
-    			if (if_block3) if_block3.m(div6, null);
-    			append_dev(div6, t24);
-    			append_dev(div6, div4);
-    			append_dev(div6, t25);
-    			if (if_block4) if_block4.m(div6, null);
-    			append_dev(div6, t26);
-    			append_dev(div6, a);
-    			append_dev(div6, t28);
-    			append_dev(div6, div5);
+    			append_dev(h32, t22);
+    			append_dev(div7, t23);
+    			if (if_block2) if_block2.m(div7, null);
+    			append_dev(div7, t24);
+    			if (if_block3) if_block3.m(div7, null);
+    			append_dev(div7, t25);
+    			append_dev(div7, div5);
+    			append_dev(div7, t26);
+    			if (if_block4) if_block4.m(div7, null);
+    			append_dev(div7, t27);
+    			append_dev(div7, a);
+    			append_dev(div7, t29);
+    			append_dev(div7, div6);
     		},
     		p: function update(ctx, [dirty]) {
     			if (dirty & /*product*/ 4 && t1_value !== (t1_value = /*product*/ ctx[2].productname + "")) set_data_dev(t1, t1_value);
     			if (dirty & /*product*/ 4 && t4_value !== (t4_value = /*product*/ ctx[2].id + "")) set_data_dev(t4, t4_value);
     			if (dirty & /*product*/ 4 && t7_value !== (t7_value = /*product*/ ctx[2].productType + "")) set_data_dev(t7, t7_value);
-    			if (dirty & /*product*/ 4 && t11_value !== (t11_value = /*product*/ ctx[2].description + "")) set_data_dev(t11, t11_value);
+    			if (dirty & /*product*/ 4 && t12_value !== (t12_value = /*product*/ ctx[2].description + "")) set_data_dev(t12, t12_value);
 
     			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
     				if_block0.p(ctx, dirty);
@@ -11076,32 +11992,35 @@ var app = (function () {
 
     				if (if_block0) {
     					if_block0.c();
-    					if_block0.m(div6, t16);
+    					if_block0.m(div7, t17);
     				}
     			}
 
-    			if (/*product*/ ctx[2].userId === null) {
+    			if (dirty & /*$user*/ 8) show_if_2 = /*$user*/ ctx[3].user_roles.includes("admin");
+
+    			if (show_if_2) {
     				if (if_block1) {
     					if_block1.p(ctx, dirty);
     				} else {
-    					if_block1 = create_if_block_7(ctx);
+    					if_block1 = create_if_block_8(ctx);
     					if_block1.c();
-    					if_block1.m(div6, t18);
+    					if_block1.m(div7, t19);
     				}
     			} else if (if_block1) {
     				if_block1.d(1);
     				if_block1 = null;
     			}
 
-    			if (dirty & /*product*/ 4 && t21_value !== (t21_value = /*product*/ ctx[2].productState + "")) set_data_dev(t21, t21_value);
+    			if (dirty & /*product*/ 4 && t22_value !== (t22_value = /*product*/ ctx[2].productState + "")) set_data_dev(t22, t22_value);
+    			if (dirty & /*$user*/ 8) show_if_1 = /*$user*/ ctx[3].user_roles.includes("admin");
 
-    			if (/*product*/ ctx[2].productState === "ACTIVE") {
+    			if (show_if_1) {
     				if (if_block2) {
     					if_block2.p(ctx, dirty);
     				} else {
     					if_block2 = create_if_block_6(ctx);
     					if_block2.c();
-    					if_block2.m(div6, t23);
+    					if_block2.m(div7, t24);
     				}
     			} else if (if_block2) {
     				if_block2.d(1);
@@ -11114,20 +12033,22 @@ var app = (function () {
     				} else {
     					if_block3 = create_if_block_5(ctx);
     					if_block3.c();
-    					if_block3.m(div6, t24);
+    					if_block3.m(div7, t25);
     				}
     			} else if (if_block3) {
     				if_block3.d(1);
     				if_block3 = null;
     			}
 
-    			if (/*$user*/ ctx[3].user_roles && /*$user*/ ctx[3].user_roles.length > 0) {
+    			if (dirty & /*$user*/ 8) show_if = /*$user*/ ctx[3].user_roles.includes("admin");
+
+    			if (show_if) {
     				if (if_block4) {
     					if_block4.p(ctx, dirty);
     				} else {
     					if_block4 = create_if_block$1(ctx);
     					if_block4.c();
-    					if_block4.m(div6, t26);
+    					if_block4.m(div7, t27);
     				}
     			} else if (if_block4) {
     				if_block4.d(1);
@@ -11143,7 +12064,9 @@ var app = (function () {
     			if (detaching) detach_dev(t5);
     			if (detaching) detach_dev(h30);
     			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(div6);
+    			if (detaching) detach_dev(div0);
+    			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(div7);
     			if_block0.d();
     			if (if_block1) if_block1.d();
     			if (if_block2) if_block2.d();
@@ -11212,7 +12135,7 @@ var app = (function () {
     	function getUsers() {
     		var config = {
     			method: "get",
-    			url: api_root + "/api/users",
+    			url: api_root + "/api/users?pagesize=30",
     			headers: { Authorization: "Bearer " + $jwt_token }
     		};
 
@@ -11251,6 +12174,7 @@ var app = (function () {
 
     		axios(config).then(function (response) {
     			alert("Product is assigned to user");
+    			getProduct();
     		}).catch(function (error) {
     			alert("Could not assign Product to user");
     			console.log(error);
@@ -11552,7 +12476,7 @@ var app = (function () {
     	return block;
     }
 
-    // (50:5) {#if $isAuthenticated}
+    // (50:5) {#if $isAuthenticated && !$user.user_roles.includes("buyer")}
     function create_if_block_1(ctx) {
     	let li;
     	let a;
@@ -11564,9 +12488,9 @@ var app = (function () {
     			a.textContent = "Utilities";
     			attr_dev(a, "class", "nav-link");
     			attr_dev(a, "href", "#/utilities");
-    			add_location(a, file, 51, 7, 1422);
+    			add_location(a, file, 51, 7, 1461);
     			attr_dev(li, "class", "nav-item");
-    			add_location(li, file, 50, 6, 1392);
+    			add_location(li, file, 50, 6, 1431);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -11581,7 +12505,7 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(50:5) {#if $isAuthenticated}",
+    		source: "(50:5) {#if $isAuthenticated && !$user.user_roles.includes(\\\"buyer\\\")}",
     		ctx
     	});
 
@@ -11600,7 +12524,7 @@ var app = (function () {
     			button.textContent = "Log In";
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file, 69, 6, 1850);
+    			add_location(button, file, 69, 6, 1889);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -11650,12 +12574,12 @@ var app = (function () {
     			button.textContent = "Log Out";
     			attr_dev(a, "class", "nav-link");
     			attr_dev(a, "href", "#/account");
-    			add_location(a, file, 60, 7, 1632);
+    			add_location(a, file, 60, 7, 1671);
     			attr_dev(span, "class", "navbar-text me-2");
-    			add_location(span, file, 59, 6, 1592);
+    			add_location(span, file, 59, 6, 1631);
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file, 63, 6, 1717);
+    			add_location(button, file, 63, 6, 1756);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -11707,8 +12631,9 @@ var app = (function () {
     	let li;
     	let a1;
     	let t5;
-    	let show_if = /*$isAuthenticated*/ ctx[0] && /*$user*/ ctx[1].user_roles.includes("admin");
+    	let show_if_1 = /*$isAuthenticated*/ ctx[0] && /*$user*/ ctx[1].user_roles.includes("admin");
     	let t6;
+    	let show_if = /*$isAuthenticated*/ ctx[0] && !/*$user*/ ctx[1].user_roles.includes("buyer");
     	let t7;
     	let div0;
     	let t8;
@@ -11716,8 +12641,8 @@ var app = (function () {
     	let router;
     	let current;
     	let if_block0 = /*$isAuthenticated*/ ctx[0] && create_if_block_3(ctx);
-    	let if_block1 = show_if && create_if_block_2(ctx);
-    	let if_block2 = /*$isAuthenticated*/ ctx[0] && create_if_block_1(ctx);
+    	let if_block1 = show_if_1 && create_if_block_2(ctx);
+    	let if_block2 = show_if && create_if_block_1(ctx);
 
     	function select_block_type(ctx, dirty) {
     		if (/*$isAuthenticated*/ ctx[0]) return create_if_block;
@@ -11777,7 +12702,7 @@ var app = (function () {
     			attr_dev(ul, "class", "navbar-nav me-auto mb-2 mb-lg-0");
     			add_location(ul, file, 25, 4, 728);
     			attr_dev(div0, "class", "d-flex");
-    			add_location(div0, file, 57, 4, 1535);
+    			add_location(div0, file, 57, 4, 1574);
     			attr_dev(div1, "class", "collapse navbar-collapse");
     			attr_dev(div1, "id", "navbarTogglerDemo01");
     			add_location(div1, file, 24, 3, 659);
@@ -11786,7 +12711,7 @@ var app = (function () {
     			attr_dev(nav, "class", "navbar navbar-expand-lg bg-light");
     			add_location(nav, file, 9, 1, 221);
     			attr_dev(div3, "class", "container");
-    			add_location(div3, file, 80, 1, 2027);
+    			add_location(div3, file, 80, 1, 2066);
     			attr_dev(div4, "id", "app");
     			add_location(div4, file, 7, 0, 186);
     		},
@@ -11832,9 +12757,9 @@ var app = (function () {
     				if_block0 = null;
     			}
 
-    			if (dirty & /*$isAuthenticated, $user*/ 3) show_if = /*$isAuthenticated*/ ctx[0] && /*$user*/ ctx[1].user_roles.includes("admin");
+    			if (dirty & /*$isAuthenticated, $user*/ 3) show_if_1 = /*$isAuthenticated*/ ctx[0] && /*$user*/ ctx[1].user_roles.includes("admin");
 
-    			if (show_if) {
+    			if (show_if_1) {
     				if (if_block1) ; else {
     					if_block1 = create_if_block_2(ctx);
     					if_block1.c();
@@ -11845,7 +12770,9 @@ var app = (function () {
     				if_block1 = null;
     			}
 
-    			if (/*$isAuthenticated*/ ctx[0]) {
+    			if (dirty & /*$isAuthenticated, $user*/ 3) show_if = /*$isAuthenticated*/ ctx[0] && !/*$user*/ ctx[1].user_roles.includes("buyer");
+
+    			if (show_if) {
     				if (if_block2) ; else {
     					if_block2 = create_if_block_1(ctx);
     					if_block2.c();

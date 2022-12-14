@@ -1,8 +1,13 @@
 <script>
     import axios from "axios";
+    import { jwt_token } from "../store";
+    import { querystring } from "svelte-spa-router";
+    import { isAuthenticated, user } from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
-    const api_root = "https://f24530a0-2bc4-4ab0-9f43-d44c45c239b5.mock.pstmn.io";
+    const api_root = "http://localhost:8080";
+    var currentPage;
+    let nrOfPages = 0;
 
     let utilities = [];
     let utility = {
@@ -11,16 +16,29 @@
         utilityType: null,
     };
 
+    $: {
+        let searchParams = new URLSearchParams($querystring);
+        if (searchParams.has("page")) {
+            currentPage = searchParams.get("page");
+        } else {
+            currentPage = "1";
+        }
+        getUtilities();
+    }
+
     function getUtilities() {
+        let query = "pageSize=6&page=" + currentPage;
+
         var config = {
             method: "get",
-            url: api_root + "/api/utilities",
-            headers: {},
+            url: api_root + "/api/utilities?" + query,
+            headers: { Authorization: "Bearer " + $jwt_token },
         };
 
         axios(config)
             .then(function (response) {
-                utilities = response.data;
+                utilities = response.data.content;
+                nrOfPages = response.data.totalPages;
             })
             .catch(function (error) {
                 alert("Could not get utilities");
@@ -34,6 +52,7 @@
             url: api_root + "/api/utilities",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: "Bearer " + $jwt_token
             },
             data: utility,
         };
@@ -49,7 +68,6 @@
             });
     }
 
-    getUtilities();
 
 </script>
 
@@ -57,9 +75,9 @@
 <form class="mb-5">
     <div class="row mb-3">
         <div class="col">
-            <label class="form-label" for="productname">Username</label>
+            <label class="form-label" for="utilityName">Name</label>
             <input
-                bind:value={utility.utilityname}
+                bind:value={utility.utilityName}
                 class="form-control"
                 id="description"
                 type="text"
@@ -67,7 +85,7 @@
         </div>
 
         <div class="col">
-                <label class="form-label" for="earnings">Price</label>
+                <label class="form-label" for="unit">Unit</label>
                 <input
                     bind:value={utility.unit}
                     class="form-control"
@@ -77,7 +95,7 @@
             </div>
 
         <div class="col">
-            <label class="form-label" for="difficultyType"
+            <label class="form-label" for="utilityType"
                 >Utility Type</label
             >
             <select
@@ -86,28 +104,26 @@
                 id="type"
                 type="text"
             >
-                <option value="OTHER">WRITING</option>
-                <option value="TEST">MARKING</option>
-                <option value="TEST">CUTTING</option>
-                <option value="TEST">SEWING</option>
-                <option value="TEST">MASCHINE</option>
-                <option value="TEST">FOOT</option>
-                <option value="TEST">NEEDLE</option>
-                <option value="TEST">ATTACHMENT</option>
-                <option value="TEST">MEASURING</option>
-                <option value="TEST">SECURITY</option>
-                <option value="TEST">HELP</option>
-                <option value="TEST">THREAD</option>
-                <option value="TEST">PATTERN</option>
+                <option value="WRITING">Writing</option>
+                <option value="MARKING">Marking</option>
+                <option value="CUTTING">Cutting</option>
+                <option value="SEWING">Sewing</option>
+                <option value="MASCHINE">Maschine</option>
+                <option value="FOOT">Foot</option>
+                <option value="NEEDLE">Needle</option>
+                <option value="ATTACHMENT">Attachment</option>
+                <option value="MEASURING">Measuring</option>
+                <option value="SECURITY">Security</option>
+                <option value="HELP">Help</option>
+                <option value="THREAD">Thread</option>
+                <option value="PATTERN">Pattern</option>
             </select>
         </div>
     </div>
 </form>
 
 
-<button type="button" class="my-button" on:click={createUtility}
-    >Submit</button
->
+<button type="button" class="my-button" on:click={createUtility}>Submit</button>
 
 <div class="row mb-3">
 </div>
@@ -127,7 +143,6 @@
         {#each utilities as utility, index}
             <tr
                 class="row-tr"
-                onclick="document.location = '{'#/utilities/' + utility.id}';"
             >
                 <td>
                     {index + 1}
@@ -145,9 +160,24 @@
         {/each}
         <tr>
             <dt>
-                Number of Products: {utilities.length}
+                Number of Utilities: {utilities.length}
             </dt>
         </tr>
     </tbody>
 </table>
+
+<nav>
+    <ul class="pagination">
+        {#each Array(nrOfPages) as _, i}
+            <li class="page-item">
+                <a
+                    class="page-link"
+                    class:active={currentPage == i + 1}
+                    href={"#/utilities?page=" + (i + 1)}
+                    >{i + 1}
+                </a>
+            </li>
+        {/each}
+    </ul>
+</nav>
 

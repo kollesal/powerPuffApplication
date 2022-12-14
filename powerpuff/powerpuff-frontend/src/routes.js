@@ -3,7 +3,7 @@ import Home from "./pages/Home.svelte";
 import Users from "./pages/Users.svelte";
 import UserDetails from "./pages/UserDetails.svelte";
 import Account from "./pages/Account.svelte";
-import Utilities from "./pages/utility/Utilities.svelte";
+import Utilities from "./pages/Utilities.svelte";
 
 import Products from "./pages/Products.svelte";
 import CreateProduct from "./pages/CreateProduct.svelte";

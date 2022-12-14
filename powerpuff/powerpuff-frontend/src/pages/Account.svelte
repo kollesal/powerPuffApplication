@@ -21,9 +21,7 @@
                  
                     <div class="mt-3">
                       <h4>{$user.name}</h4>
-                      <p class="text-secondary mb-1">{$user.userType}</p>
-                      <button class="my-button">Change Status</button>
-                      <button class="my-button">Change User Type</button>
+                      <p class="text-secondary mb-1">{$user.user_roles}</p>
                     </div>
                   </div>
                 </div>
@@ -72,11 +70,6 @@
                   </div>
                   {/if}
                   <hr>
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <button class="delete-button" target="__blank">Delete</button>
-                    </div>
-                  </div>
                 </div>
               </div>
 

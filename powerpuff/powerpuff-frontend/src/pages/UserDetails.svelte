@@ -125,6 +125,7 @@
 <h3>Status: {userper.userStatus}</h3>
 
 <label for="user">Change User Type</label>
+
 <div class="col-md-4">
     <select class="form-select" bind:value={userper.userType} id="user">
         {#if userper.userType === "BUYER"}
@@ -197,7 +198,7 @@
     >
 {/if}
 
-<a class="back-button" href="#/products" role="button" aria-pressed="true"
+<a class="back-button" href="#/users" role="button" aria-pressed="true"
     >Back</a
 >
 <div class="md-12" />

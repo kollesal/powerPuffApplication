@@ -10,7 +10,6 @@
     let product_id;
     let user_id;
 
-    
     let allUsers = [];
 
     $: {
@@ -56,7 +55,7 @@
     function getUsers() {
         var config = {
             method: "get",
-            url: api_root + "/api/users",
+            url: api_root + "/api/users?pagesize=30",
             headers: { Authorization: "Bearer " + $jwt_token },
         };
 
@@ -102,6 +101,7 @@
         axios(config)
             .then(function (response) {
                 alert("Product is assigned to user");
+                getProduct();
             })
             .catch(function (error) {
                 alert("Could not assign Product to user");
@@ -172,7 +172,7 @@
 <h1 class="md-3">Product {product.productname}</h1>
 <p>ID: {product.id}</p>
 <h3>Product Type: {product.productType}</h3>
-
+<div class="col-md-8" />
 <div class="md-12">
     <div class="col-md-4">
         <ul class="list-group">
@@ -184,28 +184,24 @@
             </li>
         </ul>
     </div>
-   
+
     <div class="col-md-8" />
 
     <h3>Creator:</h3>
 
     {#if product.userId === null}
-    <div class="row">
-                <div class="col-sm-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                No Creator assigned
-                            </h5>
-                            <p class="card-text">
-                            </p>
-                        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">No Creator assigned</h5>
+                        <p class="card-text" />
                     </div>
                 </div>
-</div>
+            </div>
+        </div>
     {:else}
-
-    <div class="row">
+        <div class="row">
             {#each allUsers as user}
                 {#if product.userId == user.id}
                     <div class="col-sm-4">
@@ -223,34 +219,35 @@
                             </div>
                         </div>
                     </div>
-               {/if}
+                {/if}
             {/each}
-    </div>
+        </div>
+    {/if}
+
+    <div class="col-md-8" />
+    {#if $user.user_roles.includes("admin")}
+    {#if product.userId === null}
+        <h3>Assign User</h3>
+        <label for="member">Add a User to this Product</label>
+        <div class="col-md-4">
+            <select class="form-select" bind:value={user_id} id="user">
+                {#each allUsers as user}
+                    {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
+                        <option value={user.id}>{user.username}</option>
+                    {/if}
+                {/each}
+            </select>
+        </div>
+        <div class="col-md-8" />
+        <button on:click={productassignment} class="my-button">Assign</button>
+    {/if}
     {/if}
 
     <div class="col-md-8" />
 
-    {#if product.userId === null}
-    <h3>Assign User</h3>
-    <label for="member">Add a User to this Product</label>
-    <div class="col-md-4">
-        <select class="form-select" bind:value={user_id} id="user">
-            {#each allUsers as user}
-                    <option value={user.id}
-                        >{user.username}</option
-                    >
-            {/each}
-        </select>
-    </div>
-    <div class="col-md-6" />
-    <button on:click={productassignment} class="my-button">Assign</button>
+    <h3>Status: {product.productState}</h3>
 
-{/if}
-
-<div class="col-md-8" />
-
-<h3>Status: {product.productState}</h3>
-
+    {#if $user.user_roles.includes("admin")}
     {#if product.productState === "ACTIVE"}
         <form>
             <div class="row mb-3">
@@ -268,25 +265,23 @@
             </div>
         </form>
     {/if}
-
+{/if}
     {#if product.productState === "INACTIVE"}
-    <div class="col-md-4">
-        <ul class="list-group">
-            <li class="list-group-item-top active" aria-current="true">
-                Reason for Inactivation:
-            </li>
-            <li class="list-group-item">
-                {product.comment}
-            </li>
-        </ul>
-    </div>
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item-top active" aria-current="true">
+                    Reason for Inactivation:
+                </li>
+                <li class="list-group-item">
+                    {product.comment}
+                </li>
+            </ul>
+        </div>
     {/if}
-
 
     <div class="col-md-8" />
 
-
-    {#if $user.user_roles && $user.user_roles.length > 0}
+    {#if $user.user_roles.includes("admin")}
         <a href="#/products" on:click={deleteProduct} class="delete-button"
             >Delete Product</a
         >

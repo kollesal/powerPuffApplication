@@ -1,18 +1,20 @@
 <script>
     import axios from "axios";
     import { querystring } from "svelte-spa-router";
+    import { each } from "svelte/internal";
     import { jwt_token } from "../store";
     import { isAuthenticated, user } from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
     const api_root = "http://localhost:8080";
-var currentPage;
+    var currentPage;
     let nrOfPages = 0;
 
-    let pricesMin, pricesMax, type;
+    let pricesMin, pricesMax, type, user_id;
+    let state = "ACTIVE";
 
     let products = [];
-
+    let allUsers = [];
 
     $: {
         let searchParams = new URLSearchParams($querystring);
@@ -22,6 +24,7 @@ var currentPage;
             currentPage = "1";
         }
         getProducts();
+        getUsers();
     }
 
     function getProducts() {
@@ -35,6 +38,12 @@ var currentPage;
         }
         if (type) {
             query += "&type=" + type;
+        }
+        if (user_id) {
+            query += "&user=" + user_id;
+        }
+        if (state) {
+            query += "&state=" + state;
         }
 
         var config = {
@@ -50,6 +59,24 @@ var currentPage;
             })
             .catch(function (error) {
                 alert("Could not get products");
+                console.log(error);
+            });
+    }
+
+    function getUsers() {
+        var config = {
+            method: "get",
+            url: api_root + "/api/users?pagesize=30",
+            headers: { Authorization: "Bearer " + $jwt_token },
+        };
+
+        axios(config)
+            .then(function (response) {
+                allUsers = response.data.content;
+                console.log(allUsers);
+            })
+            .catch(function (error) {
+               // alert("Could not get users");
                 console.log(error);
             });
     }
@@ -71,8 +98,8 @@ var currentPage;
     }
 </script>
 
-<h1>All Products</h1>
-{#if $user.user_roles && $user.user_roles.length > 0}
+<h1 class="mt-3">All Products</h1>
+{#if !$user.user_roles.includes("buyer")}
     <a
         class="my-button"
         href="#/create-product"
@@ -102,7 +129,28 @@ var currentPage;
             bind:value={pricesMax}
         />
     </div>
-    <div class="col-3" />
+    {#if $user.user_roles && $user.user_roles.length > 0}
+        <div class="col-auto">
+            <label for="" class="col-form-label">Creator: </label>
+        </div>
+        <div class="col-3">
+            <select
+                bind:value={user_id}
+                placeholder="Creator"
+                class="form-select"
+                id="id"
+                type="text"
+            >
+                {#each allUsers as user}
+                    {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
+                        <option value={user.id}>{user.username}</option>
+                    {/if}
+                {/each}
+
+                <!--            <option value=null>No Creator defined</option> -->
+            </select>
+        </div>
+    {/if}
 </div>
 
 <div class="row my-3">
@@ -139,12 +187,32 @@ var currentPage;
         </div>
     </div>
 
-    <div class="col-3">
+    {#if $user.user_roles.includes("admin")}
+        <div class="col-auto">
+            <label for="" class="col-form-label">Product State: </label>
+        </div>
+
+        <div class="col-3">
+            <select
+                bind:value={state}
+                placeholder="State"
+                class="form-select"
+                id="state"
+                type="text"
+            >
+
+                        <option value="ACTIVE">Active</option>
+                        <option value="INACTIVE">Inactive</option>
+                        <option value="NEW">New</option>
+                        <option value="REVIEW">Review</option>
+
+            </select>
+        </div>
+    {/if}
+    <div class="col-auto">
         <button class="my-button" on:click={getProducts}>Apply</button>
     </div>
 </div>
-
-
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {#each products as product, index}
@@ -209,25 +277,29 @@ var currentPage;
                                 </p>
                             {/if}
                             {#if $user.user_roles && $user.user_roles.length > 0}
-                            {#if product.userId === null}
-                                <p>
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary btn-sm"
-                                        on:click={() => {
-                                            assignToMe(product.id);
-                                        }}
-                                    >
-                                        Assign to me
-                                    </button>
-                                </p>
-                            {/if}
+                                {#if product.userId === null}
+                                    <p>
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm"
+                                            on:click={() => {
+                                                assignToMe(product.id);
+                                            }}
+                                        >
+                                            Assign to me
+                                        </button>
+                                    </p>
+                                {/if}
                             {/if}
                             {#if product.userId !== null}
                                 <p class="card-text">
-                                    <small class="text-muted"
-                                        >Creator: {product.userId}</small
-                                    >
+                                    {#each allUsers as user}
+                                        {#if product.userId === user.id}
+                                            <small class="text-muted"
+                                                >Creator: {user.username}</small
+                                            >
+                                        {/if}
+                                    {/each}
                                 </p>
                             {:else}
                                 <p class="card-text">
@@ -262,14 +334,14 @@ var currentPage;
             </li>
         {/each}
         <li class="page-item">
-            <a class="page-link" href={"#/products?page=" + (currentPage+1)}
+            <a class="page-link" href={"#/products?page=" + (currentPage + 1)}
                 >Next</a
             >
         </li>
     </ul>
 </nav>
 
-{#if $user.user_roles && $user.user_roles.length > 0}
+{#if !$user.user_roles.includes("buyer")}
     <a
         class="my-button"
         href="#/create-product"
