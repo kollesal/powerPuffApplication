@@ -79,7 +79,7 @@ public class ProductController {
         }
 
         Page<Product> allProducts;
-        if (min != null && max != null && type != null && user != null) {
+         if (min != null && max != null && type != null && user != null) {
             allProducts = productRepository
                     .findByProductTypeAndPriceBetweenAndUserId(type, min, max, user, PageRequest.of(page - 1, pageSize));
         } else if (min != null && max != null && type == null && user != null) {
@@ -106,11 +106,27 @@ public class ProductController {
         } else if (state != null) {
             allProducts = productRepository
                     .findByProductState(state, PageRequest.of(page - 1, pageSize));
-        }else {
+        } else {
             allProducts = productRepository
                     .findAll(PageRequest.of(page - 1, pageSize));
         }
+
         return new ResponseEntity<>(allProducts, HttpStatus.OK);
+ 
+   /*   if (min == null){
+    min = ".*";
+    } else if (max == null) {
+       max = ".*";
+    } else if (type == null) {
+       type = ".*";
+    } else if (user == null) {
+       user = ".*";
+    } else if (state == null) {
+       state = ".*";
+    }
+allProducts = productRepository
+        .findByQueryWithParameters(state, type, min, max, user, PageRequest.of(page - 1, pageSize)); 
+    return new ResponseEntity<>(allProducts, HttpStatus.OK); */
     }
 
     @GetMapping("/pricesabove")

@@ -68,6 +68,31 @@
             });
     }
 
+    function updateUtility(id, utilityName, unit, utilityType){
+        var config = {
+            method: "patch",
+            url: api_root + "/api/utilities/" + id,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + $jwt_token,
+            },
+            data: {
+                utilityName: utilityName,
+                unit: unit,
+                utilityType: utilityType,
+            },
+        };
+
+        axios(config)
+            .then(function (response) {
+                alert("Utility updated");
+                getUtilities();
+            })
+            .catch(function (error) {
+                alert("Could not update Utility");
+                console.log(error);
+            });
+    }
 
 </script>
 
@@ -137,6 +162,7 @@
             <th>Name</th>
             <th>Units</th>
             <th>Utility Types</th>
+            <th>Update Utility</th>
         </tr>
     </thead>
     <tbody>
@@ -156,13 +182,114 @@
                 <td>
                     {utility.utilityType}
                 </td>
+                <td>
+                    <button
+                    type="button"
+                    class="my-button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#user{utility.id}"
+                >
+                </button>
+                </td>
                 </tr>
+
+ <!-- Modal -->
+ <div
+ class="modal fade"
+ id="user{utility.id}"
+ tabindex="-1"
+ role="dialog"
+ aria-labelledby="exampleModalLabel"
+ aria-hidden="true"
+>
+ <div class="modal-dialog" role="document">
+     <div class="modal-content">
+         <div class="modal-header">
+             <h5 class="modal-title" id="exampleModalLabel">
+                 Update Utility
+             </h5>
+             <button
+                 type="button"
+                 class="close"
+                 data-bs-dismiss="modal"
+                 aria-label="Close"
+             >
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+         <div class="modal-body">
+             <form>
+                 <div class="form-group row">
+                     <label
+                         for="Name"
+                         class="col-sm-2 col-form-label">Name</label
+                     >
+                     <div class="col-sm-10">
+                         <input
+                             type="text"
+                             class="form-control"
+                             id="Name"
+                             bind:value={utility.utilityName}
+                         />
+                     </div>
+                 </div>
+                 <p></p>
+                 <div class="form-group row">
+                     <label
+                         for="Unit"
+                         class="col-sm-2 col-form-label">Unit</label
+                     >
+                     <div class="col-sm-10">
+                         <input
+                             type="text"
+                             class="form-control"
+                             id="Unit"
+                             bind:value={utility.unit}
+                         />
+                     </div>
+                 </div>
+                 <p></p>
+                 <div class="form-group row">
+                    <label class="form-label" for="utilityType"
+                    >Utility Type</label
+                >
+                <select
+                    bind:value={utility.utilityType}
+                    class="form-select"
+                    id="type"
+                    type="text"
+                >
+                    <option value="WRITING">Writing</option>
+                    <option value="MARKING">Marking</option>
+                    <option value="CUTTING">Cutting</option>
+                    <option value="SEWING">Sewing</option>
+                    <option value="MASCHINE">Maschine</option>
+                    <option value="FOOT">Foot</option>
+                    <option value="NEEDLE">Needle</option>
+                    <option value="ATTACHMENT">Attachment</option>
+                    <option value="MEASURING">Measuring</option>
+                    <option value="SECURITY">Security</option>
+                    <option value="HELP">Help</option>
+                    <option value="THREAD">Thread</option>
+                    <option value="PATTERN">Pattern</option>
+                </select>
+             </form>
+         </div>
+         <div class="modal-footer">
+             <button
+                 type="button"
+                 class="back-button"
+                 data-bs-dismiss="modal">Close</button
+             >
+             <button type="button" class="my-button" data-bs-dismiss="modal" on:click={updateUtility(utility.id, utility.utilityName, utility.unit, utility.utilityType)}
+                 >Save changes</button
+             >
+         </div>
+     </div>
+ </div>
+</div>
         {/each}
-        <tr>
-            <dt>
-                Number of Utilities: {utilities.length}
-            </dt>
-        </tr>
+
     </tbody>
 </table>
 
@@ -180,4 +307,6 @@
         {/each}
     </ul>
 </nav>
+
+
 

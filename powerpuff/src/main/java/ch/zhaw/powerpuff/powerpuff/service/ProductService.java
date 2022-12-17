@@ -117,4 +117,28 @@ public class ProductService {
         return Optional.empty();
     }
 
+//--------------------------------------------------------------------------------------------------
+// UTILITY ANBINDUNG
+//--------------------------------------------------------------------------------------------------
+
+    public Optional<Product> assignUtility(String productId, String utilityId) {
+        if (utilityRepository.findById(utilityId).isPresent()) {
+            Optional<Product> utilityToAssign = productRepository.findById(productId);
+            if (utilityToAssign.isPresent()) {
+                Product product = utilityToAssign.get();
+                if (product.getProductState() != ProductState.INACTIVE) {
+
+                    // Neue utilityId setzen
+                    product.utilityIds.add(utilityId);
+
+                    // Product speichern
+                    productRepository.save(product);
+
+                    return Optional.of(product);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
 }

@@ -28,6 +28,7 @@ import ch.zhaw.powerpuff.powerpuff.model.status.ProductReviewDTO;
 import ch.zhaw.powerpuff.powerpuff.model.status.UserActivateDTO;
 import ch.zhaw.powerpuff.powerpuff.model.status.UserChangeUserTypeDTO;
 import ch.zhaw.powerpuff.powerpuff.model.status.UserCloseDTO;
+import ch.zhaw.powerpuff.powerpuff.model.status.UtilityAssignDTO;
 import ch.zhaw.powerpuff.powerpuff.service.ConnectionService;
 import ch.zhaw.powerpuff.powerpuff.service.ProductService;
 import ch.zhaw.powerpuff.powerpuff.service.UserService;
@@ -181,6 +182,8 @@ public ResponseEntity<Product> assignToMe(@RequestParam String productId,
 
     }
 
+    // API ANBINDUNG
+
     @GetMapping("emailvalidation")
     public ResponseEntity<List<EmailValidationDTO>> emailvalidation(@RequestParam List<String> 
     email){
@@ -195,6 +198,27 @@ public ResponseEntity<Product> assignToMe(@RequestParam String productId,
         emailValDTO.add(dto);
         
         return new ResponseEntity<>(emailValDTO, HttpStatus.OK);
+    }
+
+//--------------------------------------------------------------------------------------------------
+// UTILITY ANBINDUNG
+//--------------------------------------------------------------------------------------------------
+
+    @PostMapping("/utilityassignment")
+    public ResponseEntity<Product> assignUtility(
+            @RequestBody UtilityAssignDTO assignDTO) {
+        // Service aufrufen. Falls die Zuweisung erfolgreich war
+        if (assignDTO != null) {
+            Optional<Product> newService = productService.assignUtility(assignDTO.getProductId(),
+                    assignDTO.getUtilityId());
+
+            // den modifiziertes Product mit Status OK zurückgeben, sonst BAD_REQUEST return
+            // new
+            return new ResponseEntity<>(newService.get(), HttpStatus.OK);
+        }
+
+        // ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

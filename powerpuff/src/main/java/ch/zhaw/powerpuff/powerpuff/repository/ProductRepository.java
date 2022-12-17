@@ -38,6 +38,12 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
   Page<Product> findByProductState(String status, Pageable pageable);
 
+ /*  @Query("{$match: {productState: {$regex: ?0}, productType: {$regex: ?1}, price: {$gte: {$regex: ?2}}, price: {$lte: {$regex: ?3}}, userId: {$regex: ?4},},},}")
+  List<Product> findByQueryWithParameters(String state, String type, String min, String max, String user_id);
+
+  @Query("{$match: {productState: {$regex: ?0}, productType: {$regex: ?1}, price: {$gte: {$regex: ?2}}, price: {$lte: {$regex: ?3}}, userId: {$regex: ?4},},},}")
+  Page<Product> findByQueryWithParameters(String state, String type, String min, String max, String user_id, Pageable pageable);
+ */
   @Aggregation("{$group: {_id: '$productState',productIds: {$push: '$_id'}, count: {$count: {}}}}")
   List<ProductStateAggregationDTO> getProductStateAggregation();
 

@@ -34,23 +34,6 @@
         getUsers();
     }
 
-/*     function getUser() {
-        var config = {
-            method: "get",
-            url: api_root + "/api/products/" + user_id,
-            headers: {},
-        };
-
-        axios(config)
-            .then(function (response) {
-                user = response.data;
-            })
-            .catch(function (error) {
-                alert("Could not get user");
-                console.log(error);
-            });
-    } */
-
     function getUsers() {
         let query = "pageSize=6&page=" + currentPage;
 

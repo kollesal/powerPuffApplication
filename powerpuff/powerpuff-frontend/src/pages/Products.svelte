@@ -66,7 +66,7 @@
     function getUsers() {
         var config = {
             method: "get",
-            url: api_root + "/api/users?pagesize=30",
+            url: api_root + "/api/users?pageSize=30",
             headers: { Authorization: "Bearer " + $jwt_token },
         };
 
@@ -76,7 +76,7 @@
                 console.log(allUsers);
             })
             .catch(function (error) {
-               // alert("Could not get users");
+                // alert("Could not get users");
                 console.log(error);
             });
     }
@@ -96,16 +96,19 @@
                 console.log(error);
             });
     }
+
 </script>
 
 <h1 class="mt-3">All Products</h1>
-{#if !$user.user_roles.includes("buyer")}
-    <a
-        class="my-button"
-        href="#/create-product"
-        role="button"
-        aria-pressed="true">Add Product</a
-    >
+{#if $user.user_roles && $user.user_roles.length > 0}
+    {#if !$user.user_roles.includes("buyer")}
+        <a
+            class="my-button"
+            href="#/create-product"
+            role="button"
+            aria-pressed="true">Add Product</a
+        >
+    {/if}
 {/if}
 <a class="back-button" href="#/" role="button" aria-pressed="true">Back</a>
 
@@ -186,33 +189,33 @@
             </label>
         </div>
     </div>
+    {#if $user.user_roles && $user.user_roles.length > 0}
+        {#if $user.user_roles.includes("admin")}
+            <div class="col-auto">
+                <label for="" class="col-form-label">Product State: </label>
+            </div>
 
-    {#if $user.user_roles.includes("admin")}
-        <div class="col-auto">
-            <label for="" class="col-form-label">Product State: </label>
-        </div>
-
-        <div class="col-3">
-            <select
-                bind:value={state}
-                placeholder="State"
-                class="form-select"
-                id="state"
-                type="text"
-            >
-
-                        <option value="ACTIVE">Active</option>
-                        <option value="INACTIVE">Inactive</option>
-                        <option value="NEW">New</option>
-                        <option value="REVIEW">Review</option>
-
-            </select>
-        </div>
+            <div class="col-3">
+                <select
+                    bind:value={state}
+                    placeholder="State"
+                    class="form-select"
+                    id="state"
+                    type="text"
+                >
+                    <option value="ACTIVE">Active</option>
+                    <option value="INACTIVE">Inactive</option>
+                    <option value="NEW">New</option>
+                    <option value="REVIEW">Review</option>
+                </select>
+            </div>
+        {/if}
     {/if}
     <div class="col-auto">
         <button class="my-button" on:click={getProducts}>Apply</button>
     </div>
 </div>
+
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {#each products as product, index}
@@ -252,10 +255,15 @@
                             <p>
                                 Product Price: {product.price}
                             </p>
-
-                            <p>
-                                Product Size: {product.size}
-                            </p>
+                            {#if product.productType !== "MANUAL"}
+                                <p>
+                                    Product Size: {product.size}
+                                </p>
+                            {:else}
+                                <p>
+                                    Patchart: {product.patchart}
+                                </p>
+                            {/if}
 
                             {#if product.productState === "ACTIVE"}
                                 <p>
@@ -340,13 +348,14 @@
         </li>
     </ul>
 </nav>
-
-{#if !$user.user_roles.includes("buyer")}
-    <a
-        class="my-button"
-        href="#/create-product"
-        role="button"
-        aria-pressed="true">Add Product</a
-    >
+{#if $user.user_roles && $user.user_roles.length > 0}
+    {#if !$user.user_roles.includes("buyer")}
+        <a
+            class="my-button"
+            href="#/create-product"
+            role="button"
+            aria-pressed="true">Add Product</a
+        >
+    {/if}
 {/if}
 <a class="back-button" href="#/" role="button" aria-pressed="true">Back</a>

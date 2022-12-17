@@ -9,13 +9,21 @@
     export let params = {};
     let product_id;
     let user_id;
+    let utility_id;
 
     let allUsers = [];
+    let allUtilities = [];
 
     $: {
         product_id = params.id;
         getProduct();
         getUsers();
+
+        if(isAuthenticated){
+            getUsers();
+            getUser();
+            getUtilities();
+        }
     }
 
     let product = {
@@ -28,12 +36,34 @@
         price: null,
         patchart: null,
         userId: null,
+        utilityIds: [],
         comment: null,
     };
 
-    let productId = {
-        productId: product.id,
+    let userper = {
+        username: null,
+        name: null,
+        email: null,
+        userStatus: null,
+        userType: null,
     };
+
+    function getUser() {
+        var config = {
+            method: "get",
+            url: api_root + "/api/users/email/" + $user.email,
+            headers: { Authorization: "Bearer " + $jwt_token },
+        };
+
+        axios(config)
+            .then(function (response) {
+                userper = response.data;
+            })
+            .catch(function (error) {
+                alert("Could not get user");
+                console.log(error);
+            });
+    }
 
     function getProduct() {
         var config = {
@@ -55,7 +85,7 @@
     function getUsers() {
         var config = {
             method: "get",
-            url: api_root + "/api/users?pagesize=30",
+            url: api_root + "/api/users?pageSize=30",
             headers: { Authorization: "Bearer " + $jwt_token },
         };
 
@@ -67,6 +97,24 @@
             })
             .catch(function (error) {
                 alert("Could not get users");
+                console.log(error);
+            });
+    }
+
+    function getUtilities() {
+        var config = {
+            method: "get",
+            url: api_root + "/api/utilities?pageSize=100",
+            headers: {},
+        };
+
+        axios(config)
+            .then(function (response) {
+                allUtilities = response.data.content;
+                console.log(allUtilities);
+            })
+            .catch(function (error) {
+                alert("Could not get utilities");
                 console.log(error);
             });
     }
@@ -105,6 +153,27 @@
             })
             .catch(function (error) {
                 alert("Could not assign Product to user");
+                console.log(error);
+            });
+    }
+
+    function utilityassignment() {
+        var config = {
+            method: "post",
+            url: api_root + "/api/service/utilityassignment",
+            headers: { Authorization: "Bearer " + $jwt_token },
+            data: {
+                productId: product.id,
+                utilityId: utility_id,
+            },
+        };
+        axios(config)
+            .then(function (response) {
+                alert("Product is assigned to utility");
+                getProduct();
+            })
+            .catch(function (error) {
+                alert("Could not assign Product to utility");
                 console.log(error);
             });
     }
@@ -174,7 +243,7 @@
 <h3>Product Type: {product.productType}</h3>
 <div class="col-md-8" />
 <div class="md-12">
-    <div class="col-md-4">
+    <div class="col-4">
         <ul class="list-group">
             <li class="list-group-item-top active" aria-current="true">
                 Description:
@@ -184,6 +253,48 @@
             </li>
         </ul>
     </div>
+
+    <div class="col-md-8" />
+
+    <h3 class="md-3">Utilities:</h3>
+    <div class="row">
+    {#each product.utilityIds as listUtility}
+        {#each allUtilities as entityUtility}
+            {#if listUtility === entityUtility.id}
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {entityUtility.utilityName}
+                            </h5>
+                            <p class="card-text">
+                                Type: {entityUtility.utilityType}
+                            </p>
+                            <p>
+                                Units: {entityUtility.unit}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {/if}
+        {/each}
+    {/each}
+    </div>
+    {#if $user.user_roles && $user.user_roles.length > 0}
+    {#if !$user.user_roles.includes("buyer") || userper.id === product.userId}
+    <label for="member">Add a Utility to this Product</label>
+    <div class="col-md-4">
+        <select class="form-select" bind:value={utility_id} id="user">
+            {#each allUtilities as utility}
+                    <option value={utility.id}>{utility.utilityName}</option>
+            {/each}
+        </select>
+    </div>
+    <div class="col-md-8" />
+    <button on:click={utilityassignment} class="my-button"
+        >Assign</button
+    >
+    {/if}
 
     <div class="col-md-8" />
 
@@ -223,49 +334,54 @@
             {/each}
         </div>
     {/if}
+    {/if}
 
     <div class="col-md-8" />
-    {#if $user.user_roles.includes("admin")}
-    {#if product.userId === null}
-        <h3>Assign User</h3>
-        <label for="member">Add a User to this Product</label>
-        <div class="col-md-4">
-            <select class="form-select" bind:value={user_id} id="user">
-                {#each allUsers as user}
-                    {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
-                        <option value={user.id}>{user.username}</option>
-                    {/if}
-                {/each}
-            </select>
-        </div>
-        <div class="col-md-8" />
-        <button on:click={productassignment} class="my-button">Assign</button>
+    {#if $user.user_roles && $user.user_roles.length > 0}
+    {#if $user.user_roles.includes("admin") }
+        {#if product.userId === null}
+            <h3>Assign User</h3>
+            <label for="member">Add a User to this Product</label>
+            <div class="col-md-4">
+                <select class="form-select" bind:value={user_id} id="user">
+                    {#each allUsers as user}
+                        {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
+                            <option value={user.id}>{user.username}</option>
+                        {/if}
+                    {/each}
+                </select>
+            </div>
+            <div class="col-md-8" />
+            <button on:click={productassignment} class="my-button"
+                >Assign</button
+            >
+        {/if}
     {/if}
     {/if}
 
     <div class="col-md-8" />
 
     <h3>Status: {product.productState}</h3>
-
-    {#if $user.user_roles.includes("admin")}
-    {#if product.productState === "ACTIVE"}
-        <form>
-            <div class="row mb-3">
-                <div class="col">
-                    <label for="comment"
-                        >Comment for Inactivation of Product</label
-                    >
-                    <textarea
-                        bind:value={product.comment}
-                        class="form-control"
-                        id="comment"
-                        rows="3"
-                    />
+    {#if $user.user_roles && $user.user_roles.length > 0}
+    {#if $user.user_roles.includes("admin") || userper.id === product.userId}
+        {#if product.productState === "ACTIVE"}
+            <form>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="comment"
+                            >Comment for Inactivation of Product</label
+                        >
+                        <textarea
+                            bind:value={product.comment}
+                            class="form-control"
+                            id="comment"
+                            rows="3"
+                        />
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        {/if}
     {/if}
-{/if}
     {#if product.productState === "INACTIVE"}
         <div class="col-md-4">
             <ul class="list-group">
@@ -278,10 +394,11 @@
             </ul>
         </div>
     {/if}
+    {/if}
 
     <div class="col-md-8" />
-
-    {#if $user.user_roles.includes("admin")}
+    {#if $user.user_roles && $user.user_roles.length > 0}
+    {#if $user.user_roles.includes("admin") || userper.id === product.userId}
         <a href="#/products" on:click={deleteProduct} class="delete-button"
             >Delete Product</a
         >
@@ -302,6 +419,7 @@
                 >Activate Product</a
             >
         {/if}
+    {/if}
     {/if}
     <a class="back-button" href="#/products" role="button" aria-pressed="true"
         >Back</a
