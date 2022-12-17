@@ -17,9 +17,8 @@
     $: {
         product_id = params.id;
         getProduct();
-        getUsers();
 
-        if(isAuthenticated){
+        if($isAuthenticated){
             getUsers();
             getUser();
             getUtilities();
@@ -58,6 +57,7 @@
         axios(config)
             .then(function (response) {
                 userper = response.data;
+                console.log(userper);
             })
             .catch(function (error) {
                 alert("Could not get user");
@@ -105,7 +105,7 @@
         var config = {
             method: "get",
             url: api_root + "/api/utilities?pageSize=100",
-            headers: {},
+            headers: { Authorization: "Bearer " + $jwt_token },
         };
 
         axios(config)
@@ -254,6 +254,9 @@
         </ul>
     </div>
 
+    {#if $user.user_roles && $user.user_roles.length > 0}
+    {#if !$user.user_roles.includes("buyer") || userper.id === product.userId}
+
     <div class="col-md-8" />
 
     <h3 class="md-3">Utilities:</h3>
@@ -279,9 +282,9 @@
             {/if}
         {/each}
     {/each}
+   
     </div>
-    {#if $user.user_roles && $user.user_roles.length > 0}
-    {#if !$user.user_roles.includes("buyer") || userper.id === product.userId}
+
     <label for="member">Add a Utility to this Product</label>
     <div class="col-md-4">
         <select class="form-select" bind:value={utility_id} id="user">

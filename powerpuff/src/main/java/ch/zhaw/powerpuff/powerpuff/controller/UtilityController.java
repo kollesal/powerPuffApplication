@@ -46,7 +46,7 @@ public class UtilityController {
 
     @GetMapping("")
     public ResponseEntity<Page<Utility>> getAllUtilities(
-    //    @AuthenticationPrincipal Jwt jwt,
+        @AuthenticationPrincipal Jwt jwt,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize) {
         if (page == null) {

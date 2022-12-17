@@ -82,6 +82,9 @@ public Optional<User> changeUserTypeUser(String userId, UserType userType) {
                 } else if(userType == UserType.ADMIN) {
                     user.setUserType(UserType.ADMIN);
                 }
+                else if(userType == UserType.APPLICATION) {
+                    user.setUserType(UserType.APPLICATION);
+                }
                 
 
                 // Product speichern
