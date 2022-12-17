@@ -8,6 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.lang.NonNull;
 
+import ch.zhaw.powerpuff.powerpuff.model.types.ClothingType;
+import ch.zhaw.powerpuff.powerpuff.model.types.DifficultyType;
+import ch.zhaw.powerpuff.powerpuff.model.types.ProductState;
+import ch.zhaw.powerpuff.powerpuff.model.types.ProductType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;

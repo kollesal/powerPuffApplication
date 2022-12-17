@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.zhaw.powerpuff.powerpuff.model.User;
-import ch.zhaw.powerpuff.powerpuff.model.UserStatus;
-import ch.zhaw.powerpuff.powerpuff.model.UserType;
+import ch.zhaw.powerpuff.powerpuff.model.types.UserStatus;
+import ch.zhaw.powerpuff.powerpuff.model.types.UserType;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
 import ch.zhaw.powerpuff.powerpuff.repository.UserRepository;
 import ch.zhaw.powerpuff.powerpuff.repository.UtilityRepository;

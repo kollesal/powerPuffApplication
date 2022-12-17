@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.lang.NonNull;
 
+import ch.zhaw.powerpuff.powerpuff.model.types.UserStatus;
+import ch.zhaw.powerpuff.powerpuff.model.types.UserType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;

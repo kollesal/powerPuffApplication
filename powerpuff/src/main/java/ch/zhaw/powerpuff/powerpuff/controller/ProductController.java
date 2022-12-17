@@ -26,7 +26,7 @@ import ch.zhaw.powerpuff.powerpuff.model.Product;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByProducttypeAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductByUserAggregationDTO;
 import ch.zhaw.powerpuff.powerpuff.model.aggregation.ProductStateAggregationDTO;
-import ch.zhaw.powerpuff.powerpuff.model.status.ProductCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.dto.ProductCreateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
 import ch.zhaw.powerpuff.powerpuff.security.UserValidator;
 

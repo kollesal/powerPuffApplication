@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.Utility;
-import ch.zhaw.powerpuff.powerpuff.model.status.UtilityCreateDTO;
-import ch.zhaw.powerpuff.powerpuff.model.status.UtilityUpdateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.dto.UtilityCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.dto.UtilityUpdateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.UtilityRepository;
 import ch.zhaw.powerpuff.powerpuff.security.UserValidator;
 

@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.zhaw.powerpuff.powerpuff.model.User;
-import ch.zhaw.powerpuff.powerpuff.model.status.UserCreateDTO;
-import ch.zhaw.powerpuff.powerpuff.model.status.UserUpdateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.dto.UserCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.dto.UserUpdateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.UserRepository;
 import ch.zhaw.powerpuff.powerpuff.security.UserValidator;
 

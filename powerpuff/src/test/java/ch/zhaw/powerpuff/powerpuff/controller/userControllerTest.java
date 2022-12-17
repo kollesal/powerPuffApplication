@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ch.zhaw.powerpuff.powerpuff.model.status.UserCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.dto.UserCreateDTO;
 
 @SpringBootTest
 @AutoConfigureMockMvc

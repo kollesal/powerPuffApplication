@@ -15,10 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status; 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ch.zhaw.powerpuff.powerpuff.model.ClothingType;
-import ch.zhaw.powerpuff.powerpuff.model.DifficultyType;
-import ch.zhaw.powerpuff.powerpuff.model.ProductType;
-import ch.zhaw.powerpuff.powerpuff.model.status.ProductCreateDTO; 
+import ch.zhaw.powerpuff.powerpuff.model.dto.ProductCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.types.ClothingType;
+import ch.zhaw.powerpuff.powerpuff.model.types.DifficultyType;
+import ch.zhaw.powerpuff.powerpuff.model.types.ProductType; 
 
 @SpringBootTest
 @AutoConfigureMockMvc
