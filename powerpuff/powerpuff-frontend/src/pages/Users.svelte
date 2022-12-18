@@ -2,6 +2,7 @@
     import axios from "axios";
     import { querystring } from "svelte-spa-router";
     import { jwt_token } from "../store";
+    import { isAuthenticated } from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
     const api_root = "http://localhost:8080";
@@ -97,6 +98,7 @@
             });
     }
 </script>
+{#if $isAuthenticated}
 
 <h1 class="mt-3">Create User</h1>
 <form class="mb-5">
@@ -265,3 +267,9 @@
         {/each}
     </ul>
 </nav>
+
+{:else}
+  <div class="alert" role="alert">
+    <h3><b>Not logged in</b></h3>
+  </div>
+{/if}

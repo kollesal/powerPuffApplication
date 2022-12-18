@@ -8,6 +8,7 @@
     const api_root = "http://localhost:8080";
     var currentPage;
     let nrOfPages = 0;
+    let type;
 
     let utilities = [];
     let utility = {
@@ -28,6 +29,10 @@
 
     function getUtilities() {
         let query = "pageSize=6&page=" + currentPage;
+
+        if (type) {
+            query += "&type=" + type;
+        }
 
         var config = {
             method: "get",
@@ -95,6 +100,7 @@
     }
 
 </script>
+{#if $isAuthenticated}
 
 <h1 class="mt-3">Create Utility</h1>
 <form class="mb-5">
@@ -151,6 +157,41 @@
 <button type="button" class="my-button" on:click={createUtility}>Submit</button>
 
 <div class="row mb-3">
+</div>
+
+<div class="row my-3">
+{#if $user.user_roles && $user.user_roles.length > 0}
+    <div class="col-auto">
+        <label for="" class="col-form-label">Utility Type: </label>
+    </div>
+
+    <div class="col-3">
+        <select
+            bind:value={type}
+            placeholder="Type"
+            class="form-select"
+            id="type"
+            type="text"
+        >
+        <option value="WRITING">Writing</option>
+        <option value="MARKING">Marking</option>
+        <option value="CUTTING">Cutting</option>
+        <option value="SEWING">Sewing</option>
+        <option value="MASCHINE">Maschine</option>
+        <option value="FOOT">Foot</option>
+        <option value="NEEDLE">Needle</option>
+        <option value="ATTACHMENT">Attachment</option>
+        <option value="MEASURING">Measuring</option>
+        <option value="SECURITY">Security</option>
+        <option value="HELP">Help</option>
+        <option value="THREAD">Thread</option>
+        <option value="PATTERN">Pattern</option>
+        </select>
+    </div>
+{/if}
+<div class="col-auto">
+<button class="my-button" on:click={getUtilities}>Apply</button>
+</div>
 </div>
 
 <h1>All Utilities</h1>
@@ -308,5 +349,10 @@
     </ul>
 </nav>
 
+{:else}
+  <div class="alert" role="alert">
+    <h3><b>Not logged in</b></h3>
+  </div>
+{/if}
 
 

@@ -236,6 +236,7 @@
             });
     }
 </script>
+{#if $isAuthenticated}
 
 <!--<div class="col-md-12">-->
 <h1 class="md-3">Product {product.productname}</h1>
@@ -429,3 +430,9 @@
     >
     <div class="md-12" />
 </div>
+
+{:else}
+  <div class="alert" role="alert">
+    <h3><b>Not logged in</b></h3>
+  </div>
+{/if}

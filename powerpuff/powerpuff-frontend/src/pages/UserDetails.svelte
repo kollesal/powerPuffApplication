@@ -138,6 +138,7 @@
     }
 
 </script>
+{#if $isAuthenticated}
 
 <h1 class="md-3">User {userper.username}</h1>
 <p>ID: {userper.id}</p>
@@ -315,3 +316,10 @@
 <a class="back-button" href="#/users" role="button" aria-pressed="true">Back</a>
 <img class="rounded-circle" alt="Svelte Logo" src="images/canvas.jpg" />
 <div class="md-12" />
+
+
+{:else}
+  <div class="alert" role="alert">
+    <h3><b>Not logged in</b></h3>
+  </div>
+{/if}

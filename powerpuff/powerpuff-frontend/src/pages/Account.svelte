@@ -7,13 +7,15 @@
 
   export let params = {};
   let user_id;
-  let userVariables = [];
+
   $: {
     user_id = params.id;
     getUser();
   }
 
- 
+   let userVariables = [];
+   let type;
+
   let userper = {
     username: null,
     name: null,
@@ -33,9 +35,7 @@
       .then(function (response) {
         userVariables = response.data;
                 userper = userVariables;
-                console.log(userVariables[0]);
                 console.log(userper);
-                console.log(userVariables);
 
       })
       .catch(function (error) {
@@ -66,19 +66,20 @@
       });
   }
 
-  function changeUserType() {
+  function changeUserType(type) {
     var config = {
       method: "post",
       url: api_root + "/api/service/userchangetype",
       headers: { Authorization: "Bearer " + $jwt_token },
       data: {
         userId: userper.id,
-        userType: userper.userType,
+        userType: type,
       },
     };
     axios(config)
       .then(function (response) {
-        alert("User Type Changed");
+        alert("Application for User Type Supplier successfully submitted.");
+        getUser();
       })
       .catch(function (error) {
         alert("Could not Change User Type");
@@ -137,7 +138,7 @@
                   <h6 class="mb-0">User Status</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <p>{userper.userStatus}</p>
+                  <p>{userVariables.userStatus}</p>
                 </div>
               </div>
               <hr />
@@ -169,7 +170,7 @@
   >
     Update User
   </button>
-  {#if $user.user_roles.includes("buyer")}
+  {#if userper.userType === "BUYER"}
     <button
       type="button"
       class="my-button"
@@ -178,7 +179,13 @@
     >
       Apply for Supplier Access
     </button>
-  {/if}
+    {:else if userper.userType === "APPLICATION"}
+
+    <button class="back-button">
+      Applied for Role Supplier
+    </button>
+  {/if} 
+
 
   <!-- Modal Update User-->
   <div
@@ -258,70 +265,67 @@
     </div>
   </div>
 
-  <!-- Modal Assignment-->
-  <div
-    class="modal fade"
-    id="application"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-            Application for Supplier
-          </h5>
-          <button
-            type="button"
-            class="close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>
-            If you would like to Apply for a Supplier Account, please Accept.
-          </p>
-          <form>
-            <div class="form-group row">
-              <label for="userType" class="col-sm-2 col-form-label"
-                >User Type for Validation</label
-              >
-              <div class="col-sm-10">
-                <div class="form-check">
-                  <label>
-                    <input
-                      class="form-check-input"
-                      bind:group={userper.userType}
-                      type="checkbox"
-                      name="uerType"
-                      value="APPLICATION"
-                    />
-                    Apply for Supplier Access
-                  </label>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="back-button" data-bs-dismiss="modal"
-            >Close</button
-          >
-          <button
-            type="button"
-            class="my-button"
-            data-bs-dismiss="modal"
-            on:click={changeUserType}>Accept</button
-          >
-        </div>
-      </div>
-    </div>
-  </div>
+   <!-- Modal Assignment-->
+   <div
+   class="modal fade"
+   id="application"
+   tabindex="-1"
+   role="dialog"
+   aria-labelledby="exampleModalLabel"
+   aria-hidden="true"
+ >
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">Apply for Role Supplier</h5>
+         <button
+           type="button"
+           class="close"
+           data-bs-dismiss="modal"
+           aria-label="Close"
+         >
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <form>
+           <div class="form-group row">
+            <div class="col-6">
+             <label for="userType" class="col-form-label">Apply for Usertype</label>
+             </div>
+              <div class="col-6">
+                <select
+                    bind:value={type}
+                    placeholder="Supplier"
+                    class="form-select"
+                    id="state"
+                    type="text"
+                >
+                    <option value="APPLICATION">Supplier</option>
+                    
+                </select>
+             </div>
+           </div>
+          
+           <p />
+         </form>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="back-button" data-bs-dismiss="modal"
+           >Close</button
+         >
+         <button
+           type="button"
+           class="my-button"
+           data-bs-dismiss="modal"
+           on:click={changeUserType(type)}>Apply</button
+         >
+       </div>
+     </div>
+   </div>
+ </div>
+
+ 
 {:else}
   <div class="alert" role="alert">
     <h3><b>Not logged in</b></h3>

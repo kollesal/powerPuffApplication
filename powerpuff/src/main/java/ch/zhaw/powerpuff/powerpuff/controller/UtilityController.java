@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,6 +26,7 @@ import ch.zhaw.powerpuff.powerpuff.model.dto.UtilityUpdateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.UtilityRepository;
 import ch.zhaw.powerpuff.powerpuff.security.UserValidator;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/utilities")
 public class UtilityController {
@@ -46,9 +48,10 @@ public class UtilityController {
 
     @GetMapping("")
     public ResponseEntity<Page<Utility>> getAllUtilities(
-        @AuthenticationPrincipal Jwt jwt,
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestParam(required = false) Integer pageSize,
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer pageSize) {
+            @RequestParam(required = false) String type) {
         if (page == null) {
             page = 1;
         }
@@ -56,14 +59,19 @@ public class UtilityController {
             pageSize = 6;
         }
 
-        Page<Utility> allUtilities = utilityRepository
-                .findAll(PageRequest.of(page - 1, pageSize));
-        if (!allUtilities.isEmpty()) {
-            return new ResponseEntity<>(allUtilities, HttpStatus.OK);
+        Page<Utility> allUtilities;
+        if (type != null) {
+            System.out.println(type);
+            allUtilities = utilityRepository
+                    .findByUtilityType(type, PageRequest.of(page - 1, pageSize));
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            allUtilities = utilityRepository
+                  .findAll(PageRequest.of(page - 1, pageSize));
         }
+
+        return new ResponseEntity<>(allUtilities, HttpStatus.OK);
     }
+
 
     @PatchMapping("{id}")
     public ResponseEntity<Utility> updateUtility(

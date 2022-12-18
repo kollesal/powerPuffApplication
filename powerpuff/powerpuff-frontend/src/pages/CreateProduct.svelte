@@ -39,7 +39,7 @@
             });
     }
 </script>
-
+{#if $isAuthenticated}
 {#if !$user.user_roles.includes("buyer")}
     <h1 class="mt-3">Create Product</h1>
     <form class="mb-5">
@@ -159,4 +159,10 @@
     <div class="alert" role="alert">
         <h3><b>Not correct Role</b></h3>
     </div>
+{/if}
+
+{:else}
+  <div class="alert" role="alert">
+    <h3><b>Not logged in</b></h3>
+  </div>
 {/if}
