@@ -298,6 +298,11 @@
     <button on:click={utilityassignment} class="my-button"
         >Assign</button
     >
+
+    <p></p>
+    <p>You cannot find a suiting Utility? Then you can create a new Utility here: 
+    <a href="#/utilities">Add Utility</a>
+    </p>
     {/if}
 
     <div class="col-md-8" />

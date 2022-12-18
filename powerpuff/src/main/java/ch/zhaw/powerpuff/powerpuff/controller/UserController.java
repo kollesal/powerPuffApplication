@@ -52,6 +52,10 @@ public class UserController {
             @RequestBody UserUpdateDTO uDTO,
             @AuthenticationPrincipal Jwt jwt) {
 
+        if (UserValidator.userHasRole(jwt, "buyer")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Optional<User> uDAO = userRepository.findById(id);
         if (uDAO.isPresent()) {
 
@@ -71,7 +75,13 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<Page<User>> getAllUsers(
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer pageSize) {
+            @RequestParam(required = false) Integer pageSize,
+            @AuthenticationPrincipal Jwt jwt) {
+
+        if (UserValidator.userHasRole(jwt, "buyer")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if (page == null) {
             page = 1;
         }
@@ -90,7 +100,14 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id) {
+    public ResponseEntity<User> getUserById(
+        @PathVariable String id,
+        @AuthenticationPrincipal Jwt jwt) {
+
+            if (UserValidator.userHasRole(jwt, "buyer")) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+
         Optional<User> optUser = userRepository.findById(id);
         if (optUser.isPresent()) {
             return new ResponseEntity<>(optUser.get(), HttpStatus.OK);
@@ -101,7 +118,7 @@ public class UserController {
 
     @GetMapping("/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        List <User> optUser = userRepository.findByEmail(email);
+        List<User> optUser = userRepository.findByEmail(email);
         if (optUser.size() == 1) {
             return new ResponseEntity<>(optUser.get(0), HttpStatus.OK);
         } else {

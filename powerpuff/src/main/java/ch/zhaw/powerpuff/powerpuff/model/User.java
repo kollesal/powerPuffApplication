@@ -33,5 +33,18 @@ public class User {
     private String name;
 
     private String comment;
+
+    public User(UserStatus userStatus, UserType userType, String email, String username, String name, String comment) {
+        this.userStatus = userStatus;
+        this.userType = userType;
+        this.email = email;
+        this.username = username;
+        this.name = name;
+        this.comment = comment;
+    }
+
+    
    
 }
+
+

@@ -13178,7 +13178,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (434:0) {:else}
+    // (439:0) {:else}
     function create_else_block_1(ctx) {
     	let div;
     	let h3;
@@ -13190,11 +13190,11 @@ var app = (function () {
     			h3 = element("h3");
     			b = element("b");
     			b.textContent = "Not logged in";
-    			add_location(b, file$1, 435, 8, 13737);
-    			add_location(h3, file$1, 435, 4, 13733);
+    			add_location(b, file$1, 440, 8, 13889);
+    			add_location(h3, file$1, 440, 4, 13885);
     			attr_dev(div, "class", "alert");
     			attr_dev(div, "role", "alert");
-    			add_location(div, file$1, 434, 2, 13695);
+    			add_location(div, file$1, 439, 2, 13847);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -13211,7 +13211,7 @@ var app = (function () {
     		block,
     		id: create_else_block_1.name,
     		type: "else",
-    		source: "(434:0) {:else}",
+    		source: "(439:0) {:else}",
     		ctx
     	});
 
@@ -13332,19 +13332,19 @@ var app = (function () {
     			attr_dev(div1, "class", "col-4");
     			add_location(div1, file$1, 246, 4, 7092);
     			attr_dev(div2, "class", "col-md-8");
-    			add_location(div2, file$1, 342, 4, 10288);
+    			add_location(div2, file$1, 347, 4, 10440);
     			attr_dev(div3, "class", "col-md-8");
-    			add_location(div3, file$1, 365, 4, 11191);
-    			add_location(h31, file$1, 367, 4, 11223);
+    			add_location(div3, file$1, 370, 4, 11343);
+    			add_location(h31, file$1, 372, 4, 11375);
     			attr_dev(div4, "class", "col-md-8");
-    			add_location(div4, file$1, 402, 4, 12479);
+    			add_location(div4, file$1, 407, 4, 12631);
     			attr_dev(a, "class", "back-button");
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$1, 427, 4, 13546);
+    			add_location(a, file$1, 432, 4, 13698);
     			attr_dev(div5, "class", "md-12");
-    			add_location(div5, file$1, 430, 4, 13651);
+    			add_location(div5, file$1, 435, 4, 13803);
     			attr_dev(div6, "class", "md-12");
     			add_location(div6, file$1, 245, 0, 7067);
     		},
@@ -13512,8 +13512,8 @@ var app = (function () {
     			if_block1.c();
     			if_block1_anchor = empty();
     			attr_dev(div, "class", "col-md-8");
-    			add_location(div, file$1, 302, 4, 8965);
-    			add_location(h3, file$1, 304, 4, 8997);
+    			add_location(div, file$1, 307, 4, 9117);
+    			add_location(h3, file$1, 309, 4, 9149);
     		},
     		m: function mount(target, anchor) {
     			if (if_block0) if_block0.m(target, anchor);
@@ -13592,6 +13592,12 @@ var app = (function () {
     	let div3;
     	let t7;
     	let button;
+    	let t9;
+    	let p0;
+    	let t10;
+    	let p1;
+    	let t11;
+    	let a;
     	let mounted;
     	let dispose;
     	let each_value_3 = /*product*/ ctx[5].utilityIds;
@@ -13639,6 +13645,13 @@ var app = (function () {
     			t7 = space();
     			button = element("button");
     			button.textContent = "Assign";
+    			t9 = space();
+    			p0 = element("p");
+    			t10 = space();
+    			p1 = element("p");
+    			t11 = text("You cannot find a suiting Utility? Then you can create a new Utility here: \r\n    ");
+    			a = element("a");
+    			a.textContent = "Add Utility";
     			attr_dev(div0, "class", "col-md-8");
     			add_location(div0, file$1, 260, 4, 7542);
     			attr_dev(h3, "class", "md-3");
@@ -13657,6 +13670,10 @@ var app = (function () {
     			add_location(div3, file$1, 296, 4, 8830);
     			attr_dev(button, "class", "my-button");
     			add_location(button, file$1, 297, 4, 8860);
+    			add_location(p0, file$1, 301, 4, 8954);
+    			attr_dev(a, "href", "#/utilities");
+    			add_location(a, file$1, 303, 4, 9051);
+    			add_location(p1, file$1, 302, 4, 8967);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -13684,6 +13701,12 @@ var app = (function () {
     			insert_dev(target, div3, anchor);
     			insert_dev(target, t7, anchor);
     			insert_dev(target, button, anchor);
+    			insert_dev(target, t9, anchor);
+    			insert_dev(target, p0, anchor);
+    			insert_dev(target, t10, anchor);
+    			insert_dev(target, p1, anchor);
+    			append_dev(p1, t11);
+    			append_dev(p1, a);
 
     			if (!mounted) {
     				dispose = [
@@ -13763,6 +13786,10 @@ var app = (function () {
     			if (detaching) detach_dev(div3);
     			if (detaching) detach_dev(t7);
     			if (detaching) detach_dev(button);
+    			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(p0);
+    			if (detaching) detach_dev(t10);
+    			if (detaching) detach_dev(p1);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -14020,7 +14047,7 @@ var app = (function () {
     	return block;
     }
 
-    // (318:4) {:else}
+    // (323:4) {:else}
     function create_else_block$1(ctx) {
     	let div;
     	let each_value_1 = /*allUsers*/ ctx[3];
@@ -14040,7 +14067,7 @@ var app = (function () {
     			}
 
     			attr_dev(div, "class", "row");
-    			add_location(div, file$1, 318, 8, 9428);
+    			add_location(div, file$1, 323, 8, 9580);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -14084,14 +14111,14 @@ var app = (function () {
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(318:4) {:else}",
+    		source: "(323:4) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (307:4) {#if product.userId === null}
+    // (312:4) {#if product.userId === null}
     function create_if_block_16(ctx) {
     	let div3;
     	let div2;
@@ -14112,17 +14139,17 @@ var app = (function () {
     			t1 = space();
     			p = element("p");
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$1, 311, 24, 9221);
+    			add_location(h5, file$1, 316, 24, 9373);
     			attr_dev(p, "class", "card-text");
-    			add_location(p, file$1, 312, 24, 9294);
+    			add_location(p, file$1, 317, 24, 9446);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$1, 310, 20, 9172);
+    			add_location(div0, file$1, 315, 20, 9324);
     			attr_dev(div1, "class", "card");
-    			add_location(div1, file$1, 309, 16, 9132);
+    			add_location(div1, file$1, 314, 16, 9284);
     			attr_dev(div2, "class", "col-sm-4");
-    			add_location(div2, file$1, 308, 12, 9092);
+    			add_location(div2, file$1, 313, 12, 9244);
     			attr_dev(div3, "class", "row");
-    			add_location(div3, file$1, 307, 8, 9061);
+    			add_location(div3, file$1, 312, 8, 9213);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -14143,14 +14170,14 @@ var app = (function () {
     		block,
     		id: create_if_block_16.name,
     		type: "if",
-    		source: "(307:4) {#if product.userId === null}",
+    		source: "(312:4) {#if product.userId === null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (321:16) {#if product.userId == user.id}
+    // (326:16) {#if product.userId == user.id}
     function create_if_block_17(ctx) {
     	let div2;
     	let div1;
@@ -14187,16 +14214,16 @@ var app = (function () {
     			t6 = text(t6_value);
     			t7 = space();
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$1, 324, 32, 9707);
+    			add_location(h5, file$1, 329, 32, 9859);
     			attr_dev(p0, "class", "card-text");
-    			add_location(p0, file$1, 327, 32, 9856);
-    			add_location(p1, file$1, 330, 32, 10004);
+    			add_location(p0, file$1, 332, 32, 10008);
+    			add_location(p1, file$1, 335, 32, 10156);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$1, 323, 28, 9650);
+    			add_location(div0, file$1, 328, 28, 9802);
     			attr_dev(div1, "class", "card");
-    			add_location(div1, file$1, 322, 24, 9602);
+    			add_location(div1, file$1, 327, 24, 9754);
     			attr_dev(div2, "class", "col-sm-4");
-    			add_location(div2, file$1, 321, 20, 9554);
+    			add_location(div2, file$1, 326, 20, 9706);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -14228,14 +14255,14 @@ var app = (function () {
     		block,
     		id: create_if_block_17.name,
     		type: "if",
-    		source: "(321:16) {#if product.userId == user.id}",
+    		source: "(326:16) {#if product.userId == user.id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (320:12) {#each allUsers as user}
+    // (325:12) {#each allUsers as user}
     function create_each_block_1(ctx) {
     	let if_block_anchor;
     	let if_block = /*product*/ ctx[5].userId == /*user*/ ctx[24].id && create_if_block_17(ctx);
@@ -14273,14 +14300,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(320:12) {#each allUsers as user}",
+    		source: "(325:12) {#each allUsers as user}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (344:4) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (349:4) {#if $user.user_roles && $user.user_roles.length > 0}
     function create_if_block_11(ctx) {
     	let show_if = /*$user*/ ctx[7].user_roles.includes("admin");
     	let if_block_anchor;
@@ -14321,14 +14348,14 @@ var app = (function () {
     		block,
     		id: create_if_block_11.name,
     		type: "if",
-    		source: "(344:4) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(349:4) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (345:4) {#if $user.user_roles.includes("admin") }
+    // (350:4) {#if $user.user_roles.includes("admin") }
     function create_if_block_12(ctx) {
     	let if_block_anchor;
     	let if_block = /*product*/ ctx[5].userId === null && create_if_block_13(ctx);
@@ -14366,14 +14393,14 @@ var app = (function () {
     		block,
     		id: create_if_block_12.name,
     		type: "if",
-    		source: "(345:4) {#if $user.user_roles.includes(\\\"admin\\\") }",
+    		source: "(350:4) {#if $user.user_roles.includes(\\\"admin\\\") }",
     		ctx
     	});
 
     	return block;
     }
 
-    // (346:8) {#if product.userId === null}
+    // (351:8) {#if product.userId === null}
     function create_if_block_13(ctx) {
     	let h3;
     	let t1;
@@ -14415,19 +14442,19 @@ var app = (function () {
     			t5 = space();
     			button = element("button");
     			button.textContent = "Assign";
-    			add_location(h3, file$1, 346, 12, 10471);
+    			add_location(h3, file$1, 351, 12, 10623);
     			attr_dev(label, "for", "member");
-    			add_location(label, file$1, 347, 12, 10505);
+    			add_location(label, file$1, 352, 12, 10657);
     			attr_dev(select, "class", "form-select");
     			attr_dev(select, "id", "user");
     			if (/*user_id*/ ctx[1] === void 0) add_render_callback(() => /*select_change_handler_1*/ ctx[16].call(select));
-    			add_location(select, file$1, 349, 16, 10613);
+    			add_location(select, file$1, 354, 16, 10765);
     			attr_dev(div0, "class", "col-md-4");
-    			add_location(div0, file$1, 348, 12, 10573);
+    			add_location(div0, file$1, 353, 12, 10725);
     			attr_dev(div1, "class", "col-md-8");
-    			add_location(div1, file$1, 357, 12, 11006);
+    			add_location(div1, file$1, 362, 12, 11158);
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$1, 358, 12, 11044);
+    			add_location(button, file$1, 363, 12, 11196);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -14505,14 +14532,14 @@ var app = (function () {
     		block,
     		id: create_if_block_13.name,
     		type: "if",
-    		source: "(346:8) {#if product.userId === null}",
+    		source: "(351:8) {#if product.userId === null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (352:24) {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
+    // (357:24) {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
     function create_if_block_14(ctx) {
     	let option;
     	let t_value = /*user*/ ctx[24].username + "";
@@ -14525,7 +14552,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = option_value_value = /*user*/ ctx[24].id;
     			option.value = option.__value;
-    			add_location(option, file$1, 352, 28, 10837);
+    			add_location(option, file$1, 357, 28, 10989);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -14548,14 +14575,14 @@ var app = (function () {
     		block,
     		id: create_if_block_14.name,
     		type: "if",
-    		source: "(352:24) {#if user.userType !== \\\"BUYER\\\" && user.userStatus === \\\"ACTIVE\\\"}",
+    		source: "(357:24) {#if user.userType !== \\\"BUYER\\\" && user.userStatus === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (351:20) {#each allUsers as user}
+    // (356:20) {#each allUsers as user}
     function create_each_block(ctx) {
     	let if_block_anchor;
     	let if_block = /*user*/ ctx[24].userType !== "BUYER" && /*user*/ ctx[24].userStatus === "ACTIVE" && create_if_block_14(ctx);
@@ -14593,14 +14620,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(351:20) {#each allUsers as user}",
+    		source: "(356:20) {#each allUsers as user}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (369:4) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (374:4) {#if $user.user_roles && $user.user_roles.length > 0}
     function create_if_block_7(ctx) {
     	let show_if = /*$user*/ ctx[7].user_roles.includes("admin") || /*userper*/ ctx[6].id === /*product*/ ctx[5].userId;
     	let t;
@@ -14662,14 +14689,14 @@ var app = (function () {
     		block,
     		id: create_if_block_7.name,
     		type: "if",
-    		source: "(369:4) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(374:4) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (370:4) {#if $user.user_roles.includes("admin") || userper.id === product.userId}
+    // (375:4) {#if $user.user_roles.includes("admin") || userper.id === product.userId}
     function create_if_block_9(ctx) {
     	let if_block_anchor;
     	let if_block = /*product*/ ctx[5].productState === "ACTIVE" && create_if_block_10(ctx);
@@ -14707,14 +14734,14 @@ var app = (function () {
     		block,
     		id: create_if_block_9.name,
     		type: "if",
-    		source: "(370:4) {#if $user.user_roles.includes(\\\"admin\\\") || userper.id === product.userId}",
+    		source: "(375:4) {#if $user.user_roles.includes(\\\"admin\\\") || userper.id === product.userId}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (371:8) {#if product.productState === "ACTIVE"}
+    // (376:8) {#if product.productState === "ACTIVE"}
     function create_if_block_10(ctx) {
     	let form;
     	let div1;
@@ -14735,16 +14762,16 @@ var app = (function () {
     			t1 = space();
     			textarea = element("textarea");
     			attr_dev(label, "for", "comment");
-    			add_location(label, file$1, 374, 24, 11574);
+    			add_location(label, file$1, 379, 24, 11726);
     			attr_dev(textarea, "class", "form-control");
     			attr_dev(textarea, "id", "comment");
     			attr_dev(textarea, "rows", "3");
-    			add_location(textarea, file$1, 377, 24, 11720);
+    			add_location(textarea, file$1, 382, 24, 11872);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$1, 373, 20, 11531);
+    			add_location(div0, file$1, 378, 20, 11683);
     			attr_dev(div1, "class", "row mb-3");
-    			add_location(div1, file$1, 372, 16, 11487);
-    			add_location(form, file$1, 371, 12, 11463);
+    			add_location(div1, file$1, 377, 16, 11639);
+    			add_location(form, file$1, 376, 12, 11615);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, form, anchor);
@@ -14776,14 +14803,14 @@ var app = (function () {
     		block,
     		id: create_if_block_10.name,
     		type: "if",
-    		source: "(371:8) {#if product.productState === \\\"ACTIVE\\\"}",
+    		source: "(376:8) {#if product.productState === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (389:4) {#if product.productState === "INACTIVE"}
+    // (394:4) {#if product.productState === "INACTIVE"}
     function create_if_block_8(ctx) {
     	let div;
     	let ul;
@@ -14804,13 +14831,13 @@ var app = (function () {
     			t2 = text(t2_value);
     			attr_dev(li0, "class", "list-group-item-top active");
     			attr_dev(li0, "aria-current", "true");
-    			add_location(li0, file$1, 391, 16, 12178);
+    			add_location(li0, file$1, 396, 16, 12330);
     			attr_dev(li1, "class", "list-group-item");
-    			add_location(li1, file$1, 394, 16, 12324);
+    			add_location(li1, file$1, 399, 16, 12476);
     			attr_dev(ul, "class", "list-group");
-    			add_location(ul, file$1, 390, 12, 12137);
+    			add_location(ul, file$1, 395, 12, 12289);
     			attr_dev(div, "class", "col-md-4");
-    			add_location(div, file$1, 389, 8, 12101);
+    			add_location(div, file$1, 394, 8, 12253);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -14832,14 +14859,14 @@ var app = (function () {
     		block,
     		id: create_if_block_8.name,
     		type: "if",
-    		source: "(389:4) {#if product.productState === \\\"INACTIVE\\\"}",
+    		source: "(394:4) {#if product.productState === \\\"INACTIVE\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (404:4) {#if $user.user_roles && $user.user_roles.length > 0}
+    // (409:4) {#if $user.user_roles && $user.user_roles.length > 0}
     function create_if_block_1$1(ctx) {
     	let show_if = /*$user*/ ctx[7].user_roles.includes("admin") || /*userper*/ ctx[6].id === /*product*/ ctx[5].userId;
     	let if_block_anchor;
@@ -14880,14 +14907,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(404:4) {#if $user.user_roles && $user.user_roles.length > 0}",
+    		source: "(409:4) {#if $user.user_roles && $user.user_roles.length > 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (405:4) {#if $user.user_roles.includes("admin") || userper.id === product.userId}
+    // (410:4) {#if $user.user_roles.includes("admin") || userper.id === product.userId}
     function create_if_block_2$1(ctx) {
     	let a;
     	let t1;
@@ -14914,7 +14941,7 @@ var app = (function () {
     			if_block_anchor = empty();
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "delete-button");
-    			add_location(a, file$1, 405, 8, 12651);
+    			add_location(a, file$1, 410, 8, 12803);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -14958,14 +14985,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2$1.name,
     		type: "if",
-    		source: "(405:4) {#if $user.user_roles.includes(\\\"admin\\\") || userper.id === product.userId}",
+    		source: "(410:4) {#if $user.user_roles.includes(\\\"admin\\\") || userper.id === product.userId}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (421:54) 
+    // (426:54) 
     function create_if_block_6(ctx) {
     	let a;
     	let mounted;
@@ -14977,7 +15004,7 @@ var app = (function () {
     			a.textContent = "Activate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 421, 12, 13383);
+    			add_location(a, file$1, 426, 12, 13535);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -14999,14 +15026,14 @@ var app = (function () {
     		block,
     		id: create_if_block_6.name,
     		type: "if",
-    		source: "(421:54) ",
+    		source: "(426:54) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (417:52) 
+    // (422:52) 
     function create_if_block_5(ctx) {
     	let a;
     	let mounted;
@@ -15018,7 +15045,7 @@ var app = (function () {
     			a.textContent = "Inactivate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 417, 12, 13191);
+    			add_location(a, file$1, 422, 12, 13343);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -15040,14 +15067,14 @@ var app = (function () {
     		block,
     		id: create_if_block_5.name,
     		type: "if",
-    		source: "(417:52) ",
+    		source: "(422:52) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (413:52) 
+    // (418:52) 
     function create_if_block_4(ctx) {
     	let a;
     	let mounted;
@@ -15059,7 +15086,7 @@ var app = (function () {
     			a.textContent = "Activate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 413, 12, 13003);
+    			add_location(a, file$1, 418, 12, 13155);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -15081,14 +15108,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(413:52) ",
+    		source: "(418:52) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (409:8) {#if product.productState === "NEW"}
+    // (414:8) {#if product.productState === "NEW"}
     function create_if_block_3$1(ctx) {
     	let a;
     	let mounted;
@@ -15100,7 +15127,7 @@ var app = (function () {
     			a.textContent = "Review Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 409, 12, 12821);
+    			add_location(a, file$1, 414, 12, 12973);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -15122,7 +15149,7 @@ var app = (function () {
     		block,
     		id: create_if_block_3$1.name,
     		type: "if",
-    		source: "(409:8) {#if product.productState === \\\"NEW\\\"}",
+    		source: "(414:8) {#if product.productState === \\\"NEW\\\"}",
     		ctx
     	});
 
