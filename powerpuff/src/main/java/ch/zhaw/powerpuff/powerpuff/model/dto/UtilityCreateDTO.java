@@ -11,4 +11,22 @@ public class UtilityCreateDTO {
     private int unit;
     private UtilityType utilityType;
     
+    public UtilityCreateDTO(String utilityName, int unit, UtilityType utilityType) {
+        this.utilityName = utilityName;
+        this.unit = unit;
+        this.utilityType = utilityType;
+    }
+
+    public String utilityName(){
+        return utilityName;
+    }
+
+    public int unit(){
+        return unit;
+    }
+
+    public UtilityType utilityType(){
+        return utilityType;
+    }
+    
 }

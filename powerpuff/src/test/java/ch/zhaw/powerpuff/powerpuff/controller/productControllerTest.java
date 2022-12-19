@@ -230,15 +230,7 @@ public class productControllerTest {
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
-   /*  @Test
-    // As this Statement would delete all my Products, this test is in a BLOCK-COMMENT
-    // Test DELETE of object
-    public void testDeleteAllProducts() throws Exception {
-        mvc.perform(delete("/api/products").header(HttpHeaders.AUTHORIZATION,
-                "Bearer " + bearerToken))
-                .andExpect(status().isOk());
-    } 
-
+/*
     @Test
     // Test DELETE of object
     public void testDeleteProduct() throws Exception {
@@ -248,4 +240,14 @@ public class productControllerTest {
     }
 
     */
+    
+     @Test
+    // As this Statement would delete all my Products, this test is in a BLOCK-COMMENT
+    // Test DELETE of object
+    public void testDeleteAllProducts() throws Exception {
+        mvc.perform(delete("/api/products").header(HttpHeaders.AUTHORIZATION,
+                "Bearer " + bearerToken))
+                .andExpect(status().isOk());
+    } 
+
 }

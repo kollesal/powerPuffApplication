@@ -27,6 +27,7 @@ public class Utility {
     private int unit;
 
     @NonNull
-    private UtilityType utilityType;    
+    private UtilityType utilityType;
+   
     
 }

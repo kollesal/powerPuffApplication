@@ -63,37 +63,4 @@ public class ProductCreateDTO {
         return patchart;
     }
 
-    public void setDifficultyType(DifficultyType difficultyType) {
-        this.difficultyType = difficultyType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
-    public void setClothingType(ClothingType clothingType) {
-        this.clothingType = clothingType;
-    }
-
-    public void setProductname(String productname) {
-        this.productname = productname;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setPatchart(String patchart) {
-        this.patchart = patchart;
-    }
-
-
 }

@@ -117,7 +117,14 @@ public class UserController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<User> getUserByEmail(
+        @PathVariable String email,
+        @AuthenticationPrincipal Jwt jwt) {
+
+            if (UserValidator.userHasRole(jwt, "buyer")) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            
         List<User> optUser = userRepository.findByEmail(email);
         if (optUser.size() == 1) {
             return new ResponseEntity<>(optUser.get(0), HttpStatus.OK);

@@ -37,10 +37,11 @@ public class UtilityController {
     public ResponseEntity<Utility> createUtility(
             @RequestBody UtilityCreateDTO uDTO,
             @AuthenticationPrincipal Jwt jwt) {
-                if (UserValidator.userHasRole(jwt, "buyer")) {
-                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-                    } 
-                    
+                
+        if (UserValidator.userHasRole(jwt, "buyer")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Utility uDAO = new Utility(uDTO.getUtilityName(), uDTO.getUnit(), uDTO.getUtilityType());
         Utility u = utilityRepository.save(uDAO);
         return new ResponseEntity<>(u, HttpStatus.CREATED);
@@ -52,6 +53,11 @@ public class UtilityController {
             @RequestParam(required = false) Integer pageSize,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) String type) {
+
+        if (UserValidator.userHasRole(jwt, "buyer")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if (page == null) {
             page = 1;
         }
@@ -66,16 +72,15 @@ public class UtilityController {
                     .findByUtilityType(type, PageRequest.of(page - 1, pageSize));
         } else {
             allUtilities = utilityRepository
-                  .findAll(PageRequest.of(page - 1, pageSize));
+                    .findAll(PageRequest.of(page - 1, pageSize));
         }
 
         return new ResponseEntity<>(allUtilities, HttpStatus.OK);
     }
 
-
     @PatchMapping("{id}")
     public ResponseEntity<Utility> updateUtility(
-        @RequestBody UtilityUpdateDTO uDTO,
+            @RequestBody UtilityUpdateDTO uDTO,
             @PathVariable String id,
             @AuthenticationPrincipal Jwt jwt) {
 
@@ -93,9 +98,15 @@ public class UtilityController {
         }
     }
 
-
     @GetMapping("{id}")
-    public ResponseEntity<Utility> getUtilityById(@PathVariable String id) {
+    public ResponseEntity<Utility> getUtilityById(
+            @PathVariable String id,
+            @AuthenticationPrincipal Jwt jwt) {
+
+        if (UserValidator.userHasRole(jwt, "buyer")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Optional<Utility> optUtility = utilityRepository.findById(id);
         if (optUtility.isPresent()) {
             return new ResponseEntity<>(optUtility.get(), HttpStatus.OK);
@@ -105,13 +116,26 @@ public class UtilityController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllUtilities() {
+    public ResponseEntity<String> deleteAllUtilities(
+    @AuthenticationPrincipal Jwt jwt) {
+
+        if (UserValidator.userHasRole(jwt, "buyer")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         utilityRepository.deleteAll();
         return ResponseEntity.status(HttpStatus.OK).body("All Utilities have been deleted successfully");
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteUtilityById(@PathVariable String id) {
+    public ResponseEntity<String> deleteUtilityById(
+        @PathVariable String id,
+        @AuthenticationPrincipal Jwt jwt) {
+
+            if (UserValidator.userHasRole(jwt, "buyer")) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+
         Optional<Utility> utility = utilityRepository.findById(id);
         if (utility.isPresent()) {
             this.utilityRepository.delete(utility.get());

@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,7 +40,33 @@ public class userControllerTest {
                 .andExpect(status().isCreated());
     }
 
+    @Test
+    // Test POST FORBIDDEN of object
+    public void testPostNewUserNotPossible() throws Exception {
+       
+        mvc.perform(post("/api/users/")
+                .contentType("application/json"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     // Test PUT of object
+    public void testPutser() throws Exception {
+       
+        mvc.perform(put("/api/users/639991a436f1b67db81c2a43").header(HttpHeaders.AUTHORIZATION,
+                "Bearer " + bearerToken)
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    // Test PUT FORBIDDEN of object
+    public void testPutUserNotPossible() throws Exception {
+       
+        mvc.perform(put("/api/users/639991a436f1b67db81c2a43")
+                .contentType("application/json"))
+                .andExpect(status().isForbidden());
+    }
 
     @Test
     // Test GET of list of objects
@@ -68,12 +95,25 @@ public class userControllerTest {
     }
 
     @Test
-    // UNAUTHORIZED GET one object
-    public void testDoNotGetById() throws Exception {
-        mvc.perform(get("/api/users/6390a5437bb4cf7efe7a59fe"))
-                .andExpect(status().isUnauthorized());
+    // Test GET one object
+    public void testByMail() throws Exception {
+        mvc.perform(get("/api/users/email/kollesal@students.zhaw.ch").header(HttpHeaders.AUTHORIZATION,
+        "Bearer " + bearerToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Salome Koller")))
+                .andExpect(jsonPath("$.username", is("salomekoller")))
+                .andExpect(jsonPath("$.email", is("kollesal@students.zhaw.ch")));
     }
 
+/*
+     @Test
+    // As this Statement would delete all my Users, this test is in a BLOCK-COMMENT
+    // Test DELETE of object
+    public void testDeleteAllUser() throws Exception {
+        mvc.perform(delete("/api/users").header(HttpHeaders.AUTHORIZATION,
+                "Bearer " + bearerToken))
+                .andExpect(status().isOk());
+    } */
 
     @Test
     // Test DELETE of object
@@ -83,12 +123,4 @@ public class userControllerTest {
                 .andExpect(status().isOk());
     }
 
-   /*  @Test
-    // As this Statement would delete all my Users, this test is in a BLOCK-COMMENT
-    // Test DELETE of object
-    public void testDeleteAllUser() throws Exception {
-        mvc.perform(delete("/api/users").header(HttpHeaders.AUTHORIZATION,
-                "Bearer " + bearerToken))
-                .andExpect(status().isOk());
-    } */
 }
