@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.zhaw.powerpuff.powerpuff.model.dto.UtilityCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.dto.UtilityUpdateDTO;
 import ch.zhaw.powerpuff.powerpuff.model.types.UtilityType;
 
 @SpringBootTest
@@ -27,7 +28,7 @@ public class utilityControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    public String bearerToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Inc5U0pYVF9xdmRjN1YyNDVmbFRlSCJ9.eyJ1c2VyX3JvbGVzIjpbImFkbWluIl0sIm5pY2tuYW1lIjoia29sbGVzYWwiLCJuYW1lIjoia29sbGVzYWxAc3R1ZGVudHMuemhhdy5jaCIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci80NjE3MjQwMDIwZTczYWQwODg3NTlmNjZhZDYwNTc2NT9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRmtvLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIyLTEyLTE4VDEwOjUyOjEwLjM5NFoiLCJlbWFpbCI6ImtvbGxlc2FsQHN0dWRlbnRzLnpoYXcuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vZGV2LWFjYTFqenZ1dnEzNmpnajIuZXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYzOGNjZWYxNmMxYjVjMjBkZjU3MWFkMyIsImF1ZCI6ImZGTU1NQk1yc1pyemt3N296WFNVeTcxUGk2bTV5MXFnIiwiaWF0IjoxNjcxNDMzOTk3LCJleHAiOjE2NzE0Njk5OTcsInNpZCI6Ik5mNHNicUJqWTF6eW1GMGQwcldmb1NwUUZ3VzJUQ2VWIiwibm9uY2UiOiJXbVIxVkU0NGJWUlNUMnh5VjA5bWNEZHlVbTl4TVc5aVFWVm9VMmhDUjI5UFUzNW9kMDF3Ymt0RU1BPT0ifQ.md8bB5ATZHRW-HPaLRdGy-3FbSAOq_929o0PrX5T7dQbZlyAK-5Fqsh7PX37ClH3IeTPM66FTeS2snY9Tf2K8f0mrz8AvcPRFa2REK5Zv89RvoOScz2-cbYp112sc3Au61i6XbHzMi6x03pFzfZ2hcVXxljmJJD53LR26BmPFQfd064458nFxmrHILfLFickaeKJTZ4INxxbLSqdc3MiPaAs0HID6TlpXi__OqSBwowUgleMxoGthi8ZO09d_eAKCkC1aw8P5_7f45U3EGzx-iI7E7qMzsZ1nENmRWkHyc7U8WmUclSiXNKKLhsiYQXqPYbh0875EICE7cqGdeRVtg";
+    public String bearerToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Inc5U0pYVF9xdmRjN1YyNDVmbFRlSCJ9.eyJ1c2VyX3JvbGVzIjpbImFkbWluIl0sIm5pY2tuYW1lIjoia29sbGVzYWwiLCJuYW1lIjoia29sbGVzYWxAc3R1ZGVudHMuemhhdy5jaCIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci80NjE3MjQwMDIwZTczYWQwODg3NTlmNjZhZDYwNTc2NT9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRmtvLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIyLTEyLTIwVDEwOjEyOjQ3LjAyMloiLCJlbWFpbCI6ImtvbGxlc2FsQHN0dWRlbnRzLnpoYXcuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vZGV2LWFjYTFqenZ1dnEzNmpnajIuZXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYzOGNjZWYxNmMxYjVjMjBkZjU3MWFkMyIsImF1ZCI6ImZGTU1NQk1yc1pyemt3N296WFNVeTcxUGk2bTV5MXFnIiwiaWF0IjoxNjcxNTMxMTY3LCJleHAiOjE2NzE1NjcxNjcsInNpZCI6InBkaUlJVVo0UUw1ZVp4a3RvT2xDaVRrU1M1T3J2MEVnIiwibm9uY2UiOiJaalkyYWt4TVExbE5UeTFvZW1wa2FVWnFWVU5QTm5Sa1ZVcFdVREl6WVVkaFVsRlZmbTVNY2kxT1N3PT0ifQ.JLdFNRi73nvdEac0zfU4BV7lU8h3UNxa62N49YXw-xaDdH1nAdRyHoKWAweferPT0-CUW6kl7xrYaz3kyxrwq97v3cogX_feR_7YanvlSDhJg_lYzKarTLEZT7GwvNVwZPHMzXHwpfA6-85Gmaiyfqp_vLlFCt2JwMOhskuqEs9oXOIxlOHUM9X6XH6mqhbVr1DM0pXIrpNSuFRJxweahKcc8gvfftafVDs2aq_JszCutlj1bhJ2E9j3HiUqZw32asbhnLkqqpcDr951zrJlWwdFW-2zUJvUUoEQKwBgFOGOXAUqlE6mLtwVJA9MjZANDyM17sJdEHazAO4dlpGNGQ";
 
     @Test
     // Test POST of object
@@ -52,10 +53,29 @@ public class utilityControllerTest {
     // Test PATCH of object
     public void testPatchUtility() throws Exception {
      
-        mvc.perform(patch("/api/utilities/6399da430eec70756b3b71f5").header(HttpHeaders.AUTHORIZATION,
+        UtilityUpdateDTO utilityUpdateDTO = new UtilityUpdateDTO("ScissorTest", 10, UtilityType.CUTTING);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mvc.perform(patch("/api/utilities/6399d8f60eec70756b3b71ec").header(HttpHeaders.AUTHORIZATION,
                 "Bearer " + bearerToken)
-                .contentType("application/json"))
+                .contentType("application/json")
+                .content(mapper.writeValueAsBytes(utilityUpdateDTO)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    // Test FORBIDDEN PATCH of object
+    public void testPatchUtilityForbidden() throws Exception {
+     
+        UtilityUpdateDTO utilityUpdateDTO = new UtilityUpdateDTO("ScissorTest", 10, UtilityType.CUTTING);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mvc.perform(patch("/api/utilities/6399d8f60eec70756b3b71ec")
+                .contentType("application/json")
+                .content(mapper.writeValueAsBytes(utilityUpdateDTO)))
+                .andExpect(status().isForbidden());
     }
 
     @Test

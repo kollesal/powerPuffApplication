@@ -10455,7 +10455,7 @@ var app = (function () {
     	return block;
     }
 
-    // (148:20) {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
+    // (148:20) {#if (user.userType === "SUPPLIER" || user.userType === "ADMIN") && user.userStatus === "ACTIVE"}
     function create_if_block_13$1(ctx) {
     	let option;
     	let t_value = /*user*/ ctx[29].username + "";
@@ -10468,7 +10468,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = option_value_value = /*user*/ ctx[29].id;
     			option.value = option.__value;
-    			add_location(option, file$3, 148, 24, 4317);
+    			add_location(option, file$3, 148, 24, 4351);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -10491,7 +10491,7 @@ var app = (function () {
     		block,
     		id: create_if_block_13$1.name,
     		type: "if",
-    		source: "(148:20) {#if user.userType !== \\\"BUYER\\\" && user.userStatus === \\\"ACTIVE\\\"}",
+    		source: "(148:20) {#if (user.userType === \\\"SUPPLIER\\\" || user.userType === \\\"ADMIN\\\") && user.userStatus === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
@@ -10501,7 +10501,7 @@ var app = (function () {
     // (147:16) {#each allUsers as user}
     function create_each_block_3$1(ctx) {
     	let if_block_anchor;
-    	let if_block = /*user*/ ctx[29].userType !== "BUYER" && /*user*/ ctx[29].userStatus === "ACTIVE" && create_if_block_13$1(ctx);
+    	let if_block = (/*user*/ ctx[29].userType === "SUPPLIER" || /*user*/ ctx[29].userType === "ADMIN") && /*user*/ ctx[29].userStatus === "ACTIVE" && create_if_block_13$1(ctx);
 
     	const block = {
     		c: function create() {
@@ -10513,7 +10513,7 @@ var app = (function () {
     			insert_dev(target, if_block_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (/*user*/ ctx[29].userType !== "BUYER" && /*user*/ ctx[29].userStatus === "ACTIVE") {
+    			if ((/*user*/ ctx[29].userType === "SUPPLIER" || /*user*/ ctx[29].userType === "ADMIN") && /*user*/ ctx[29].userStatus === "ACTIVE") {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -10623,29 +10623,29 @@ var app = (function () {
     			option3.textContent = "Review";
     			attr_dev(label, "for", "");
     			attr_dev(label, "class", "col-form-label");
-    			add_location(label, file$3, 194, 16, 5739);
+    			add_location(label, file$3, 194, 16, 5773);
     			attr_dev(div0, "class", "col-auto");
-    			add_location(div0, file$3, 193, 12, 5699);
+    			add_location(div0, file$3, 193, 12, 5733);
     			option0.__value = "ACTIVE";
     			option0.value = option0.__value;
-    			add_location(option0, file$3, 205, 20, 6107);
+    			add_location(option0, file$3, 205, 20, 6141);
     			option1.__value = "INACTIVE";
     			option1.value = option1.__value;
-    			add_location(option1, file$3, 206, 20, 6167);
+    			add_location(option1, file$3, 206, 20, 6201);
     			option2.__value = "NEW";
     			option2.value = option2.__value;
-    			add_location(option2, file$3, 207, 20, 6231);
+    			add_location(option2, file$3, 207, 20, 6265);
     			option3.__value = "REVIEW";
     			option3.value = option3.__value;
-    			add_location(option3, file$3, 208, 20, 6285);
+    			add_location(option3, file$3, 208, 20, 6319);
     			attr_dev(select, "placeholder", "State");
     			attr_dev(select, "class", "form-select");
     			attr_dev(select, "id", "state");
     			attr_dev(select, "type", "text");
     			if (/*state*/ ctx[6] === void 0) add_render_callback(() => /*select_change_handler_1*/ ctx[19].call(select));
-    			add_location(select, file$3, 198, 16, 5872);
+    			add_location(select, file$3, 198, 16, 5906);
     			attr_dev(div1, "class", "col-3");
-    			add_location(div1, file$3, 197, 12, 5835);
+    			add_location(div1, file$3, 197, 12, 5869);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -10701,7 +10701,7 @@ var app = (function () {
     			p = element("p");
     			t0 = text("Patchart: ");
     			t1 = text(t1_value);
-    			add_location(p, file$3, 262, 32, 8394);
+    			add_location(p, file$3, 262, 32, 8428);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -10739,7 +10739,7 @@ var app = (function () {
     			p = element("p");
     			t0 = text("Product Size: ");
     			t1 = text(t1_value);
-    			add_location(p, file$3, 258, 32, 8216);
+    			add_location(p, file$3, 258, 32, 8250);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -10778,8 +10778,8 @@ var app = (function () {
     			span = element("span");
     			t = text(t_value);
     			attr_dev(span, "class", "badge bg-secondary");
-    			add_location(span, file$3, 281, 36, 9372);
-    			add_location(p, file$3, 280, 32, 9331);
+    			add_location(span, file$3, 281, 36, 9406);
+    			add_location(p, file$3, 280, 32, 9365);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -10818,8 +10818,8 @@ var app = (function () {
     			span = element("span");
     			t = text(t_value);
     			attr_dev(span, "class", "badge bg-warning");
-    			add_location(span, file$3, 275, 36, 9043);
-    			add_location(p, file$3, 274, 32, 9002);
+    			add_location(span, file$3, 275, 36, 9077);
+    			add_location(p, file$3, 274, 32, 9036);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -10858,8 +10858,8 @@ var app = (function () {
     			span = element("span");
     			t = text(t_value);
     			attr_dev(span, "class", "badge bg-success");
-    			add_location(span, file$3, 269, 36, 8682);
-    			add_location(p, file$3, 268, 32, 8641);
+    			add_location(span, file$3, 269, 36, 8716);
+    			add_location(p, file$3, 268, 32, 8675);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -10948,8 +10948,8 @@ var app = (function () {
     			button.textContent = "Assign to me";
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "btn btn-primary btn-sm");
-    			add_location(button, file$3, 289, 40, 9816);
-    			add_location(p, file$3, 288, 36, 9771);
+    			add_location(button, file$3, 289, 40, 9850);
+    			add_location(p, file$3, 288, 36, 9805);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -10992,9 +10992,9 @@ var app = (function () {
     			small = element("small");
     			small.textContent = "Creator: No Creator defined";
     			attr_dev(small, "class", "text-muted");
-    			add_location(small, file$3, 313, 36, 11120);
+    			add_location(small, file$3, 313, 36, 11154);
     			attr_dev(p, "class", "card-text");
-    			add_location(p, file$3, 312, 32, 11061);
+    			add_location(p, file$3, 312, 32, 11095);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -11037,7 +11037,7 @@ var app = (function () {
     			}
 
     			attr_dev(p, "class", "card-text");
-    			add_location(p, file$3, 302, 32, 10503);
+    			add_location(p, file$3, 302, 32, 10537);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -11101,7 +11101,7 @@ var app = (function () {
     			t0 = text("Creator: ");
     			t1 = text(t1_value);
     			attr_dev(small, "class", "text-muted");
-    			add_location(small, file$3, 305, 44, 10706);
+    			add_location(small, file$3, 305, 44, 10740);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, small, anchor);
@@ -11281,29 +11281,29 @@ var app = (function () {
     			attr_dev(img, "class", "card-img-top");
     			if (!src_url_equal(img.src, img_src_value = "/images/default.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "Card image cap");
-    			add_location(img, file$3, 230, 24, 7017);
+    			add_location(img, file$3, 230, 24, 7051);
     			attr_dev(h5, "class", "card-title");
-    			add_location(h5, file$3, 236, 28, 7283);
+    			add_location(h5, file$3, 236, 28, 7317);
     			attr_dev(span, "class", "badge bg-primary");
-    			add_location(span, file$3, 241, 32, 7484);
+    			add_location(span, file$3, 241, 32, 7518);
     			attr_dev(p0, "class", "card-title");
-    			add_location(p0, file$3, 240, 28, 7428);
+    			add_location(p0, file$3, 240, 28, 7462);
     			attr_dev(p1, "class", "card-text");
-    			add_location(p1, file$3, 246, 28, 7684);
-    			add_location(p2, file$3, 247, 28, 7737);
-    			add_location(p3, file$3, 250, 28, 7873);
-    			add_location(p4, file$3, 254, 28, 8013);
+    			add_location(p1, file$3, 246, 28, 7718);
+    			add_location(p2, file$3, 247, 28, 7771);
+    			add_location(p3, file$3, 250, 28, 7907);
+    			add_location(p4, file$3, 254, 28, 8047);
     			attr_dev(div0, "class", "card-body");
-    			add_location(div0, file$3, 235, 24, 7230);
+    			add_location(div0, file$3, 235, 24, 7264);
     			attr_dev(div1, "class", "card");
     			attr_dev(div1, "onclick", div1_onclick_value = "document.location = '" + ('#/products/' + /*product*/ ctx[26].id) + "';");
-    			add_location(div1, file$3, 224, 20, 6739);
+    			add_location(div1, file$3, 224, 20, 6773);
     			attr_dev(div2, "class", "card mb-2");
-    			add_location(div2, file$3, 223, 16, 6694);
+    			add_location(div2, file$3, 223, 16, 6728);
     			attr_dev(div3, "class", "col-10");
-    			add_location(div3, file$3, 222, 12, 6656);
+    			add_location(div3, file$3, 222, 12, 6690);
     			attr_dev(div4, "class", "container");
-    			add_location(div4, file$3, 221, 8, 6619);
+    			add_location(div4, file$3, 221, 8, 6653);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div4, anchor);
@@ -11442,9 +11442,9 @@ var app = (function () {
     			attr_dev(a, "class", "page-link");
     			attr_dev(a, "href", "#/products?page=" + (/*i*/ ctx[25] + 1));
     			toggle_class(a, "active", /*currentPage*/ ctx[0] == /*i*/ ctx[25] + 1);
-    			add_location(a, file$3, 335, 16, 11781);
+    			add_location(a, file$3, 335, 16, 11815);
     			attr_dev(li, "class", "page-item");
-    			add_location(li, file$3, 334, 12, 11741);
+    			add_location(li, file$3, 334, 12, 11775);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -11530,7 +11530,7 @@ var app = (function () {
     			attr_dev(a, "href", "#/create-product");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$3, 352, 8, 12323);
+    			add_location(a, file$3, 352, 8, 12357);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -11727,19 +11727,19 @@ var app = (function () {
     			add_location(div3, file$3, 114, 0, 3246);
     			attr_dev(label1, "for", "");
     			attr_dev(label1, "class", "col-form-label");
-    			add_location(label1, file$3, 160, 8, 4625);
+    			add_location(label1, file$3, 160, 8, 4659);
     			attr_dev(div4, "class", "col-auto");
-    			add_location(div4, file$3, 159, 4, 4593);
+    			add_location(div4, file$3, 159, 4, 4627);
     			attr_dev(input2, "class", "form-check-input");
     			attr_dev(input2, "type", "radio");
     			attr_dev(input2, "name", "schittmuster");
     			input2.__value = "SCHNITTMUSTER";
     			input2.value = input2.__value;
     			/*$$binding_groups*/ ctx[17][0].push(input2);
-    			add_location(input2, file$3, 165, 16, 4794);
-    			add_location(label2, file$3, 164, 12, 4769);
+    			add_location(input2, file$3, 165, 16, 4828);
+    			add_location(label2, file$3, 164, 12, 4803);
     			attr_dev(div5, "class", "form-check");
-    			add_location(div5, file$3, 163, 8, 4731);
+    			add_location(div5, file$3, 163, 8, 4765);
     			attr_dev(input3, "class", "form-check-input");
     			attr_dev(input3, "type", "radio");
     			attr_dev(input3, "name", "manual");
@@ -11747,38 +11747,38 @@ var app = (function () {
     			input3.__value = "MANUAL";
     			input3.value = input3.__value;
     			/*$$binding_groups*/ ctx[17][0].push(input3);
-    			add_location(input3, file$3, 178, 16, 5209);
-    			add_location(label3, file$3, 177, 12, 5184);
+    			add_location(input3, file$3, 178, 16, 5243);
+    			add_location(label3, file$3, 177, 12, 5218);
     			attr_dev(div6, "class", "form-check");
-    			add_location(div6, file$3, 176, 8, 5146);
+    			add_location(div6, file$3, 176, 8, 5180);
     			attr_dev(div7, "class", "col-3");
-    			add_location(div7, file$3, 162, 4, 4702);
+    			add_location(div7, file$3, 162, 4, 4736);
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$3, 214, 8, 6434);
+    			add_location(button, file$3, 214, 8, 6468);
     			attr_dev(div8, "class", "col-auto");
-    			add_location(div8, file$3, 213, 4, 6402);
+    			add_location(div8, file$3, 213, 4, 6436);
     			attr_dev(div9, "class", "row my-3");
-    			add_location(div9, file$3, 158, 0, 4565);
+    			add_location(div9, file$3, 158, 0, 4599);
     			attr_dev(div10, "class", "row row-cols-1 row-cols-md-3 g-4");
-    			add_location(div10, file$3, 219, 0, 6523);
+    			add_location(div10, file$3, 219, 0, 6557);
     			attr_dev(a1, "class", "page-link");
     			attr_dev(a1, "href", a1_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] - 1));
-    			add_location(a1, file$3, 329, 12, 11559);
+    			add_location(a1, file$3, 329, 12, 11593);
     			attr_dev(li0, "class", "page-item");
-    			add_location(li0, file$3, 328, 8, 11523);
+    			add_location(li0, file$3, 328, 8, 11557);
     			attr_dev(a2, "class", "page-link");
     			attr_dev(a2, "href", a2_href_value = "#/products?page=" + (/*currentPage*/ ctx[0] + 1));
-    			add_location(a2, file$3, 344, 12, 12070);
+    			add_location(a2, file$3, 344, 12, 12104);
     			attr_dev(li1, "class", "page-item");
-    			add_location(li1, file$3, 343, 8, 12034);
+    			add_location(li1, file$3, 343, 8, 12068);
     			attr_dev(ul, "class", "pagination");
-    			add_location(ul, file$3, 327, 4, 11490);
-    			add_location(nav, file$3, 326, 0, 11479);
+    			add_location(ul, file$3, 327, 4, 11524);
+    			add_location(nav, file$3, 326, 0, 11513);
     			attr_dev(a3, "class", "back-button");
     			attr_dev(a3, "href", "#/");
     			attr_dev(a3, "role", "button");
     			attr_dev(a3, "aria-pressed", "true");
-    			add_location(a3, file$3, 360, 0, 12499);
+    			add_location(a3, file$3, 360, 0, 12533);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -13190,11 +13190,11 @@ var app = (function () {
     			h3 = element("h3");
     			b = element("b");
     			b.textContent = "Not logged in";
-    			add_location(b, file$1, 440, 8, 13889);
-    			add_location(h3, file$1, 440, 4, 13885);
+    			add_location(b, file$1, 440, 8, 13923);
+    			add_location(h3, file$1, 440, 4, 13919);
     			attr_dev(div, "class", "alert");
     			attr_dev(div, "role", "alert");
-    			add_location(div, file$1, 439, 2, 13847);
+    			add_location(div, file$1, 439, 2, 13881);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -13334,17 +13334,17 @@ var app = (function () {
     			attr_dev(div2, "class", "col-md-8");
     			add_location(div2, file$1, 347, 4, 10440);
     			attr_dev(div3, "class", "col-md-8");
-    			add_location(div3, file$1, 370, 4, 11343);
-    			add_location(h31, file$1, 372, 4, 11375);
+    			add_location(div3, file$1, 370, 4, 11377);
+    			add_location(h31, file$1, 372, 4, 11409);
     			attr_dev(div4, "class", "col-md-8");
-    			add_location(div4, file$1, 407, 4, 12631);
+    			add_location(div4, file$1, 407, 4, 12665);
     			attr_dev(a, "class", "back-button");
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "aria-pressed", "true");
-    			add_location(a, file$1, 432, 4, 13698);
+    			add_location(a, file$1, 432, 4, 13732);
     			attr_dev(div5, "class", "md-12");
-    			add_location(div5, file$1, 435, 4, 13803);
+    			add_location(div5, file$1, 435, 4, 13837);
     			attr_dev(div6, "class", "md-12");
     			add_location(div6, file$1, 245, 0, 7067);
     		},
@@ -14452,9 +14452,9 @@ var app = (function () {
     			attr_dev(div0, "class", "col-md-4");
     			add_location(div0, file$1, 353, 12, 10725);
     			attr_dev(div1, "class", "col-md-8");
-    			add_location(div1, file$1, 362, 12, 11158);
+    			add_location(div1, file$1, 362, 12, 11192);
     			attr_dev(button, "class", "my-button");
-    			add_location(button, file$1, 363, 12, 11196);
+    			add_location(button, file$1, 363, 12, 11230);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -14539,7 +14539,7 @@ var app = (function () {
     	return block;
     }
 
-    // (357:24) {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
+    // (357:24) {#if (user.userType === "SUPPLIER" || user.userType === "ADMIN") && user.userStatus === "ACTIVE"}
     function create_if_block_14(ctx) {
     	let option;
     	let t_value = /*user*/ ctx[24].username + "";
@@ -14552,7 +14552,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = option_value_value = /*user*/ ctx[24].id;
     			option.value = option.__value;
-    			add_location(option, file$1, 357, 28, 10989);
+    			add_location(option, file$1, 357, 28, 11023);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -14575,7 +14575,7 @@ var app = (function () {
     		block,
     		id: create_if_block_14.name,
     		type: "if",
-    		source: "(357:24) {#if user.userType !== \\\"BUYER\\\" && user.userStatus === \\\"ACTIVE\\\"}",
+    		source: "(357:24) {#if (user.userType === \\\"SUPPLIER\\\" || user.userType === \\\"ADMIN\\\") && user.userStatus === \\\"ACTIVE\\\"}",
     		ctx
     	});
 
@@ -14585,7 +14585,7 @@ var app = (function () {
     // (356:20) {#each allUsers as user}
     function create_each_block(ctx) {
     	let if_block_anchor;
-    	let if_block = /*user*/ ctx[24].userType !== "BUYER" && /*user*/ ctx[24].userStatus === "ACTIVE" && create_if_block_14(ctx);
+    	let if_block = (/*user*/ ctx[24].userType === "SUPPLIER" || /*user*/ ctx[24].userType === "ADMIN") && /*user*/ ctx[24].userStatus === "ACTIVE" && create_if_block_14(ctx);
 
     	const block = {
     		c: function create() {
@@ -14597,7 +14597,7 @@ var app = (function () {
     			insert_dev(target, if_block_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (/*user*/ ctx[24].userType !== "BUYER" && /*user*/ ctx[24].userStatus === "ACTIVE") {
+    			if ((/*user*/ ctx[24].userType === "SUPPLIER" || /*user*/ ctx[24].userType === "ADMIN") && /*user*/ ctx[24].userStatus === "ACTIVE") {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -14762,16 +14762,16 @@ var app = (function () {
     			t1 = space();
     			textarea = element("textarea");
     			attr_dev(label, "for", "comment");
-    			add_location(label, file$1, 379, 24, 11726);
+    			add_location(label, file$1, 379, 24, 11760);
     			attr_dev(textarea, "class", "form-control");
     			attr_dev(textarea, "id", "comment");
     			attr_dev(textarea, "rows", "3");
-    			add_location(textarea, file$1, 382, 24, 11872);
+    			add_location(textarea, file$1, 382, 24, 11906);
     			attr_dev(div0, "class", "col");
-    			add_location(div0, file$1, 378, 20, 11683);
+    			add_location(div0, file$1, 378, 20, 11717);
     			attr_dev(div1, "class", "row mb-3");
-    			add_location(div1, file$1, 377, 16, 11639);
-    			add_location(form, file$1, 376, 12, 11615);
+    			add_location(div1, file$1, 377, 16, 11673);
+    			add_location(form, file$1, 376, 12, 11649);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, form, anchor);
@@ -14831,13 +14831,13 @@ var app = (function () {
     			t2 = text(t2_value);
     			attr_dev(li0, "class", "list-group-item-top active");
     			attr_dev(li0, "aria-current", "true");
-    			add_location(li0, file$1, 396, 16, 12330);
+    			add_location(li0, file$1, 396, 16, 12364);
     			attr_dev(li1, "class", "list-group-item");
-    			add_location(li1, file$1, 399, 16, 12476);
+    			add_location(li1, file$1, 399, 16, 12510);
     			attr_dev(ul, "class", "list-group");
-    			add_location(ul, file$1, 395, 12, 12289);
+    			add_location(ul, file$1, 395, 12, 12323);
     			attr_dev(div, "class", "col-md-4");
-    			add_location(div, file$1, 394, 8, 12253);
+    			add_location(div, file$1, 394, 8, 12287);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -14941,7 +14941,7 @@ var app = (function () {
     			if_block_anchor = empty();
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "delete-button");
-    			add_location(a, file$1, 410, 8, 12803);
+    			add_location(a, file$1, 410, 8, 12837);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -15004,7 +15004,7 @@ var app = (function () {
     			a.textContent = "Activate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 426, 12, 13535);
+    			add_location(a, file$1, 426, 12, 13569);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -15045,7 +15045,7 @@ var app = (function () {
     			a.textContent = "Inactivate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 422, 12, 13343);
+    			add_location(a, file$1, 422, 12, 13377);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -15086,7 +15086,7 @@ var app = (function () {
     			a.textContent = "Activate Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 418, 12, 13155);
+    			add_location(a, file$1, 418, 12, 13189);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -15127,7 +15127,7 @@ var app = (function () {
     			a.textContent = "Review Product";
     			attr_dev(a, "href", "#/products");
     			attr_dev(a, "class", "my-button");
-    			add_location(a, file$1, 414, 12, 12973);
+    			add_location(a, file$1, 414, 12, 13007);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);

@@ -354,7 +354,7 @@
             <div class="col-md-4">
                 <select class="form-select" bind:value={user_id} id="user">
                     {#each allUsers as user}
-                        {#if user.userType !== "BUYER" && user.userStatus === "ACTIVE"}
+                        {#if (user.userType === "SUPPLIER" || user.userType === "ADMIN") && user.userStatus === "ACTIVE"}
                             <option value={user.id}>{user.username}</option>
                         {/if}
                     {/each}

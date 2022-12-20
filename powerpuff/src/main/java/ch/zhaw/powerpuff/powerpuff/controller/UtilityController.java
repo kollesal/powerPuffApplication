@@ -84,6 +84,10 @@ public class UtilityController {
             @PathVariable String id,
             @AuthenticationPrincipal Jwt jwt) {
 
+                if (UserValidator.userHasRole(jwt, "buyer")) {
+                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                }    
+
         Optional<Utility> uDAO = utilityRepository.findById(id);
         if (uDAO.isPresent()) {
             Utility utility = uDAO.get();

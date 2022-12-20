@@ -1,6 +1,9 @@
 package ch.zhaw.powerpuff.powerpuff.controller;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.zhaw.powerpuff.powerpuff.model.dto.UserCreateDTO;
+import ch.zhaw.powerpuff.powerpuff.model.dto.UserUpdateDTO;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -26,7 +30,7 @@ public class userControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    public String bearerToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Inc5U0pYVF9xdmRjN1YyNDVmbFRlSCJ9.eyJ1c2VyX3JvbGVzIjpbImFkbWluIl0sIm5pY2tuYW1lIjoia29sbGVzYWwiLCJuYW1lIjoia29sbGVzYWxAc3R1ZGVudHMuemhhdy5jaCIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci80NjE3MjQwMDIwZTczYWQwODg3NTlmNjZhZDYwNTc2NT9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRmtvLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIyLTEyLTE4VDEwOjUyOjEwLjM5NFoiLCJlbWFpbCI6ImtvbGxlc2FsQHN0dWRlbnRzLnpoYXcuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vZGV2LWFjYTFqenZ1dnEzNmpnajIuZXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYzOGNjZWYxNmMxYjVjMjBkZjU3MWFkMyIsImF1ZCI6ImZGTU1NQk1yc1pyemt3N296WFNVeTcxUGk2bTV5MXFnIiwiaWF0IjoxNjcxMzk4NTQ1LCJleHAiOjE2NzE0MzQ1NDUsInNpZCI6Ik5mNHNicUJqWTF6eW1GMGQwcldmb1NwUUZ3VzJUQ2VWIiwibm9uY2UiOiJUbWc1WTBWc1IwUm5Ta2hoY21WemREWlFkM1pvVjBSd1RtRlBRbkZrYjNBMVVIa3lRalZxYm10VVJRPT0ifQ.kUtEShgiw_Wevmf-26hZenwetEa-mz1AI-NiCEPMzY8o1j1bSqMZKLf9mbwOAN2wlI7ItHkGJLmBN4hQho7F9q_858CsLCh11-YZJC-Zn1Dbkl0EJB4mCnnVxQvuc4KXm2y6il15doZUEkOLut57Y16Ue6foSGhla1NqIqC0I3Aw0_bfb-NGJNhd46QHgoBRBa9rS-dpIm6T7-ew4YABYA0gaRcMcqsSJNMuIJ1ccVk9IhmMtTlNzaPVNS3UFXMRzK4b7R1fA9e0FRfMU9fyOwS-vZbkMVjah-nG280641ehENqmnomD_Izj3l1TUAFgHOHpjpW8J3vaE91uHYa7BA";
+    public String bearerToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Inc5U0pYVF9xdmRjN1YyNDVmbFRlSCJ9.eyJ1c2VyX3JvbGVzIjpbImFkbWluIl0sIm5pY2tuYW1lIjoia29sbGVzYWwiLCJuYW1lIjoia29sbGVzYWxAc3R1ZGVudHMuemhhdy5jaCIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci80NjE3MjQwMDIwZTczYWQwODg3NTlmNjZhZDYwNTc2NT9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRmtvLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIyLTEyLTIwVDEwOjEyOjQ3LjAyMloiLCJlbWFpbCI6ImtvbGxlc2FsQHN0dWRlbnRzLnpoYXcuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vZGV2LWFjYTFqenZ1dnEzNmpnajIuZXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYzOGNjZWYxNmMxYjVjMjBkZjU3MWFkMyIsImF1ZCI6ImZGTU1NQk1yc1pyemt3N296WFNVeTcxUGk2bTV5MXFnIiwiaWF0IjoxNjcxNTMxMTY3LCJleHAiOjE2NzE1NjcxNjcsInNpZCI6InBkaUlJVVo0UUw1ZVp4a3RvT2xDaVRrU1M1T3J2MEVnIiwibm9uY2UiOiJaalkyYWt4TVExbE5UeTFvZW1wa2FVWnFWVU5QTm5Sa1ZVcFdVREl6WVVkaFVsRlZmbTVNY2kxT1N3PT0ifQ.JLdFNRi73nvdEac0zfU4BV7lU8h3UNxa62N49YXw-xaDdH1nAdRyHoKWAweferPT0-CUW6kl7xrYaz3kyxrwq97v3cogX_feR_7YanvlSDhJg_lYzKarTLEZT7GwvNVwZPHMzXHwpfA6-85Gmaiyfqp_vLlFCt2JwMOhskuqEs9oXOIxlOHUM9X6XH6mqhbVr1DM0pXIrpNSuFRJxweahKcc8gvfftafVDs2aq_JszCutlj1bhJ2E9j3HiUqZw32asbhnLkqqpcDr951zrJlWwdFW-2zUJvUUoEQKwBgFOGOXAUqlE6mLtwVJA9MjZANDyM17sJdEHazAO4dlpGNGQ";
 
      @Test
     // Test POST of object
@@ -57,6 +61,43 @@ public class userControllerTest {
                 "Bearer " + bearerToken)
                 .contentType("application/json"))
                 .andExpect(status().isOk());
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+        "name, Salome K, username, salome, email, test@test.ch"
+})
+// PUT Test of object
+    public void testPutUser(ArgumentsAccessor accessor) throws Exception {
+       
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO("Salome K", "salome", "Test");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mvc.perform(put("/api/users/639f90ab2cb535157647a591")
+        .header(HttpHeaders.AUTHORIZATION,"Bearer " + bearerToken)
+                .contentType("application/json")
+                .content(mapper.writeValueAsBytes(userUpdateDTO)))
+                .andExpect(status().isOk());
+
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+        "name, Salome K, username, salome, email, test@test.ch"
+})
+// PUT FORBIDDEN Test of object
+    public void testPutUserForbidden(ArgumentsAccessor accessor) throws Exception {
+       
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO("Salome K", "salome", "Test");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mvc.perform(put("/api/users/639f90ab2cb535157647a591")
+                .contentType("application/json")
+                .content(mapper.writeValueAsBytes(userUpdateDTO)))
+                .andExpect(status().isForbidden());
+
     }
 
     @Test

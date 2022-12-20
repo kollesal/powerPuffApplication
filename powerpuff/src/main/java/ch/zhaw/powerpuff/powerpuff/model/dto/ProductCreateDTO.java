@@ -31,36 +31,4 @@ public class ProductCreateDTO {
  
     }
 
-    public DifficultyType getDifficultyType() {
-        return difficultyType;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public ClothingType getClothingType() {
-        return clothingType;
-    }
-
-    public String getProductname() {
-        return productname;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public String getPatchart() {
-        return patchart;
-    }
-
 }
