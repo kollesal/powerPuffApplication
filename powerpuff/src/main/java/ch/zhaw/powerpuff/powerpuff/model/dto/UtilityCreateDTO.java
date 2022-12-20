@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UtilityCreateDTO {
+    
     @NonNull
     private String utilityName;
     @NonNull

@@ -11,9 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EmailValidationDTO {
 
-    public String status;
-    public String email_address;
-    public String domain;
-    public boolean deliverable;
+    private String status;
+    private String email_address;
+    private String domain;
+    private boolean deliverable;
     
 }

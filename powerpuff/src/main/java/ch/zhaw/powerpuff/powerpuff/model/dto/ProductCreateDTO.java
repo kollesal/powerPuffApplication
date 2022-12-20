@@ -4,31 +4,31 @@ import ch.zhaw.powerpuff.powerpuff.model.types.DifficultyType;
 import ch.zhaw.powerpuff.powerpuff.model.types.ProductType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
+@RequiredArgsConstructor
+@Setter
 @Getter
 public class ProductCreateDTO {
     
+    @NonNull
     private DifficultyType difficultyType;
+    @NonNull
     private ProductType productType;
+    @NonNull
     private ClothingType clothingType;
+    @NonNull
     private String productname;
+    @NonNull
     private String description;
+    @NonNull
     private String size;
-    private double price;
+    @NonNull
+    private Double price;
+    @NonNull
     private String patchart;
-
-
-    public ProductCreateDTO (DifficultyType difficultyType, ClothingType clothingType, ProductType productType, String productname, String description, String size, String patchart, Double price){
-        this.difficultyType = difficultyType;
-        this.clothingType  = clothingType;
-        this.productType = productType;
-        this.productname = productname;
-        this.description = description;
-        this.size = size;
-        this.price = price;
-        this.patchart = patchart;
- 
-    }
 
 }

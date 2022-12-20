@@ -40,8 +40,8 @@ public class productControllerTest {
     @Test
     // Test POST of object
     public void testPostnewProduct() throws Exception {
-        ProductCreateDTO u = new ProductCreateDTO(DifficultyType.DIFFICULT, ClothingType.PULLOVER,
-                ProductType.SCHNITTMUSTER, "Long Skirt for Winter", "This is made for winter.", "10", "", 4.5);
+        ProductCreateDTO u = new ProductCreateDTO(DifficultyType.DIFFICULT, ProductType.SCHNITTMUSTER,ClothingType.PULLOVER,
+                 "Long Skirt for Winter", "This is made for winter.", "10", 4.5, "");
         ObjectMapper mapper = new ObjectMapper();
         mvc.perform(post("/api/products/").header(HttpHeaders.AUTHORIZATION,
                 "Bearer " + bearerToken)
