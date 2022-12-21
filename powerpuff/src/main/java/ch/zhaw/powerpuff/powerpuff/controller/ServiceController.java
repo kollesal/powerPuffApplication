@@ -36,7 +36,7 @@ import ch.zhaw.powerpuff.powerpuff.service.ConnectionService;
 import ch.zhaw.powerpuff.powerpuff.service.ProductService;
 import ch.zhaw.powerpuff.powerpuff.service.UserService;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "https://powerpuff-1671620117973.azurewebsites.net")
 @RestController
 @RequestMapping("/api/service")
 public class ServiceController {

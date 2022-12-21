@@ -5,7 +5,7 @@
     import { isAuthenticated, user } from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
-    const api_root = "http://localhost:8080";
+    const api_root = "https://powerpuff-1671620117973.azurewebsites.net";
     var currentPage;
     let nrOfPages = 0;
     let type;

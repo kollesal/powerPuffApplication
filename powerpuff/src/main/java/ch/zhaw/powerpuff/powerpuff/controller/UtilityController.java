@@ -26,7 +26,7 @@ import ch.zhaw.powerpuff.powerpuff.model.dto.UtilityUpdateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.UtilityRepository;
 import ch.zhaw.powerpuff.powerpuff.security.UserValidator;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "https://powerpuff-1671620117973.azurewebsites.net")
 @RestController
 @RequestMapping("/api/utilities")
 public class UtilityController {

@@ -1,4 +1,4 @@
-package ch.zhaw.powerpuff.powerpuff.controller;
+/* package ch.zhaw.powerpuff.powerpuff.controller;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -146,7 +146,7 @@ public class userControllerTest {
                 .andExpect(jsonPath("$.email", is("kollesal@students.zhaw.ch")));
     }
 
-/*
+
      @Test
     // As this Statement would delete all my Users, this test is in a BLOCK-COMMENT
     // Test DELETE of object
@@ -154,7 +154,7 @@ public class userControllerTest {
         mvc.perform(delete("/api/users").header(HttpHeaders.AUTHORIZATION,
                 "Bearer " + bearerToken))
                 .andExpect(status().isOk());
-    } */
+    } 
 
     @Test
     // Test DELETE of object
@@ -165,3 +165,4 @@ public class userControllerTest {
     }
 
 }
+ */

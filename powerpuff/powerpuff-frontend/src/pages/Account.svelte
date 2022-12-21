@@ -3,7 +3,7 @@
   import { jwt_token } from "../store";
   import { isAuthenticated, user } from "../store";
 
-  const api_root = "http://localhost:8080";
+  const api_root = "https://powerpuff-1671620117973.azurewebsites.net";
 
   export let params = {};
   let user_id;

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import ch.zhaw.powerpuff.powerpuff.model.dto.UserUpdateDTO;
 import ch.zhaw.powerpuff.powerpuff.repository.UserRepository;
 import ch.zhaw.powerpuff.powerpuff.security.UserValidator;
 
+@CrossOrigin(origins = "https://powerpuff-1671620117973.azurewebsites.net")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

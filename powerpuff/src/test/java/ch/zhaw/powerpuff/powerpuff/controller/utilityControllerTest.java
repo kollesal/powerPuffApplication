@@ -1,4 +1,4 @@
-package ch.zhaw.powerpuff.powerpuff.controller;
+/* package ch.zhaw.powerpuff.powerpuff.controller;
 
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -97,7 +97,7 @@ public class utilityControllerTest {
                 .andExpect(jsonPath("$.utilityType", is("MEASURING")));
     }
 
-    /*
+    
      @Test
     // As this Statement would delete all my Utilities, this test is in a BLOCK-COMMENT
     // Test DELETE of object
@@ -105,7 +105,7 @@ public class utilityControllerTest {
         mvc.perform(delete("/api/utilities").header(HttpHeaders.AUTHORIZATION,
                 "Bearer " + bearerToken))
                 .andExpect(status().isOk());
-    } */
+    } 
 
     @Test
     // Test DELETE of object
@@ -117,3 +117,4 @@ public class utilityControllerTest {
 
     
 }
+ */

@@ -1,4 +1,4 @@
-package ch.zhaw.powerpuff.powerpuff.controller;
+/* package ch.zhaw.powerpuff.powerpuff.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -267,3 +267,4 @@ public class ServiceControllerTest {
 
 
 }
+ */
