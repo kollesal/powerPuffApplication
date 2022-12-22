@@ -3,14 +3,12 @@ package ch.zhaw.powerpuff.powerpuff.service;
 import java.util.List;
 import java.util.Optional;
 
-//import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.zhaw.powerpuff.powerpuff.model.Product;
-import ch.zhaw.powerpuff.powerpuff.model.ProductState;
 import ch.zhaw.powerpuff.powerpuff.model.User;
+import ch.zhaw.powerpuff.powerpuff.model.types.ProductState;
 import ch.zhaw.powerpuff.powerpuff.repository.ProductRepository;
 import ch.zhaw.powerpuff.powerpuff.repository.UserRepository;
 import ch.zhaw.powerpuff.powerpuff.repository.UtilityRepository;
@@ -106,6 +104,30 @@ public class ProductService {
                     // Neuer Zustand und UserId setzen
                     product.setProductState(ProductState.INACTIVE);
                     product.setComment(comment);
+
+                    // Product speichern
+                    productRepository.save(product);
+
+                    return Optional.of(product);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+//--------------------------------------------------------------------------------------------------
+// UTILITY ANBINDUNG
+//--------------------------------------------------------------------------------------------------
+
+    public Optional<Product> assignUtility(String productId, String utilityId) {
+        if (utilityRepository.findById(utilityId).isPresent()) {
+            Optional<Product> utilityToAssign = productRepository.findById(productId);
+            if (utilityToAssign.isPresent()) {
+                Product product = utilityToAssign.get();
+                if (product.getProductState() != ProductState.INACTIVE) {
+
+                    // Neue utilityId setzen
+                    product.utilityIds.add(utilityId);
 
                     // Product speichern
                     productRepository.save(product);

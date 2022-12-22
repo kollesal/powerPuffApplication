@@ -2,9 +2,10 @@
     import axios from "axios";
     import { querystring } from "svelte-spa-router";
     import { jwt_token } from "../store";
+    import { isAuthenticated } from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
-    const api_root = "http://localhost:8080";
+    const api_root = "https://powerpuff-1671620117973.azurewebsites.net";
 
     let currentPage;
     let nrOfPages = 0;
@@ -32,23 +33,6 @@
             currentPage = "1";
         }
         getUsers();
-    }
-
-    function getUser() {
-        var config = {
-            method: "get",
-            url: api_root + "/api/products/" + user_id,
-            headers: {},
-        };
-
-        axios(config)
-            .then(function (response) {
-                user = response.data;
-            })
-            .catch(function (error) {
-                alert("Could not get user");
-                console.log(error);
-            });
     }
 
     function getUsers() {
@@ -105,12 +89,6 @@
                 let emailVariables = response.data;
                 emailCheck = emailVariables[0];
                 mailChecked = true;
-                alert(
-                    "User Mail " +
-                        emailCheck +
-                        " checked: \nStatus: " +
-                        emailCheck.status
-                );
                 console.log(emailCheck);
                 console.log(mailChecked);
             })
@@ -120,6 +98,7 @@
             });
     }
 </script>
+{#if $isAuthenticated}
 
 <h1 class="mt-3">Create User</h1>
 <form class="mb-5">
@@ -129,7 +108,7 @@
             <input
                 bind:value={user.username}
                 class="form-control"
-                id="description"
+                id="username"
                 type="text"
             />
         </div>
@@ -139,7 +118,7 @@
             <input
                 bind:value={user.name}
                 class="form-control"
-                id="description"
+                id="name"
                 type="text"
             />
         </div>
@@ -149,7 +128,7 @@
             <input
                 bind:value={user.email}
                 class="form-control"
-                id="description"
+                id="email"
                 type="text"
             />
         </div>
@@ -169,17 +148,17 @@
                 >
             </div>
             <div class="col-sm-3">
-                <label for="staticEmail" class="col-sm-2 col-form-label"
+                <label for="staticStatus" class="col-sm-2 col-form-label"
                     >Status</label
                 >
             </div>
             <div class="col-sm-3">
-                <label for="staticEmail" class="col-sm-2 col-form-label"
+                <label for="staticDomain" class="col-sm-2 col-form-label"
                     >Domain</label
                 >
             </div>
             <div class="col-sm-3">
-                <label for="staticEmail" class="col-sm-2 col-form-label"
+                <label for="staticDeliverable" class="col-sm-2 col-form-label"
                     >Deliverable</label
                 >
             </div>
@@ -200,7 +179,7 @@
                     type="text"
                     readonly
                     class="form-control-plaintext"
-                    id="staticEmailStatus"
+                    id="staticStatus"
                     value={emailCheck.status}
                 />
             </div>
@@ -209,7 +188,7 @@
                     type="text"
                     readonly
                     class="form-control-plaintext"
-                    id="staticEmailStatus"
+                    id="staticDomain"
                     value={emailCheck.domain}
                 />
             </div>
@@ -218,7 +197,7 @@
                     type="text"
                     readonly
                     class="form-control-plaintext"
-                    id="staticEmailStatus"
+                    id="staticDeliverable"
                     value={emailCheck.deliverable}
                 />
             </div>
@@ -236,7 +215,7 @@
 
 <div class="row mb-3" />
 
-<h1>All Users</h1>
+<h1 class="mt-3">All Users</h1>
 
 <table class="table table-hover">
     <thead>
@@ -288,3 +267,9 @@
         {/each}
     </ul>
 </nav>
+
+{:else}
+  <div class="alert" role="alert">
+    <h3><b>Not logged in</b></h3>
+  </div>
+{/if}

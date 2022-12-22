@@ -4,7 +4,7 @@
     import { isAuthenticated, user } from "../store";
 
     // TODO: Setze hier die URL zu deinem mit Postman erstellten Mock Server
-    const api_root = "http://localhost:8080";
+    const api_root = "https://powerpuff-1671620117973.azurewebsites.net";
 
     export let params = {};
     let user_id;
@@ -114,17 +114,40 @@
                 console.log(error);
             });
     }
+
+    function updateUser(){
+        var config = {
+            method: "put",
+            url: api_root + "/api/users/" + user_id,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + $jwt_token,
+            },
+            data: userper,
+        };
+
+        axios(config)
+            .then(function (response) {
+                alert("User updated");
+                getUser();
+            })
+            .catch(function (error) {
+                alert("Could not update User");
+                console.log(error);
+            });
+    }
+
 </script>
+{#if $isAuthenticated}
 
 <h1 class="md-3">User {userper.username}</h1>
 <p>ID: {userper.id}</p>
+<h3>User Name: {userper.name}</h3>
 <h3>User Type: {userper.userType}</h3>
-
-<div class="col-md-8" />
-
 <h3>Status: {userper.userStatus}</h3>
 
 <label for="user">Change User Type</label>
+
 <div class="col-md-4">
     <select class="form-select" bind:value={userper.userType} id="user">
         {#if userper.userType === "BUYER"}
@@ -188,16 +211,115 @@
             >Activate User</a
         >
     {/if}
-{/if}
-
-{#if $user.user_roles && $user.user_roles.length > 0}
 
     <a href="#/users" on:click={changeUserType} class="my-button"
         >Change User Type</a
     >
+
+    <!-- Button trigger modal -->
+    <button
+        type="button"
+        class="my-button"
+        data-bs-toggle="modal"
+        data-bs-target="#user{userper.id}"
+    >
+        Update User
+    </button>
+
+    <!-- Modal -->
+    <div
+        class="modal fade"
+        id="user{userper.id}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Update User
+                    </h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group row">
+                            <label
+                                for="Email"
+                                class="col-sm-2 col-form-label">Email</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="Email"
+                                    bind:value={userper.email}
+                                />
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="form-group row">
+                            <label
+                                for="Name"
+                                class="col-sm-2 col-form-label">Name</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="Name"
+                                    bind:value={userper.name}
+                                />
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="form-group row">
+                            <label
+                                for="Username"
+                                class="col-sm-2 col-form-label">Username</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="Username"
+                                    bind:value={userper.username}
+                                />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="back-button"
+                        data-bs-dismiss="modal">Close</button
+                    >
+                    <button type="button" class="my-button" data-bs-dismiss="modal" on:click={updateUser}
+                        >Save changes</button
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
 {/if}
 
-<a class="back-button" href="#/products" role="button" aria-pressed="true"
-    >Back</a
->
+<a class="back-button" href="#/users" role="button" aria-pressed="true">Back</a>
+<img class="rounded-circle" alt="Svelte Logo" src="images/canvas.jpg" />
 <div class="md-12" />
+
+
+{:else}
+  <div class="alert" role="alert">
+    <h3><b>Not logged in</b></h3>
+  </div>
+{/if}

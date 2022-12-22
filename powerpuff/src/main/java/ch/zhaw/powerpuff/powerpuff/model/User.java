@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.lang.NonNull;
 
+import ch.zhaw.powerpuff.powerpuff.model.types.UserStatus;
+import ch.zhaw.powerpuff.powerpuff.model.types.UserType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +33,18 @@ public class User {
     private String name;
 
     private String comment;
+
+    public User(UserStatus userStatus, UserType userType, String email, String username, String name, String comment) {
+        this.userStatus = userStatus;
+        this.userType = userType;
+        this.email = email;
+        this.username = username;
+        this.name = name;
+        this.comment = comment;
+    }
+
+    
    
 }
+
+

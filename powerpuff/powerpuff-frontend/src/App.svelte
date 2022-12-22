@@ -47,7 +47,7 @@
 							<a class="nav-link" href="#/users">Users</a>
 						</li>
 					{/if}
-					{#if $isAuthenticated}
+					{#if $isAuthenticated && !$user.user_roles.includes("buyer")}
 						<li class="nav-item">
 							<a class="nav-link" href="#/utilities"
 								>Utilities</a
