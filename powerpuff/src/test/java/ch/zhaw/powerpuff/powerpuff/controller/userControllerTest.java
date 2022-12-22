@@ -10,12 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +28,7 @@ public class userControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    public String bearerToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Inc5U0pYVF9xdmRjN1YyNDVmbFRlSCJ9.eyJ1c2VyX3JvbGVzIjpbImFkbWluIl0sIm5pY2tuYW1lIjoia29sbGVzYWwiLCJuYW1lIjoia29sbGVzYWxAc3R1ZGVudHMuemhhdy5jaCIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci80NjE3MjQwMDIwZTczYWQwODg3NTlmNjZhZDYwNTc2NT9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRmtvLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIyLTEyLTIwVDEwOjEyOjQ3LjAyMloiLCJlbWFpbCI6ImtvbGxlc2FsQHN0dWRlbnRzLnpoYXcuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vZGV2LWFjYTFqenZ1dnEzNmpnajIuZXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYzOGNjZWYxNmMxYjVjMjBkZjU3MWFkMyIsImF1ZCI6ImZGTU1NQk1yc1pyemt3N296WFNVeTcxUGk2bTV5MXFnIiwiaWF0IjoxNjcxNTMxMTY3LCJleHAiOjE2NzE1NjcxNjcsInNpZCI6InBkaUlJVVo0UUw1ZVp4a3RvT2xDaVRrU1M1T3J2MEVnIiwibm9uY2UiOiJaalkyYWt4TVExbE5UeTFvZW1wa2FVWnFWVU5QTm5Sa1ZVcFdVREl6WVVkaFVsRlZmbTVNY2kxT1N3PT0ifQ.JLdFNRi73nvdEac0zfU4BV7lU8h3UNxa62N49YXw-xaDdH1nAdRyHoKWAweferPT0-CUW6kl7xrYaz3kyxrwq97v3cogX_feR_7YanvlSDhJg_lYzKarTLEZT7GwvNVwZPHMzXHwpfA6-85Gmaiyfqp_vLlFCt2JwMOhskuqEs9oXOIxlOHUM9X6XH6mqhbVr1DM0pXIrpNSuFRJxweahKcc8gvfftafVDs2aq_JszCutlj1bhJ2E9j3HiUqZw32asbhnLkqqpcDr951zrJlWwdFW-2zUJvUUoEQKwBgFOGOXAUqlE6mLtwVJA9MjZANDyM17sJdEHazAO4dlpGNGQ";
+    public String bearerToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Inc5U0pYVF9xdmRjN1YyNDVmbFRlSCJ9.eyJ1c2VyX3JvbGVzIjpbImFkbWluIl0sIm5pY2tuYW1lIjoia29sbGVzYWwiLCJuYW1lIjoia29sbGVzYWxAc3R1ZGVudHMuemhhdy5jaCIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci80NjE3MjQwMDIwZTczYWQwODg3NTlmNjZhZDYwNTc2NT9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRmtvLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIyLTEyLTIxVDEzOjA4OjQ3LjIxM1oiLCJlbWFpbCI6ImtvbGxlc2FsQHN0dWRlbnRzLnpoYXcuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vZGV2LWFjYTFqenZ1dnEzNmpnajIuZXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYzOGNjZWYxNmMxYjVjMjBkZjU3MWFkMyIsImF1ZCI6ImZGTU1NQk1yc1pyemt3N296WFNVeTcxUGk2bTV5MXFnIiwiaWF0IjoxNjcxNjM1MDc2LCJleHAiOjE2NzE2NzEwNzYsInNpZCI6IkhEcnZUcjFybzFGVjRCUDNKS2pmZDRBbEEyaFI3REpWIiwibm9uY2UiOiJTSGRKZVRKd2RsUlRVVk50VFZsbFEyUlBTak5vWDIxVk0wMVFMa0ZtV1U1Q1YwOXNPRkZHZGxBMll3PT0ifQ.WKNotklKWHyTE_mD6xPjKSU9njUp8-Mn4H8WrwpBzTs0KGYcorf27fJ3L6k6dckevd-m0eAJFRh_EqzG6AQwlMisHxxFQB3vNg80kL5zffCrIYkVOLg-3_zSVKXPA4ieknNBcz9Y_kzEPM-T0gfNoZqOlG6jq-BFyxyERg4eWeEP9ZsQiNFQ9xMpG0kr76ZFQkTRQjY4pWB1o3NWv37OOmEX2ybYEGMZBYl2WSSe7LMOu47EXwtcta5FvdpsSQzg4tK4muUGOsIAG6R3VAxb-JXiFK_vSlnA6DdQAY89zlRYVCXzw6buD6_ZurHvrPE_9x6YAjl_AwyYMoQw5eHJeQ";
 
      @Test
     // Test POST of object
@@ -53,16 +51,6 @@ public class userControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Test
-    // Test PUT of object
-    public void testPutser() throws Exception {
-       
-        mvc.perform(put("/api/users/639991a436f1b67db81c2a43").header(HttpHeaders.AUTHORIZATION,
-                "Bearer " + bearerToken)
-                .contentType("application/json"))
-                .andExpect(status().isOk());
-    }
-
     @ParameterizedTest
     @CsvSource(value = {
         "name, Salome K, username, salome, email, test@test.ch"
@@ -74,7 +62,7 @@ public class userControllerTest {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        mvc.perform(put("/api/users/639f90ab2cb535157647a591")
+        mvc.perform(put("/api/users/63a31e3f810e42168979bda7")
         .header(HttpHeaders.AUTHORIZATION,"Bearer " + bearerToken)
                 .contentType("application/json")
                 .content(mapper.writeValueAsBytes(userUpdateDTO)))
@@ -101,15 +89,6 @@ public class userControllerTest {
     }
 
     @Test
-    // Test PUT FORBIDDEN of object
-    public void testPutUserNotPossible() throws Exception {
-       
-        mvc.perform(put("/api/users/639991a436f1b67db81c2a43")
-                .contentType("application/json"))
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
     // Test GET of list of objects
     public void testGetAllUsers() throws Exception {
         this.mvc.perform(get("/api/users").header(HttpHeaders.AUTHORIZATION,
@@ -129,10 +108,7 @@ public class userControllerTest {
     public void testById() throws Exception {
         mvc.perform(get("/api/users/6390a5437bb4cf7efe7a59fe").header(HttpHeaders.AUTHORIZATION,
         "Bearer " + bearerToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Salome Koller")))
-                .andExpect(jsonPath("$.username", is("salomekoller")))
-                .andExpect(jsonPath("$.email", is("kollesal@students.zhaw.ch")));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -140,29 +116,26 @@ public class userControllerTest {
     public void testByMail() throws Exception {
         mvc.perform(get("/api/users/email/kollesal@students.zhaw.ch").header(HttpHeaders.AUTHORIZATION,
         "Bearer " + bearerToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Salome Koller")))
-                .andExpect(jsonPath("$.username", is("salomekoller")))
-                .andExpect(jsonPath("$.email", is("kollesal@students.zhaw.ch")));
-    }
-
-
-     @Test
-    // As this Statement would delete all my Users, this test is in a BLOCK-COMMENT
-    // Test DELETE of object
-    public void testDeleteAllUser() throws Exception {
-        mvc.perform(delete("/api/users").header(HttpHeaders.AUTHORIZATION,
-                "Bearer " + bearerToken))
-                .andExpect(status().isOk());
-    } 
-
-    @Test
-    // Test DELETE of object
-    public void testDeleteUser() throws Exception {
-        mvc.perform(delete("/api/user/6378f767a8d0c73ba92fc258").header(HttpHeaders.AUTHORIZATION,
-                "Bearer " + bearerToken))
                 .andExpect(status().isOk());
     }
+
+
+    //   @Test
+    // // As this Statement would delete all my Users, this test is in a BLOCK-COMMENT
+    // // Test DELETE of object
+    // public void testDeleteAllUser() throws Exception {
+    //     mvc.perform(delete("/api/users").header(HttpHeaders.AUTHORIZATION,
+    //             "Bearer " + bearerToken))
+    //             .andExpect(status().isOk());
+    // }  
+
+    // @Test
+    // // Test DELETE of object
+    // public void testDeleteUser() throws Exception {
+    //     mvc.perform(delete("/api/user/63a3256fcbeb1f5fcaec8b5d").header(HttpHeaders.AUTHORIZATION,
+    //             "Bearer " + bearerToken))
+    //             .andExpect(status().isOk());
+    // }
 
 }
- */
+  */

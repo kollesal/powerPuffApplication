@@ -154,7 +154,7 @@ button {
     text-align: left;
     /* background-color: #e2e8f0;    */
     height: 100%; 
-    background-image: url(http://localhost:8080/images/background.jpg);
+    background-image: url(https://powerpuff-1671620117973.azurewebsites.net/images/background.jpg);
     background:rgba(0.19);
     background-position: center;
             background-repeat: no-repeat;

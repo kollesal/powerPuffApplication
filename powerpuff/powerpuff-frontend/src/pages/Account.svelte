@@ -120,7 +120,7 @@
                   <h6 class="mb-0">Username</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <p>{$user.nickname}</p>
+                  <p>{userper.username}</p>
                 </div>
               </div>
               <hr />

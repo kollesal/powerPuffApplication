@@ -80,10 +80,6 @@ public class UserController {
             @RequestParam(required = false) Integer pageSize,
             @AuthenticationPrincipal Jwt jwt) {
 
-        if (UserValidator.userHasRole(jwt, "buyer")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
         if (page == null) {
             page = 1;
         }
@@ -122,10 +118,6 @@ public class UserController {
     public ResponseEntity<User> getUserByEmail(
         @PathVariable String email,
         @AuthenticationPrincipal Jwt jwt) {
-
-            if (UserValidator.userHasRole(jwt, "buyer")) {
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
             
         List<User> optUser = userRepository.findByEmail(email);
         if (optUser.size() == 1) {

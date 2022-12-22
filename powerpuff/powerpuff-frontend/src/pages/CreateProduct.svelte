@@ -8,14 +8,14 @@
 
     let products = [];
     let product = {
-        productname: null,
-        description: null,
-        productType: null,
-        difficultyType: null,
-        clothingType: null,
-        size: null,
-        price: null,
-        patchart: null,
+        productname: "",
+        description: "",
+        productType: "",
+        difficultyType: "",
+        clothingType: "",
+        size: "",
+        price: "",
+        patchart: "",
     };
 
     function createProduct() {

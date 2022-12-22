@@ -28,6 +28,7 @@ public class Utility {
 
     @NonNull
     private UtilityType utilityType;
-   
+
+    
     
 }

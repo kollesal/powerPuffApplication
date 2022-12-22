@@ -18,7 +18,7 @@
         product_id = params.id;
         getProduct();
 
-        if($isAuthenticated){
+        if ($isAuthenticated) {
             getUsers();
             getUser();
             getUtilities();
@@ -236,208 +236,236 @@
             });
     }
 </script>
+
 {#if $isAuthenticated}
-
-<!--<div class="col-md-12">-->
-<h1 class="md-3">Product {product.productname}</h1>
-<p>ID: {product.id}</p>
-<h3>Product Type: {product.productType}</h3>
-<div class="col-md-8" />
-<div class="md-12">
-    <div class="col-4">
-        <ul class="list-group">
-            <li class="list-group-item-top active" aria-current="true">
-                Description:
-            </li>
-            <li class="list-group-item">
-                {product.description}
-            </li>
-        </ul>
-    </div>
-
-    {#if $user.user_roles && $user.user_roles.length > 0}
-    {#if !$user.user_roles.includes("buyer") || userper.id === product.userId}
-
+    <!--<div class="col-md-12">-->
+    <h1 class="md-3">Product {product.productname}</h1>
+    <p>ID: {product.id}</p>
+    <h3>Product Type: {product.productType}</h3>
     <div class="col-md-8" />
-
-    <h3 class="md-3">Utilities:</h3>
-    <div class="row">
-    {#each product.utilityIds as listUtility}
-        {#each allUtilities as entityUtility}
-            {#if listUtility === entityUtility.id}
-                <div class="col-sm-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                {entityUtility.utilityName}
-                            </h5>
-                            <p class="card-text">
-                                Type: {entityUtility.utilityType}
-                            </p>
-                            <p>
-                                Units: {entityUtility.unit}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            {/if}
-        {/each}
-    {/each}
-   
-    </div>
-
-    <label for="member">Add a Utility to this Product</label>
-    <div class="col-md-4">
-        <select class="form-select" bind:value={utility_id} id="user">
-            {#each allUtilities as utility}
-                    <option value={utility.id}>{utility.utilityName}</option>
-            {/each}
-        </select>
-    </div>
-    <div class="col-md-8" />
-    <button on:click={utilityassignment} class="my-button"
-        >Assign</button
-    >
-
-    <p></p>
-    <p>You cannot find a suiting Utility? Then you can create a new Utility here: 
-    <a href="#/utilities">Add Utility</a>
-    </p>
-    {/if}
-
-    <div class="col-md-8" />
-
-    <h3>Creator:</h3>
-
-    {#if product.userId === null}
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">No Creator assigned</h5>
-                        <p class="card-text" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    {:else}
-        <div class="row">
-            {#each allUsers as user}
-                {#if product.userId == user.id}
-                    <div class="col-sm-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    {user.username}
-                                </h5>
-                                <p class="card-text">
-                                    Name: {user.name}
-                                </p>
-                                <p>
-                                    Email: {user.email}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                {/if}
-            {/each}
-        </div>
-    {/if}
-    {/if}
-
-    <div class="col-md-8" />
-    {#if $user.user_roles && $user.user_roles.length > 0}
-    {#if $user.user_roles.includes("admin") }
-        {#if product.userId === null}
-            <h3>Assign User</h3>
-            <label for="member">Add a User to this Product</label>
-            <div class="col-md-4">
-                <select class="form-select" bind:value={user_id} id="user">
-                    {#each allUsers as user}
-                        {#if (user.userType === "SUPPLIER" || user.userType === "ADMIN") && user.userStatus === "ACTIVE"}
-                            <option value={user.id}>{user.username}</option>
-                        {/if}
-                    {/each}
-                </select>
-            </div>
-            <div class="col-md-8" />
-            <button on:click={productassignment} class="my-button"
-                >Assign</button
-            >
-        {/if}
-    {/if}
-    {/if}
-
-    <div class="col-md-8" />
-
-    <h3>Status: {product.productState}</h3>
-    {#if $user.user_roles && $user.user_roles.length > 0}
-    {#if $user.user_roles.includes("admin") || userper.id === product.userId}
-        {#if product.productState === "ACTIVE"}
-            <form>
-                <div class="row mb-3">
-                    <div class="col">
-                        <label for="comment"
-                            >Comment for Inactivation of Product</label
-                        >
-                        <textarea
-                            bind:value={product.comment}
-                            class="form-control"
-                            id="comment"
-                            rows="3"
-                        />
-                    </div>
-                </div>
-            </form>
-        {/if}
-    {/if}
-    {#if product.productState === "INACTIVE"}
-        <div class="col-md-4">
+    <div class="md-12">
+        <div class="col-4">
             <ul class="list-group">
                 <li class="list-group-item-top active" aria-current="true">
-                    Reason for Inactivation:
+                    Description:
                 </li>
                 <li class="list-group-item">
-                    {product.comment}
+                    {product.description}
                 </li>
             </ul>
         </div>
-    {/if}
-    {/if}
 
-    <div class="col-md-8" />
-    {#if $user.user_roles && $user.user_roles.length > 0}
-    {#if $user.user_roles.includes("admin") || userper.id === product.userId}
-        <a href="#/products" on:click={deleteProduct} class="delete-button"
-            >Delete Product</a
-        >
-        {#if product.productState === "NEW"}
-            <a href="#/products" on:click={productReview} class="my-button"
-                >Review Product</a
-            >
-        {:else if product.productState === "REVIEW"}
-            <a href="#/products" on:click={productActivation} class="my-button"
-                >Activate Product</a
-            >
-        {:else if product.productState === "ACTIVE"}
-            <a href="#/products" on:click={productCompletion} class="my-button"
-                >Inactivate Product</a
-            >
-        {:else if product.productState === "INACTIVE"}
-            <a href="#/products" on:click={productActivation} class="my-button"
-                >Activate Product</a
-            >
+        {#if $user.user_roles && $user.user_roles.length > 0}
+            {#if $isAuthenticated}
+                <div class="col-md-8" />
+
+                <h3 class="md-3">Utilities:</h3>
+                <div class="row">
+                    {#each product.utilityIds as listUtility}
+                        {#each allUtilities as entityUtility}
+                            {#if listUtility === entityUtility.id}
+                                <div class="col-sm-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                {entityUtility.utilityName}
+                                            </h5>
+                                            <p class="card-text">
+                                                Type: {entityUtility.utilityType}
+                                            </p>
+                                            <p>
+                                                Units: {entityUtility.unit}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {/if}
+                        {/each}
+                    {/each}
+                </div>
+            {/if}
+            {#if $user.user_roles.includes("admin") || userper.id === product.userId}
+                <label for="member">Add a Utility to this Product</label>
+                <div class="col-md-4">
+                    <select
+                        class="form-select"
+                        bind:value={utility_id}
+                        id="user"
+                    >
+                        {#each allUtilities as utility}
+                            <option value={utility.id}
+                                >{utility.utilityName}</option
+                            >
+                        {/each}
+                    </select>
+                </div>
+                <div class="col-md-8" />
+                <button on:click={utilityassignment} class="my-button"
+                    >Assign</button
+                >
+
+                <p />
+                <p>
+                    You cannot find a suiting Utility? Then you can create a new
+                    Utility here:
+                    <a href="#/utilities">Add Utility</a>
+                </p>
+            {/if}
+
+            <div class="col-md-8" />
+
+            {#if product.userId === null}
+                <h3>Creator:</h3>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">No Creator assigned</h5>
+                                <p class="card-text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {:else}
+                <div class="row">
+                    {#each allUsers as user}
+                        {#if product.userId == user.id}
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {user.username}
+                                        </h5>
+                                        <p class="card-text">
+                                            Name: {user.name}
+                                        </p>
+                                        <p>
+                                            Email: {user.email}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {/if}
+                    {/each}
+                </div>
+            {/if}
         {/if}
-    {/if}
-    {/if}
-    <a class="back-button" href="#/products" role="button" aria-pressed="true"
-        >Back</a
-    >
-    <div class="md-12" />
-</div>
 
+        <div class="col-md-8" />
+        {#if $user.user_roles && $user.user_roles.length > 0}
+            {#if $user.user_roles.includes("admin")}
+                {#if product.userId === null}
+                    <h3>Assign User</h3>
+                    <label for="member">Add a User to this Product</label>
+                    <div class="col-md-4">
+                        <select
+                            class="form-select"
+                            bind:value={user_id}
+                            id="user"
+                        >
+                            {#each allUsers as user}
+                                {#if (user.userType === "SUPPLIER" || user.userType === "ADMIN") && user.userStatus === "ACTIVE"}
+                                    <option value={user.id}
+                                        >{user.username}</option
+                                    >
+                                {/if}
+                            {/each}
+                        </select>
+                    </div>
+                    <div class="col-md-8" />
+                    <button on:click={productassignment} class="my-button"
+                        >Assign</button
+                    >
+                {/if}
+            {/if}
+        {/if}
+
+        <div class="col-md-8" />
+
+        <h3>Status: {product.productState}</h3>
+        {#if $user.user_roles && $user.user_roles.length > 0}
+            {#if $user.user_roles.includes("admin") || userper.id === product.userId}
+                {#if product.productState === "ACTIVE"}
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="comment"
+                                    >Comment for Inactivation of Product</label
+                                >
+                                <textarea
+                                    bind:value={product.comment}
+                                    class="form-control"
+                                    id="comment"
+                                    rows="3"
+                                />
+                            </div>
+                        </div>
+                    </form>
+                {/if}
+            {/if}
+            {#if product.productState === "INACTIVE"}
+                <div class="col-md-4">
+                    <ul class="list-group">
+                        <li
+                            class="list-group-item-top active"
+                            aria-current="true"
+                        >
+                            Reason for Inactivation:
+                        </li>
+                        <li class="list-group-item">
+                            {product.comment}
+                        </li>
+                    </ul>
+                </div>
+            {/if}
+        {/if}
+
+        <div class="col-md-8" />
+        {#if $user.user_roles && $user.user_roles.length > 0}
+            {#if $user.user_roles.includes("admin") || userper.id === product.userId}
+                <a
+                    href="#/products"
+                    on:click={deleteProduct}
+                    class="delete-button">Delete Product</a
+                >
+                {#if product.productState === "NEW"}
+                    <a
+                        href="#/products"
+                        on:click={productReview}
+                        class="my-button">Review Product</a
+                    >
+                {:else if product.productState === "REVIEW"}
+                    <a
+                        href="#/products"
+                        on:click={productActivation}
+                        class="my-button">Activate Product</a
+                    >
+                {:else if product.productState === "ACTIVE"}
+                    <a
+                        href="#/products"
+                        on:click={productCompletion}
+                        class="my-button">Inactivate Product</a
+                    >
+                {:else if product.productState === "INACTIVE"}
+                    <a
+                        href="#/products"
+                        on:click={productActivation}
+                        class="my-button">Activate Product</a
+                    >
+                {/if}
+            {/if}
+        {/if}
+        <a
+            class="back-button"
+            href="#/products"
+            role="button"
+            aria-pressed="true">Back</a
+        >
+        <div class="md-12" />
+    </div>
 {:else}
-  <div class="alert" role="alert">
-    <h3><b>Not logged in</b></h3>
-  </div>
+    <div class="alert" role="alert">
+        <h3><b>Not logged in</b></h3>
+    </div>
 {/if}

@@ -1,11 +1,9 @@
 /* package ch.zhaw.powerpuff.powerpuff.controller;
 
-import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +26,7 @@ public class utilityControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    public String bearerToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Inc5U0pYVF9xdmRjN1YyNDVmbFRlSCJ9.eyJ1c2VyX3JvbGVzIjpbImFkbWluIl0sIm5pY2tuYW1lIjoia29sbGVzYWwiLCJuYW1lIjoia29sbGVzYWxAc3R1ZGVudHMuemhhdy5jaCIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci80NjE3MjQwMDIwZTczYWQwODg3NTlmNjZhZDYwNTc2NT9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRmtvLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIyLTEyLTIwVDEwOjEyOjQ3LjAyMloiLCJlbWFpbCI6ImtvbGxlc2FsQHN0dWRlbnRzLnpoYXcuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vZGV2LWFjYTFqenZ1dnEzNmpnajIuZXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYzOGNjZWYxNmMxYjVjMjBkZjU3MWFkMyIsImF1ZCI6ImZGTU1NQk1yc1pyemt3N296WFNVeTcxUGk2bTV5MXFnIiwiaWF0IjoxNjcxNTMxMTY3LCJleHAiOjE2NzE1NjcxNjcsInNpZCI6InBkaUlJVVo0UUw1ZVp4a3RvT2xDaVRrU1M1T3J2MEVnIiwibm9uY2UiOiJaalkyYWt4TVExbE5UeTFvZW1wa2FVWnFWVU5QTm5Sa1ZVcFdVREl6WVVkaFVsRlZmbTVNY2kxT1N3PT0ifQ.JLdFNRi73nvdEac0zfU4BV7lU8h3UNxa62N49YXw-xaDdH1nAdRyHoKWAweferPT0-CUW6kl7xrYaz3kyxrwq97v3cogX_feR_7YanvlSDhJg_lYzKarTLEZT7GwvNVwZPHMzXHwpfA6-85Gmaiyfqp_vLlFCt2JwMOhskuqEs9oXOIxlOHUM9X6XH6mqhbVr1DM0pXIrpNSuFRJxweahKcc8gvfftafVDs2aq_JszCutlj1bhJ2E9j3HiUqZw32asbhnLkqqpcDr951zrJlWwdFW-2zUJvUUoEQKwBgFOGOXAUqlE6mLtwVJA9MjZANDyM17sJdEHazAO4dlpGNGQ";
+    public String bearerToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Inc5U0pYVF9xdmRjN1YyNDVmbFRlSCJ9.eyJ1c2VyX3JvbGVzIjpbImFkbWluIl0sIm5pY2tuYW1lIjoia29sbGVzYWwiLCJuYW1lIjoia29sbGVzYWxAc3R1ZGVudHMuemhhdy5jaCIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci80NjE3MjQwMDIwZTczYWQwODg3NTlmNjZhZDYwNTc2NT9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRmtvLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIyLTEyLTIxVDEzOjA4OjQ3LjIxM1oiLCJlbWFpbCI6ImtvbGxlc2FsQHN0dWRlbnRzLnpoYXcuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vZGV2LWFjYTFqenZ1dnEzNmpnajIuZXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYzOGNjZWYxNmMxYjVjMjBkZjU3MWFkMyIsImF1ZCI6ImZGTU1NQk1yc1pyemt3N296WFNVeTcxUGk2bTV5MXFnIiwiaWF0IjoxNjcxNjM1MDc2LCJleHAiOjE2NzE2NzEwNzYsInNpZCI6IkhEcnZUcjFybzFGVjRCUDNKS2pmZDRBbEEyaFI3REpWIiwibm9uY2UiOiJTSGRKZVRKd2RsUlRVVk50VFZsbFEyUlBTak5vWDIxVk0wMVFMa0ZtV1U1Q1YwOXNPRkZHZGxBMll3PT0ifQ.WKNotklKWHyTE_mD6xPjKSU9njUp8-Mn4H8WrwpBzTs0KGYcorf27fJ3L6k6dckevd-m0eAJFRh_EqzG6AQwlMisHxxFQB3vNg80kL5zffCrIYkVOLg-3_zSVKXPA4ieknNBcz9Y_kzEPM-T0gfNoZqOlG6jq-BFyxyERg4eWeEP9ZsQiNFQ9xMpG0kr76ZFQkTRQjY4pWB1o3NWv37OOmEX2ybYEGMZBYl2WSSe7LMOu47EXwtcta5FvdpsSQzg4tK4muUGOsIAG6R3VAxb-JXiFK_vSlnA6DdQAY89zlRYVCXzw6buD6_ZurHvrPE_9x6YAjl_AwyYMoQw5eHJeQ";
 
     @Test
     // Test POST of object
@@ -57,7 +55,7 @@ public class utilityControllerTest {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        mvc.perform(patch("/api/utilities/6399d8f60eec70756b3b71ec").header(HttpHeaders.AUTHORIZATION,
+        mvc.perform(patch("/api/utilities/6399daec0eec70756b3b7201").header(HttpHeaders.AUTHORIZATION,
                 "Bearer " + bearerToken)
                 .contentType("application/json")
                 .content(mapper.writeValueAsBytes(utilityUpdateDTO)))
@@ -91,30 +89,27 @@ public class utilityControllerTest {
     public void testById() throws Exception {
         mvc.perform(get("/api/utilities/6399d8cb0eec70756b3b71ea").header(HttpHeaders.AUTHORIZATION,
         "Bearer " + bearerToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.utilityName", is("Ruler")))
-                .andExpect(jsonPath("$.unit", is(1)))
-                .andExpect(jsonPath("$.utilityType", is("MEASURING")));
+                .andExpect(status().isOk());
     }
 
     
-     @Test
-    // As this Statement would delete all my Utilities, this test is in a BLOCK-COMMENT
-    // Test DELETE of object
-    public void testDeleteAllUtilities() throws Exception {
-        mvc.perform(delete("/api/utilities").header(HttpHeaders.AUTHORIZATION,
-                "Bearer " + bearerToken))
-                .andExpect(status().isOk());
-    } 
+    //   @Test
+    // // As this Statement would delete all my Utilities, this test is in a BLOCK-COMMENT
+    // // Test DELETE of object
+    // public void testDeleteAllUtilities() throws Exception {
+    //     mvc.perform(delete("/api/utilities").header(HttpHeaders.AUTHORIZATION,
+    //             "Bearer " + bearerToken))
+    //             .andExpect(status().isOk());
+    // }  
 
     @Test
     // Test DELETE of object
     public void testDeleteUtility() throws Exception {
-        mvc.perform(delete("/api/utilities/6399da3a0eec70756b3b71f4").header(HttpHeaders.AUTHORIZATION,
+        mvc.perform(delete("/api/utilities/63a32c4727517053c9fa07ad").header(HttpHeaders.AUTHORIZATION,
                 "Bearer " + bearerToken))
                 .andExpect(status().isOk());
     }
 
     
 }
- */
+  */

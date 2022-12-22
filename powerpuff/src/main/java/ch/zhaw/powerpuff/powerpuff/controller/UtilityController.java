@@ -54,10 +54,6 @@ public class UtilityController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) String type) {
 
-        if (UserValidator.userHasRole(jwt, "buyer")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
         if (page == null) {
             page = 1;
         }
