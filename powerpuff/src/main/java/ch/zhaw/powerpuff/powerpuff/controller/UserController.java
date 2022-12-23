@@ -54,10 +54,6 @@ public class UserController {
             @RequestBody UserUpdateDTO uDTO,
             @AuthenticationPrincipal Jwt jwt) {
 
-        if (UserValidator.userHasRole(jwt, "buyer")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
         Optional<User> uDAO = userRepository.findById(id);
         if (uDAO.isPresent()) {
 
