@@ -17,11 +17,12 @@
    let type;
 
   let userper = {
-    username: null,
-    name: null,
-    email: null,
-    userStatus: null,
-    userType: null,
+    username: "",
+    name: "",
+    email: "",
+    userStatus: "",
+    userType: "",
+    comment: "",
   };
 
   function getUser() {
@@ -47,7 +48,7 @@
   function updateUser() {
     var config = {
       method: "put",
-      url: api_root + "/api/users/" + user_id,
+      url: api_root + "/api/users/" + userper.id,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + $jwt_token,
