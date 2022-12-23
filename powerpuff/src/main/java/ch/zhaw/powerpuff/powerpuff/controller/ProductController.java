@@ -94,7 +94,23 @@ public class ProductController {
         } else if (min != null && max != null && type == null && user == null) {
             allProducts = productRepository
                     .findByPriceBetween(min, max, PageRequest.of(page - 1, pageSize));
-        } else if (min != null) {
+
+
+        } else if (min != null && max != null && type == null && user != null && state != null) {
+            allProducts = productRepository
+                    .findByUserIdAndProductStateAndPriceBetween(user, state, min, max, PageRequest.of(page - 1, pageSize));
+        } else if (min == null && max == null && type != null && user != null  && state != null) {
+            allProducts = productRepository
+                    .findByUserIdAndProductStateAndProductType(user, state, type, PageRequest.of(page - 1, pageSize));
+        } else if (min != null && max != null && type != null && user == null && state != null) {
+            allProducts = productRepository
+                    .findByProductTypeAndProductStateAndPriceBetween(type, state, min, max, PageRequest.of(page - 1, pageSize));
+        } else if (min != null && max != null && type == null && user == null && state != null) {
+            allProducts = productRepository
+                    .findByProductStateAndPriceBetween(state, min, max, PageRequest.of(page - 1, pageSize));
+
+
+        }else if (min != null) {
             allProducts = productRepository
                     .findByPriceGreaterThan(min, PageRequest.of(page - 1, pageSize));
         } else if (type != null) {

@@ -235,6 +235,7 @@
                 console.log(error);
             });
     }
+
 </script>
 
 {#if $isAuthenticated}

@@ -26,6 +26,11 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
   List<Product> findByProductState(String state);
 
+  List<Product> findByUserIdAndProductStateAndPriceBetween(String user_id, String state, Double min, Double max);
+  List<Product> findByUserIdAndProductStateAndProductType(String user_id, String state, String type);
+  List<Product> findByProductTypeAndProductStateAndPriceBetween(String type, String state, Double min, Double max);
+  List<Product> findByProductStateAndPriceBetween(String state, Double min, Double max);
+
   Page<Product> findByPriceGreaterThan(Double price, Pageable pageable);
   Page<Product> findByPriceBetween(Double min, Double max, Pageable pageable);
   Page<Product> findByProductType(String type, Pageable pageable);
@@ -37,6 +42,11 @@ public interface ProductRepository extends MongoRepository<Product, String> {
   Page<Product> findByProductTypeAndPriceBetweenAndUserId(String type, Double min, Double max, String user_id, Pageable pageable);
 
   Page<Product> findByProductState(String status, Pageable pageable);
+
+  Page<Product> findByUserIdAndProductStateAndPriceBetween(String user_id, String state, Double min, Double max, Pageable pageable);
+  Page<Product> findByUserIdAndProductStateAndProductType(String user_id, String state, String type, Pageable pageable);
+  Page<Product> findByProductTypeAndProductStateAndPriceBetween(String type, String state, Double min, Double max, Pageable pageable);
+  Page<Product> findByProductStateAndPriceBetween(String state, Double min, Double max, Pageable pageable);
 
  /*  @Query("{$match: {productState: {$regex: ?0}, productType: {$regex: ?1}, price: {$gte: {$regex: ?2}}, price: {$lte: {$regex: ?3}}, userId: {$regex: ?4},},},}")
   List<Product> findByQueryWithParameters(String state, String type, String min, String max, String user_id);
